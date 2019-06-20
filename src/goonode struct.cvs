@@ -1,0 +1,26 @@
+地址		field name	data type	length	Initial Value
+0		nodeID	Int	2	8011
+2	2.0 	workOK	Bool	1	FALSE
+	2.1 	commOK	Bool		TRUE
+	2.2 	pump_run_1	Bool		FALSE
+	2.3 	pump_run_2	Bool		FALSE
+	2.4 	pump_run_3	Bool		FALSE
+	2.5 	pump_run_4	Bool		FALSE
+	2.6 	pump_run_5	Bool		FALSE
+	2.7 	heater_run_1	Bool		FALSE
+3	3.0 	heater_run_2	Bool	1	FALSE
+	3.1 	heater_run_3	Bool		FALSE
+	3.2 	heater_run_4	Bool		FALSE
+	3.3 	heater_run_5	Bool		FALSE
+4		year	Byte	1	16#0
+5		month	Byte	1	16#0
+6		day	Byte	1	16#0
+7		hour	Byte	1	16#0
+8		minute	Byte	1	16#0
+9		second	Byte	1	16#0
+10		ms	Byte	2	16#0
+12		temperature	Real	4	0
+16		pressure	Real	4	0
+20		flow	Real	4	0
+24		reserve	Array[0..25] of Byte	26	26*16#0
+小计				50	
