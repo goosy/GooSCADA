@@ -23,7 +23,7 @@
   "scripts": {
     "start": "node -r esm ./lib/VPLC.js",
     "build": "rollup -c",
-    "watch": "rollup -c -w",
+    "watch": "rollup -c -w"
   },
   "keywords": [
     "PLC",
