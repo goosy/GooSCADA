@@ -14,6 +14,7 @@ else
 	call npm install pm2 -g
 fi
 
+rm .gitignore
 rm -dr node_modules
 rm -dr src
 rm -drf .git
