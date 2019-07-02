@@ -8,6 +8,7 @@
     "esm": "^3.2.22"
   },
   "devDependencies": {
+    "eslint": "^6.0.1",
     "gulp": "^4.0.2",
     "jsonminify": "^0.4.1",
     "node-snap7": "^1.0.2",
