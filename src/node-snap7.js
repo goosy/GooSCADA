@@ -5,8 +5,10 @@
  */
 
 import events from 'events';
-import snap7 from './node_snap7.node';
 import util from "util";
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const snap7 = require('./node_snap7.node');
 export { snap7 };
 
 // promisify

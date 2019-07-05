@@ -13,7 +13,7 @@ gulp.task('copy',  ()=>{
         .pipe(gulp.dest('lib'))
 });
 
-gulp.task('bundle', async function () {
+gulp.task('JSONFromFile-bundle', async function () {
     let bundle = await rollup({
         input: 'src/JSONFromFile.js',
         plugins: [
@@ -30,7 +30,10 @@ gulp.task('bundle', async function () {
         format: 'esm', // 
     });
 
-    bundle = await rollup({
+});
+
+gulp.task('getData-bundle', async function () {
+    let bundle = await rollup({
         input: 'src/getData.js',
         plugins: [
             resolve({
@@ -46,7 +49,10 @@ gulp.task('bundle', async function () {
         format: 'esm', // 
     });
 
-    bundle = await rollup({
+});
+
+gulp.task('VPLC-bundle', async function () {
+    let bundle = await rollup({
         input: 'src/VPLC.js',
         plugins: [
             resolve({
@@ -55,7 +61,7 @@ gulp.task('bundle', async function () {
             commonjs(), // converts XX to ES modules
             production && terser() // minify, but only in production
         ],
-        external: [ 'events', 'util', './getData.js', './JSONFromFile.js', './node_snap7.node' ],
+        external: [ 'module', 'events', 'util', './getData.js', './JSONFromFile.js', './node_snap7.node' ],
     });
     await bundle.write({
         file: 'lib/VPLC.js',
@@ -63,4 +69,4 @@ gulp.task('bundle', async function () {
     });
 });
 
-gulp.task('build',gulp.series('copy', 'bundle'));
+gulp.task('build', gulp.parallel('copy', 'JSONFromFile-bundle', 'getData-bundle', 'VPLC-bundle'));

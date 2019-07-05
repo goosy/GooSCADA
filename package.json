@@ -4,14 +4,16 @@
   "type": "module",
   "description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
   "main": "/lib/VPLC.js",
-  "dependencies": {
-    "esm": "^3.2.22"
+  "engines": {
+    "node": ">=12.6.0 <13.0.0"
   },
+  "dependencies": {},
   "devDependencies": {
+    "esm": "^3.2.22",
     "eslint": "^6.0.1",
     "gulp": "^4.0.2",
     "jsonminify": "^0.4.1",
-    "node-snap7": "^1.0.2",
+    "node-snap7": "^1.0.3",
     "rollup": "^1.15.6",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.3",
@@ -22,7 +24,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "node -r esm ./lib/VPLC.js",
+    "start": "node ./lib/VPLC.js",
     "build": "rollup -c",
     "watch": "rollup -c -w"
   },

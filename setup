@@ -1,4 +1,7 @@
 #!/bin/sh
+echo please add command to ~/.bashrc
+echo export NODE_OPTIONS=--experimental-modules
+source ~/.bashrc
 
 npm install
 
@@ -15,8 +18,8 @@ else
 	call npm install pm2 -g
 fi
 
-rm .gitignore
+# rm .gitignore
 rm -dr node_modules
 rm -dr src
-rm -drf .git
-npm install --production
+# rm -drf .git
+# npm install --production

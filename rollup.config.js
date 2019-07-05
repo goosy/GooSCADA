@@ -50,6 +50,6 @@ export default [
 			commonjs(), // converts XX to ES modules
 			production && terser() // minify, but only in production
 		],
-		external: [ 'events', 'util', './getData.js', './JSONFromFile.js', './node_snap7.node' ],
+		external: [ 'events', 'util', 'module', './getData.js', './JSONFromFile.js', './node_snap7.node' ],
 	},
 ];
