@@ -1,19 +1,17 @@
-import gulp from 'gulp';
+import {task, src, dest, parallel} from 'gulp';
 import {rollup} from 'rollup';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 
-// `npm run build` -> `production` is true
-// `npm run dev` -> `production` is false
-const production = !process.env.ROLLUP_WATCH;
+let production = !process.env.ROLLUP_WATCH;
 
-gulp.task('copy',  ()=>{
-    return gulp.src('node_modules/node-snap7/build/Release/node_snap7.node')
-        .pipe(gulp.dest('lib'))
+task('copy',  ()=>{
+    return src('node_modules/node-snap7/build/Release/node_snap7.node')
+        .pipe(dest('lib'))
 });
 
-gulp.task('JSONFromFile-bundle', async function () {
+task('JSONFromFile-bundle', async function () {
     let bundle = await rollup({
         input: 'src/JSONFromFile.js',
         plugins: [
@@ -32,7 +30,7 @@ gulp.task('JSONFromFile-bundle', async function () {
 
 });
 
-gulp.task('getData-bundle', async function () {
+task('getData-bundle', async function () {
     let bundle = await rollup({
         input: 'src/getData.js',
         plugins: [
@@ -51,7 +49,7 @@ gulp.task('getData-bundle', async function () {
 
 });
 
-gulp.task('VPLC-bundle', async function () {
+task('VPLC-bundle', async function () {
     let bundle = await rollup({
         input: 'src/VPLC.js',
         plugins: [
@@ -69,4 +67,9 @@ gulp.task('VPLC-bundle', async function () {
     });
 });
 
-gulp.task('build', gulp.parallel('copy', 'JSONFromFile-bundle', 'getData-bundle', 'VPLC-bundle'));
+task('build', parallel('copy', 'JSONFromFile-bundle', 'getData-bundle', 'VPLC-bundle'));
+
+task('dev', async function () {
+    production = false;
+    parallel('copy', 'JSONFromFile-bundle', 'getData-bundle', 'VPLC-bundle')();
+});
