@@ -64,4 +64,6 @@ typings/
 .idea
 
 # production
+build-define/
+dist/
 lib/
