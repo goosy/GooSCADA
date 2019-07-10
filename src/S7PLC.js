@@ -5,9 +5,8 @@
 
 import events from 'events';
 import {snap7} from "./node-snap7.js";
-import {JSONFromFile} from "./JSONFromFile.js";
 
-export class GooS7Server {
+export class S7PLC {
     constructor(path=null) {
         this.tags = {};
         if(path)this.setConfigFile(path);
@@ -70,13 +69,13 @@ export class GooS7Server {
     }
 
     async startServe(){
-        let config = await JSONFromFile(this.configFile, {"encoding":"utf8"});
+        let {vplc} = await import(this.configFile);
         let server = this.s7server = new snap7.S7Server();
         server.on("event", (event) => {
             console.log(server.EventText(event));
         });
 
-        let areas = this.areas = config.areas; 
+        let areas = this.areas = vplc.areas; 
         areas.forEach( area=>{
             // console.log(area);
             if(area.type=="DB"){
@@ -85,9 +84,9 @@ export class GooS7Server {
             }
         });
 
-        server.StartTo(config.host);
+        server.StartTo(vplc.host);
     }
 }
 
-GooS7Server.super_ = events.EventEmitter;
-Object.setPrototypeOf(GooS7Server.prototype, events.EventEmitter.prototype);
+S7PLC.super_ = events.EventEmitter;
+Object.setPrototypeOf(S7PLC.prototype, events.EventEmitter.prototype);

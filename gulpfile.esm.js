@@ -1,75 +1,28 @@
-import {task, src, dest, parallel} from 'gulp';
-import {rollup} from 'rollup';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import { terser } from 'rollup-plugin-terser';
+import {
+    task,
+    src,
+    dest,
+    series
+} from 'gulp';
+import {tasks} from './gulpfile.user.js';
 
-let production = !process.env.ROLLUP_WATCH;
-
-task('copy',  ()=>{
-    return src('node_modules/node-snap7/build/Release/node_snap7.node')
-        .pipe(dest('lib'))
+task('copy', async () => {
+    src('build-define/*').pipe(dest('dist/'));
+    src('package.json').pipe(dest('dist/'));
+    src('command/*').pipe(dest('dist/'));
+    src('conf/*').pipe(dest('dist/conf'));
+    await src('node_modules/node-snap7/build/Release/node_snap7.node')
+        .pipe(dest('lib'));
+    src('lib/*').pipe(dest('dist/lib/'));
 });
 
-task('JSONFromFile-bundle', async function () {
-    let bundle = await rollup({
-        input: 'src/JSONFromFile.js',
-        plugins: [
-            resolve({
-                preferBuiltins: true,
-            }), // tells Rollup how to find XX in node_modules
-            commonjs(), // converts XX to ES modules
-            production && terser() // minify, but only in production
-        ],
-        external: [ 'fs' ],
-    });
-    await bundle.write({
-        file: 'lib/JSONFromFile.js',
-        format: 'esm', // 
-    });
+task('setdev', async () => {
+    process.env.PRODUCTION = false;
+})
 
-});
+task('setproduction', async () => {
+    process.env.PRODUCTION = true;
+})
 
-task('getData-bundle', async function () {
-    let bundle = await rollup({
-        input: 'src/getData.js',
-        plugins: [
-            resolve({
-                preferBuiltins: true,
-            }), // tells Rollup how to find XX in node_modules
-            commonjs(), // converts XX to ES modules
-            production && terser() // minify, but only in production
-        ],
-        external: [ 'events', 'fs', 'net', './JSONFromFile.js' ],
-    });
-    await bundle.write({
-        file: 'lib/getData.js',
-        format: 'esm', // 
-    });
-
-});
-
-task('VPLC-bundle', async function () {
-    let bundle = await rollup({
-        input: 'src/VPLC.js',
-        plugins: [
-            resolve({
-                preferBuiltins: true,
-            }), // tells Rollup how to find XX in node_modules
-            commonjs(), // converts XX to ES modules
-            production && terser() // minify, but only in production
-        ],
-        external: [ 'module', 'events', 'util', './getData.js', './JSONFromFile.js', './node_snap7.node' ],
-    });
-    await bundle.write({
-        file: 'lib/VPLC.js',
-        format: 'esm', // 
-    });
-});
-
-task('build', parallel('copy', 'JSONFromFile-bundle', 'getData-bundle', 'VPLC-bundle'));
-
-task('dev', async function () {
-    production = false;
-    parallel('copy', 'JSONFromFile-bundle', 'getData-bundle', 'VPLC-bundle')();
-});
+task('dev', series('setdev', ...tasks, 'copy'));
+task('build', series('setproduction', ...tasks, 'copy'));

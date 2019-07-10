@@ -5,7 +5,6 @@
 
 import events from 'events';
 import net from "net";
-import {JSONFromFile} from "./JSONFromFile.js";
 
 export class Goonode {
 
@@ -60,7 +59,7 @@ export class Goonode {
     }
 
     async getChannels(){
-        this.channels = await JSONFromFile(this.configFile, {"encoding":"utf8"});
+        this.channels = (await import(this.configFile)).channels;
     }
 
     async createConns(){

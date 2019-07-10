@@ -9,8 +9,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "esm": "^3.2.22",
     "eslint": "^6.0.1",
+    "esm": "^3.2.25",
     "gulp": "^4.0.2",
     "jsonminify": "^0.4.1",
     "node-snap7": "^1.0.3",
