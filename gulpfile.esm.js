@@ -22,8 +22,8 @@ task('copy-snap7', async () => {
 
 task('copy', async () => {
     src('build-define/*').pipe(dest('dist/'));
+    src('build-include/*').pipe(dest('dist/'));
     src('package.json').pipe(dest('dist/'));
-    src('command/*').pipe(dest('dist/'));
     src('conf/*').pipe(dest('dist/conf'));
     src('lib/*').pipe(dest('dist/lib'));
 });

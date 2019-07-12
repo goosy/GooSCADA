@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "node ./lib/index.js",
-    "build": "rollup -c",
+    "build": "gulp build",
     "watch": "rollup -c -w"
   },
   "keywords": [

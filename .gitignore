@@ -64,7 +64,6 @@ typings/
 .idea
 
 # production
-build-define/
+build-include/
 dist/
 lib/
-index.js
