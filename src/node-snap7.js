@@ -6,10 +6,14 @@
 
 import events from 'events';
 import util from "util";
-import { createRequire } from 'module';
+import {
+    createRequire
+} from 'module';
 const require = createRequire(import.meta.url);
-const snap7 = require('./node_snap7.node');
-export { snap7 };
+const snap7 = require('../lib/node_snap7.node');
+export {
+    snap7
+};
 
 // promisify
 snap7.S7Client.prototype.ReadArea = util.promisify(snap7.S7Client.prototype.ReadArea);

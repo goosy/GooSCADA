@@ -67,3 +67,4 @@ typings/
 build-define/
 dist/
 lib/
+index.js

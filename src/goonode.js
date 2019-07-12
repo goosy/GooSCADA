@@ -8,42 +8,42 @@ import net from "net";
 
 export class Goonode {
 
-    constructor(path=null) {
+    constructor(path = null) {
         this.tags = {};
         this.channels = [];
-        if(path)this.setConfigFile(path);
+        if (path) this.setConfigFile(path);
     }
 
-    setConfigFile(path){
+    setConfigFile(path) {
         this.configFile = path;
     }
 
-    setTag(tag){
+    setTag(tag) {
         let tagname = tag.name;
-        if(!this.tags[tagname]){
-            this.tags[tagname]={
-                "name" : tag.name,
-                "type" : tag.type,
-                "value" : tag.value
+        if (!this.tags[tagname]) {
+            this.tags[tagname] = {
+                "name": tag.name,
+                "type": tag.type,
+                "value": tag.value
             };
             this.emit('change', this.tags[tagname]);
         }
         let tagInCache = this.tags[tag.name];
-        if( tagInCache.value != tag.value) {
+        if (tagInCache.value != tag.value) {
             tagInCache.value = tag.value;
             this.emit('change', tagInCache);
         }
     }
 
-    parse(channel){
-        channel.tags.forEach( tag => {
+    parse(channel) {
+        channel.tags.forEach(tag => {
             let buffer = channel.buffer;
             buffer = buffer ? buffer : Buffer.alloc(0);
-            if( tag.offset + tag.length > buffer.length )return;//防止溢出
+            if (tag.offset + tag.length > buffer.length) return; //防止溢出
             if (tag.type == 'bool') {
-                tag.value = !!(buffer.readUInt8(tag.offset)&(1<<tag.bit_offset)); //获取 offset.bit_offset 的布尔值
+                tag.value = !!(buffer.readUInt8(tag.offset) & (1 << tag.bit_offset)); //获取 offset.bit_offset 的布尔值
                 this.setTag(tag);
-                return ;
+                return;
             }
             if (tag.type == 'int16') {
                 tag.value = buffer.readInt16BE(tag.offset);
@@ -58,14 +58,14 @@ export class Goonode {
         });
     }
 
-    async getChannels(){
+    async getChannels() {
         this.channels = (await import(this.configFile)).channels;
     }
 
-    async createConns(){
-        let self = this; 
+    async createConns() {
+        let self = this;
         await this.getChannels();
-        this.channels.forEach( channel=>{
+        this.channels.forEach(channel => {
             /**
              * 构建TCP客户端
              */
@@ -79,8 +79,8 @@ export class Goonode {
             });
 
             // 监听服务器传来的data数据
-            client.on("data", data=> {
-                channel.buffer = data; 
+            client.on("data", data => {
+                channel.buffer = data;
                 self.parse(channel);
                 console.log(data);
             });

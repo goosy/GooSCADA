@@ -6,9 +6,9 @@ const production = !process.env.ROLLUP_WATCH;
 
 export default [
 	{
-		input: 'src/VPLC.js',
+		input: ['build-define/main.js'],
 		output: {
-			file: 'lib/VPLC.js',
+			file: 'lib/index.js',
 			format: 'esm', // 
 		},
 		plugins: [
@@ -18,6 +18,6 @@ export default [
 			commonjs(), // converts XX to ES modules
 			production && terser() // minify, but only in production
 		],
-		external: [ 'events', 'util', 'module', './getData.js', './JSONFromFile.js', './node_snap7.node' ],
+		external: [ 'events', 'module', 'net', 'util' ],
 	},
 ];
