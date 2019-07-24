@@ -6,11 +6,9 @@
 
 import events from 'events';
 import util from "util";
-import {
-    createRequire
-} from 'module';
-const require = createRequire(import.meta.url);
-const snap7 = require('../lib/node_snap7.node');
+import { createRequire } from 'module';
+const requireESM = createRequire(import.meta.url);
+const snap7 = requireESM('./node_snap7.node');
 export {
     snap7
 };

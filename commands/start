@@ -1,4 +1,4 @@
 #!/bin/sh
 pm2 delete all
-pm2 start --name="VPLC" node -- ./lib/VPLC.js
+pm2 start --name="VPLC" node -- ./lib/index.js
 pm2 logs "VPLC" --lines 200

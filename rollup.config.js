@@ -1,23 +1,24 @@
+import pkg from './package.json';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import { terser } from 'rollup-plugin-terser';
+import copy from 'rollup-plugin-copy'
 
-const production = !process.env.ROLLUP_WATCH;
-
-export default [
-	{
-		input: ['build-define/main.js'],
-		output: {
-			file: 'lib/index.js',
-			format: 'esm', // 
-		},
-		plugins: [
-			resolve({
-				preferBuiltins: true,
-			}), // tells Rollup how to find XX in node_modules
-			commonjs(), // converts XX to ES modules
-			production && terser() // minify, but only in production
-		],
-		external: [ 'events', 'module', 'net', 'util' ],
-	},
-];
+export default {
+    input: 'index.js',
+    output: {
+        file: pkg['main'],
+        format: 'es',
+    },
+    plugins: [
+        resolve({
+            preferBuiltins: true,
+        }), // tells Rollup how to find XX in node_modules
+        commonjs(), // converts XX to ES modules
+        copy({
+            targets: [
+            { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'lib' },
+            ]
+        }),
+    ],
+    external: ['events', 'net', 'module', 'util'],
+}

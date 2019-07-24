@@ -1,38 +1,36 @@
 {
-  "name": "gubei-vplc",
-  "version": "0.1.0",
-  "type": "module",
-  "description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
-  "main": "/lib/VPLC.js",
-  "engines": {
-    "node": ">=12.6.0 <13.0.0"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "eslint": "^6.0.1",
-    "esm": "^3.2.25",
-    "gulp": "^4.0.2",
-    "node-snap7": "^1.0.3",
-    "rollup": "^1.15.6",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-node-resolve": "^5.0.3",
-    "rollup-plugin-terser": "^5.0.0"
-  },
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "scripts": {
-    "start": "node ./lib/index.js",
-    "build": "gulp build",
-    "watch": "rollup -c -w"
-  },
-  "keywords": [
-    "PLC",
-    "S7",
-    "SCADA",
-    "nodejs"
-  ],
-  "author": "goosy.jo@gmail.com",
-  "license": "GPL-3.0"
+	"name": "vplc",
+	"version": "0.1.1",
+	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
+	"type": "module",
+	"main": "lib/index.js",
+	"engines": {
+		"node": ">=12.6.0 <13.0.0"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"eslint": "^6.0.1",
+		"node-snap7": "^1.0.3",
+		"rollup": "^1.15.6",
+		"rollup-plugin-commonjs": "^10.0.0",
+		"rollup-plugin-copy": "^3.0.0",
+		"rollup-plugin-node-resolve": "^5.0.3"
+	},
+	"directories": {
+		"lib": "lib",
+		"test": "test"
+	},
+	"scripts": {
+		"start": "node ./lib/index.js",
+		"build": "rollup -c",
+		"watch": "rollup -c -w"
+	},
+	"keywords": [
+		"PLC",
+		"S7",
+		"SCADA",
+		"nodejs"
+	],
+	"author": "goosy.jo@gmail.com",
+	"license": "MIT"
 }
