@@ -4,9 +4,7 @@
  */
 
 import events from 'events';
-import {
-    snap7
-} from "./node-snap7.js";
+import snap7 from "./node-snap7.js";
 
 export class S7PLC {
     constructor(path = null) {

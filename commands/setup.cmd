@@ -1,6 +1,6 @@
 @echo off
-node -v | find "v12.6." > nul
-if NOT %ERRORLEVEL% == 0 node-v12.6.0-x64.msi
+node -v | find "v12." > nul
+if NOT %ERRORLEVEL% == 0 echo 没有安装Nodejs!!! && pause && exit
 setx NODE_OPTIONS --experimental-modules
 set NODE_OPTIONS=--experimental-modules
 where pm2.cmd > nul

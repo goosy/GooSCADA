@@ -63,6 +63,9 @@ typings/
 # jet brain
 .idea
 
+# configuration
+package-lock.json
+
 # production
 build-include/
 dist/

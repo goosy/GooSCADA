@@ -9,9 +9,7 @@ import util from "util";
 import { createRequire } from 'module';
 const requireESM = createRequire(import.meta.url);
 const snap7 = requireESM('./node_snap7.node');
-export {
-    snap7
-};
+export {snap7 as default};
 
 // promisify
 snap7.S7Client.prototype.ReadArea = util.promisify(snap7.S7Client.prototype.ReadArea);

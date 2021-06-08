@@ -1,12 +1,12 @@
 import pkg from './package.json';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import copy from 'rollup-plugin-copy'
 
 export default {
     input: 'index.js',
     output: {
-        file: pkg['main'],
+        file: pkg.exports['.'],
         format: 'es',
     },
     plugins: [
