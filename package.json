@@ -1,6 +1,6 @@
 {
-	"name": "vplc",
-	"version": "0.1.3",
+	"name": "goovplc",
+	"version": "0.2.0",
 	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
 	"type": "module",
 	"main": "lib/index.js",
