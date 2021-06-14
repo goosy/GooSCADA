@@ -18,7 +18,7 @@ export class SIntTag extends Tag {
         }
         buff.writeInt8(value, 0);
     }
-    constructor(name, type = "SINT") {
+    constructor({ name = "", type = "SINT" } = { name: "", type: "SINT" }) {
         const bytes = 1;
         super({ name, type, bytes });
     }

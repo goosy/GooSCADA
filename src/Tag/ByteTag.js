@@ -19,7 +19,7 @@ export class ByteTag extends Tag {
         }
         this.buffer[0] = value;
     }
-    constructor(name, type = "BYTE") {
+    constructor({ name = "", type = "BYTE" } = { name: "", type: "BYTE" }) {
         const bytes = 1;
         super({ name, type, bytes });
     }

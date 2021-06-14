@@ -1,4 +1,4 @@
-import {Tag} from './Tag.js';
+import { Tag } from './Tag.js';
 export class BoolTag extends Tag {
     /**
      * @return {boolean}
@@ -19,8 +19,7 @@ export class BoolTag extends Tag {
         else byte = byte & ~bit_number;
         this.buffer[0] = byte;
     }
-    constructor(name) {
-        const type = "BOOL";
+    constructor({ name = "", type = "BOOL" } = { name: "", type: "BOOL" }) {
         const bytes = 1;
         super({ name, type, bytes });
     }

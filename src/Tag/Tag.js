@@ -39,12 +39,10 @@ export class Tag {
      * 
      * @param {{string, string, number, int|string}} 变量描述对象 
      */
-    constructor({ name, type = "byte", bytes = 2 } = { name: undefined }) {
-        if (!name) throw new Error("name not gave!");
+    constructor({ name = "", type = "BYTE", bytes = 2 } = { name: "", type: "BYTE" }) {
         this.#name = name;
         this.#type = type;
         this.#bytes = bytes;
-
     }
 
     /**

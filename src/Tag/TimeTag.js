@@ -85,8 +85,8 @@ export class TimeTag extends DIntTag {
         let msList = timeStrList.map(TimeTag.#parse);
         super.value = sign * msList.reduce((ms, value) => ms + value); // 调用基类确保已绑定
     }
-    constructor(name, type = "TIME") {
-        super(name, type);
+    constructor({ name = "", type = "TIME" } = { name: "", type: "TIME" }) {
+        super({name, type});
     }
 }
 

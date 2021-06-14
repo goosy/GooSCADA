@@ -14,6 +14,7 @@ import { UDIntTag } from "./UDIntTag.js"
 import { TODTag } from "./TODTag.js"
 import { DIntTag } from "./DIntTag.js"
 import { TimeTag } from "./TimeTag.js"
+
 const tags = {
     "BOOL": BoolTag,
     "BYTE": ByteTag,
@@ -32,11 +33,15 @@ const tags = {
     "TIME": TimeTag,
 };
 
+function createTag(type, argus = {type}) {
+    return new tags[type](argus);
+}
+
 export {
     Tag,
     tags,
     createTag,
-// 基本类型 BOOL BYTE CHAR WORD DWORD INT DINT REAL S5TIME TIME
+    // 基本类型 BOOL BYTE CHAR WORD DWORD INT DINT REAL S5TIME TIME
     BoolTag,
     ByteTag,
     USIntTag,
@@ -53,6 +58,6 @@ export {
     DIntTag,
     TimeTag,
     StringTag,
-// 复杂类型 DATE_AND_TIME STRING ARRAY STRUCT
+    // 复杂类型 DATE_AND_TIME STRING ARRAY STRUCT
     ArrayTag,
 }

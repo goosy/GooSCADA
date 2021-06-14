@@ -18,8 +18,7 @@ export class DWordTag extends Tag {
         }
         this.buffer.writeUInt32BE(value, 0);
     }
-    constructor(name) {
-        const type = "DWORD";
+    constructor({ name = "", type = "DWORD" } = { name: "", type: "DWORD" }) {
         const bytes = 4;
         super({ name, type, bytes });
     }

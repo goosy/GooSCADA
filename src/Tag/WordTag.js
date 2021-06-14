@@ -18,8 +18,7 @@ export class WordTag extends Tag {
         }
         this.buffer.writeUInt16BE(value, 0);
     }
-    constructor(name) {
-        const type = "WORD";
+    constructor({ name = "", type = "WORD" } = { name: "", type: "WORD" }) {
         const bytes = 2;
         super({ name, type, bytes });
     }

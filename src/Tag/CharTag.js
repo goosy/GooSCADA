@@ -19,7 +19,7 @@ export class CharTag extends ByteTag {
         }
         this.buffer[0] = value.charCodeAt(0);
     }
-    constructor(name, type = "CHAR") {
-        super(name, type);
+    constructor({ name = "", type = "CHAR" } = { name: "", type: "CHAR" }) {
+        super({ name, type });
     }
 }

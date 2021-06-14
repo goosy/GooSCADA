@@ -44,7 +44,7 @@ export class S5TimeTag extends WordTag {
         this.buffer[0] = BCDList[0] | (base << 4);
         this.buffer[1] = BCDList[1];
     }
-    constructor(name) {
-        super(name, 'S5TIME');
+    constructor({ name, type = 'S5TIME' } = { name: "", type: 'S5TIME' }) {
+        super({ name, type });
     }
 }

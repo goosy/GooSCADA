@@ -33,7 +33,7 @@ export class DateTag extends WordTag {
         let ms = date.valueOf();
         super.value = (ms - ms % DateTag.msPerDay) / DateTag.msPerDay; // 调用基类确保已绑定
     }
-    constructor(name, type = "DATE") {
-        super(name, type);
+    constructor({ name = "", type = "DATE" } = { name: "", type: "DATE" }) {
+        super({ name, type });
     }
 }

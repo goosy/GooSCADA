@@ -22,7 +22,7 @@ export class TODTag extends DWordTag {
         remainder = value % TODTag.msPerSecond;
         strList.unshift(remainder); // 毫秒值
         value = (value - remainder) / TODTag.msPerSecond;
-        remainder = value % TODTag.secondsPerMinute; 
+        remainder = value % TODTag.secondsPerMinute;
         strList.unshift(remainder); //秒值
         value = (value - remainder) / TODTag.secondsPerMinute;
         remainder = value % TODTag.minutesPerHour;
@@ -50,7 +50,7 @@ export class TODTag extends DWordTag {
         if (num < 0 || num > 86399999) throw new Error('input error, 0 ~ 86399999 or "TOD#0:0:0.0" ~ "TOD#23:59:59.999"');
         super.value = num; // 调用基类确保已绑定
     }
-    constructor(name, type = "TOD") {
-        super(name, type);
+    constructor({ name, type = "TOD" } = { name: "", type: "TOD" }) {
+        super({ name, type });
     }
 }
