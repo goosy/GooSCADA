@@ -1,6 +1,6 @@
-import { Tag } from './Tag.js'
+import { S7Tag } from './index.js'
 
-export class ByteTag extends Tag {
+export class ByteTag extends S7Tag {
     /**
      * @return {number}
      */

@@ -1,5 +1,5 @@
-import { Tag } from './Tag.js';
-export class DWordTag extends Tag {
+import { S7Tag } from './S7Tag.js';
+export class DWordTag extends S7Tag {
     /**
      * @return {number}
      */

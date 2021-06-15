@@ -5,7 +5,7 @@ export class CharTag extends ByteTag {
      */
     get value() {
         // 确保已绑定
-        if (!this.binded) throw new Error(`tag:${this.name} have not bind a area`);
+        if (!this.mounted) throw new Error(`S7Tag:${this.name} have not mount a area`);
         return this.buffer.toString('utf8');
     }
     /**
@@ -14,7 +14,7 @@ export class CharTag extends ByteTag {
      */
     set value(value) {
         // 确保已绑定
-        if (!this.binded) throw new Error(`tag:${this.name} have not bind a area`);
+        if (!this.mounted) throw new Error(`S7Tag:${this.name} have not mount a area`);
         if (value.length > 1) {
             console.log("Invalid value");
             return;

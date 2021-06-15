@@ -1,5 +1,5 @@
-import { Tag } from './index.js';
-export class StringTag extends Tag {
+import { S7Tag } from './index.js';
+export class StringTag extends S7Tag {
     get length() {
         return this.bytes - 2;
     }
@@ -41,8 +41,8 @@ export class StringTag extends Tag {
      * @param {Buffer} buff 
      * @param {number} offset 
      */
-    bind(buff, offset = 0) {
-        super.bind(buff, offset);
+    mount(buff, offset = 0) {
+        super.mount(buff, offset);
         // S7 STRING 数据区第0字节为最大长度，第1字节为实际长度
         this.buffer[0] = this.length;
     }

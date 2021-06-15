@@ -1,4 +1,4 @@
-import { Tag } from "./Tag.js"
+import { S7Tag } from "./S7Tag.js"
 import { BoolTag } from "./BoolTag.js"
 import { ByteTag } from "./ByteTag.js"
 import { USIntTag } from "./USIntTag.js"
@@ -16,7 +16,7 @@ import { DIntTag } from "./DIntTag.js"
 import { TimeTag } from "./TimeTag.js"
 import { StringTag } from "./StringTag.js"
 
-const tags = {
+const S7Tags = {
     "BOOL": BoolTag,
     "BYTE": ByteTag,
     "USINT": USIntTag,
@@ -36,12 +36,12 @@ const tags = {
 };
 
 function createTag(type, argus = {type}) {
-    return new tags[type](argus);
+    return new S7Tags[type](argus);
 }
 
 export {
-    Tag,
-    tags,
+    S7Tag,
+    S7Tags,
     createTag,
     // 基本类型 BOOL BYTE CHAR WORD DWORD INT DINT REAL S5TIME TIME
     BoolTag,

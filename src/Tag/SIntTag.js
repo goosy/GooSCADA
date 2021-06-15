@@ -1,5 +1,5 @@
-import { Tag } from './Tag.js';
-export class SIntTag extends Tag {
+import { S7Tag } from './S7Tag.js';
+export class SIntTag extends S7Tag {
     /**
      * @return {number}
      */
