@@ -1,4 +1,4 @@
-import { S5TimeTag, createTag } from "../src/Tag/index.js"
+import { S5TimeTag, createTag } from "../src/storage/index.js"
 
 console.log("================================\n")
 

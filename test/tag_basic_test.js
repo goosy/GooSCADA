@@ -1,4 +1,4 @@
-import { createTag } from "../src/Tag/index.js"
+import { createTag } from "../src/storage/index.js"
 
 console.log("================================\n")
 

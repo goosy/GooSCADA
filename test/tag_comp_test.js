@@ -1,4 +1,4 @@
-import { createTag } from "../src/Tag/index.js"
+import { createTag } from "../src/storage/index.js"
 
 console.log("================================\n")
 
@@ -19,3 +19,18 @@ console.log('buffer:', t.buffer);
 console.log('raw:', buff);
 console.log("\n");
 
+t = createTag("ARRAY", {
+    name: "myArray",
+    elmType: "DINT",
+    length: 5
+});
+t.bytes = 8;
+t.mount(buff, 0);
+console.log(`S7Tag ${t.name} :`);
+t.value = "";
+console.log('bytes:', t.bytes);
+console.log('length:', t.length);
+console.log('value:', t.value);
+console.log('buffer:', t.buffer);
+console.log('raw:', buff);
+console.log("\n");
