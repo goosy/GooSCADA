@@ -1,4 +1,6 @@
-/*
+/**
+ * 一个实现了 GooNode 功能的S7PLC
+ * @note GooNode a front-end node S7 PLC in the TLMS_ESD system
  * Copyright (c) 2019, goosy.jo@gmail.com
  * MIT License
  */
@@ -6,7 +8,7 @@
 import events from 'events';
 import net from "net";
 
-export class Goonode {
+export class GooNodePLC {
 
     constructor(path = null) {
         this.tags = {};
