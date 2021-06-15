@@ -1,9 +1,9 @@
 export class Tag {
     #name; //变量名称
     #type; //类型
-    #bytes; //字节数
+    #bytes; //字节数，必须在bind()之前设值，即bind()之后就不可以变了
     #bit_offset; //位偏移量
-    #isBinding = false; //指示是否绑定至一区域
+    #binded = false; //指示是否绑定至一区域
     buffer;
 
     /**
@@ -11,7 +11,7 @@ export class Tag {
      * @return {Buffer}
      */
     get value() {
-        if (!this.#isBinding) throw new Error(`tag:${this.#name} have not bind a area`);
+        if (!this.#binded) throw new Error(`tag:${this.#name} have not bind a area`);
         return this.buffer;
     }
     /**
@@ -20,26 +20,43 @@ export class Tag {
      */
     set value(value) { }
 
-    // 以下几个属性只读
+    // readonly
     get name() {
         return this.#name;
     }
+    // readonly
     get type() {
         return this.#type;
     }
+    // readonly
+    get bit_offset() {
+        if (!this.#binded) throw new Error(`tag:${this.#name} have not bind a area`);
+        return this.#bit_offset;
+    }
+    // readonly
+    get binded() {
+        return this.#binded;
+    }
+
+    // 
     get bytes() {
         return this.#bytes;
     }
-    get bit_offset() {
-        if (!this.#isBinding) throw new Error(`tag:${this.#name} have not bind a area`);
-        return this.#bit_offset;
+    /**
+     * bind()之后，本字段就不可变
+     * 基本数据类型由子类设定为永不可改
+     * @param {number} value
+     */
+    set bytes(value) {
+        if (this.#binded) throw new Error(`tag:${this.#name} have bind a area, cant change bytes.`);
+        this.#bytes = value;
     }
 
     /**
      * 
      * @param {{string, string, number, int|string}} 变量描述对象 
      */
-    constructor({ name = "", type = "BYTE", bytes = 2 } = { name: "", type: "BYTE" }) {
+    constructor({ name = "", type = "BYTE", bytes = 0 } = { name: "", type: "BYTE", bytes: 0 }) {
         this.#name = name;
         this.#type = type;
         this.#bytes = bytes;
@@ -54,7 +71,7 @@ export class Tag {
     bind(buff, offset = 0, bit_offset = 0) {
         this.buffer = buff.slice(offset, offset + this.#bytes);
         this.#bit_offset = bit_offset;
-        this.#isBinding = true;
+        this.#binded = true;
     }
 
 };

@@ -11,12 +11,12 @@ export class DIntTag extends Tag {
      * @param {number} value
      */
     set value(value) {
-        super.value; // 调用基类确保已绑定
+        let buff = super.value; // 调用基类确保已绑定
         if (value < -2147483648 || value > 2147483647) {
             console.log("Invalid value");
             return;
         }
-        this.buffer.writeInt32BE(value, 0);
+        buff.writeInt32BE(value, 0);
     }
     constructor({ name = "", type = "DWORD" } = { name: "", type: "DWORD" }) {
         const bytes = 4;

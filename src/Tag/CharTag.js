@@ -4,7 +4,8 @@ export class CharTag extends ByteTag {
      * @return {string}
      */
     get value() {
-        super.value; // 调用基类确保已绑定
+        // 确保已绑定
+        if (!this.binded) throw new Error(`tag:${this.name} have not bind a area`);
         return this.buffer.toString('utf8');
     }
     /**
@@ -12,7 +13,8 @@ export class CharTag extends ByteTag {
      * @param {string} value 
      */
     set value(value) {
-        super.value; // 调用基类确保已绑定
+        // 确保已绑定
+        if (!this.binded) throw new Error(`tag:${this.name} have not bind a area`);
         if (value.length > 1) {
             console.log("Invalid value");
             return;
@@ -20,6 +22,7 @@ export class CharTag extends ByteTag {
         this.buffer[0] = value.charCodeAt(0);
     }
     constructor({ name = "", type = "CHAR" } = { name: "", type: "CHAR" }) {
+        // bytes 继承
         super({ name, type });
     }
 }

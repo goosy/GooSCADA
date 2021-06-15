@@ -12,12 +12,12 @@ export class ByteTag extends Tag {
      * @param {number} value 
      */
     set value(value) {
-        super.value; // 调用基类确保已绑定
+        let buff = super.value; // 调用基类确保已绑定
         if (value < 0 || value > 255) {
             console.log("Invalid value");
             return;
         }
-        this.buffer[0] = value;
+        buff[0] = value;
     }
     constructor({ name = "", type = "BYTE" } = { name: "", type: "BYTE" }) {
         const bytes = 1;

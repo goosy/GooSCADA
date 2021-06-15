@@ -14,6 +14,7 @@ import { UDIntTag } from "./UDIntTag.js"
 import { TODTag } from "./TODTag.js"
 import { DIntTag } from "./DIntTag.js"
 import { TimeTag } from "./TimeTag.js"
+import { StringTag } from "./StringTag.js"
 
 const tags = {
     "BOOL": BoolTag,
@@ -31,6 +32,7 @@ const tags = {
     "TOD": TODTag,
     "DINT": DIntTag,
     "TIME": TimeTag,
+    "STRING": StringTag,
 };
 
 function createTag(type, argus = {type}) {
@@ -57,7 +59,6 @@ export {
     TODTag,
     DIntTag,
     TimeTag,
-    StringTag,
     // 复杂类型 DATE_AND_TIME STRING ARRAY STRUCT
-    ArrayTag,
+    StringTag,
 }
