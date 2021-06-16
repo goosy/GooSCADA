@@ -8,13 +8,13 @@ export class TimeTag extends DIntTag {
      * @return {number}
      */
     get rawValue() {
-        return super.value; // 调用基类确保已绑定
+        return super.value; // 调用基类确保已加载
     }
     /**
      * @return {string}
      */
     get value() {
-        let value = super.value; // 调用基类确保已绑定
+        let value = super.value; // 调用基类确保已加载
         let sign = 1;
         if (value < 0) {
             value = -value;
@@ -83,7 +83,7 @@ export class TimeTag extends DIntTag {
         }
         let timeStrList = valStr.split("_");
         let msList = timeStrList.map(TimeTag.#parse);
-        super.value = sign * msList.reduce((ms, value) => ms + value); // 调用基类确保已绑定
+        super.value = sign * msList.reduce((ms, value) => ms + value); // 调用基类确保已加载
     }
     constructor({ name = "", type = "TIME" } = { name: "", type: "TIME" }) {
         super({name, type});

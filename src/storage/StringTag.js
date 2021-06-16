@@ -1,13 +1,13 @@
 import { S7Tag } from './index.js';
 export class StringTag extends S7Tag {
     get length() {
-        return this.bytes - 2;
+        return this.size - 2;
     }
     /**
      * @return {string}
      */
     get value() {
-        let buff = super.value; // 调用基类Tag确保已绑定
+        let buff = super.value; // 调用基类Tag确保已加载
         return buff.toString('utf8');
     }
     /**
@@ -15,7 +15,7 @@ export class StringTag extends S7Tag {
      * @param {string} value 
      */
     set value(str) {
-        let buff = super.value; // 调用基类Tag确保已绑定
+        let buff = super.value; // 调用基类Tag确保已加载
         // str 长度最大长度不得超过 this.length，否则只复制合法范围内的字串
         let length = str.length > this.length ? this.length : str.length;
         for (let index = 0; index < length; index++) {
@@ -33,11 +33,11 @@ export class StringTag extends S7Tag {
             = { name: "", length: 254, type: "STRING" }
     ) {
         if (length < 1 || length > 254) throw new Error('length must be between 1 and 254');
-        let bytes = length + 2;
-        super({ name, bytes, type });
+        let size = length + 2;
+        super({ name, size, type });
     }
     /**
-     * 同一个数据区域绑定
+     * 同一个数据区域加载
      * @param {Buffer} buff 
      * @param {number} offset 
      */

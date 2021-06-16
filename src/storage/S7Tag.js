@@ -1,46 +1,12 @@
-export class S7Tag {
-    /** @type {string} */
-    #name;
-    /**
-     * 变量名称，只读，初始化时指定。
-     * @return {Buffer}
-     */
-    get name() {
-        return this.#name;
-    }
+import { S7Memory } from "./S7Memory.js";
 
-    #type;
-    /**
-     * S7Tag type : readonly 
-     * initial on constructor
-     * @returns {string}
-     */
-    get type() {
-        return this.#type;
-    }
-    
-    /** @type {number} */
-    #bytes; //字节数，
-    /**
-     * 存储字节数 readonly
-     */
-    get bytes() {
-        return this.#bytes;
-    }
-    /**
-     * 必须在mount()之前设值，即mount()之后，本字段不可变
-     * 基本数据类型由子类设定为永不可改
-     * @param {number} value
-     */
-    set bytes(value) {
-        if (this.mounted) throw new Error(`S7Tag:${this.name} have mount a area, cant change bytes.`);
-        this.#bytes = value;
-    }
-
+export class S7Tag extends S7Memory {
     /** @type {number} */
     #offset;
     /**
-     * 偏移值，只读，仅在加入 parentsTag 或 mount 到数据区时可更改
+     * 偏移值，相对于父存储区而言
+     * 该值仅在加入父存储区时修改改
+     * @readonly
      */
     get offset() {
         return this.#offset;
@@ -48,15 +14,16 @@ export class S7Tag {
     /** @type {number} */
     #bit_offset; //位偏移量
     /**
-     * 位偏移值，只读，仅在加入 parentsTag 或 mount 到数据区时可更改
+     * 位偏移值，相对于父存储区而言
+     * 该值仅在加入父存储区时修改改
+     * @readonly
      * @return {number}
      */
     get bit_offset() {
         return this.#bit_offset;
     }
 
-    /** @type {Buffer} */
-    buffer;
+    // this.buffer 继承自父类
     /**
      * 读S7Tag值，通过buffer存储变量值，具体子类应覆盖
      */
@@ -72,45 +39,38 @@ export class S7Tag {
         value;
     }
 
-    #mounted = false; //指示是否绑定至一区域
-    /**
-     * 是否装载
-     * readonly
-     * @date 2021-06-15
-     * @returns {boolean}
-     */
-    get mounted() {
-        return this.#mounted;
-    }
-
     /**
      * @typedef {object} S7TagParamter
      * @property {string} name
      * @property {string} type
-     * @property {number} bytes
+     * @property {number} size
      */
     /** @param {S7TagParamter} */
-    constructor({ name = "", type = "BYTE", bytes = 0 } = { name: "", type: "BYTE", bytes: 0 }) {
-        this.#name = name;
-        this.#type = type;
-        this.#bytes = bytes;
+    constructor({ name = "", type = "BYTE", size = 0 } = { name: "", type: "BYTE", size: 0 }) {
+        super({ name, type, size })
     }
 
-    /** @type {S7Tag} */
+    /** @type {S7Memory} */
     parent;
-    /** @type {S7Tag} */
-    children;
+
     /**
-     * 同一个数据区域绑定
+     * 加载至一数据区域
      * @param {Buffer} buff
      * @param {number} offset 
      * @param {number} bit_offset 
      */
     mount(buff, offset = 0, bit_offset = 0) {
-        this.buffer = buff.slice(offset, offset + this.#bytes);
-        this.#offset = offset;
-        this.#bit_offset = bit_offset;
-        this.#mounted = true;
+        super.mount();
+        let begin_offset = offset,
+            begin_bit_offset = bit_offset,
+            end_offset,
+            end_bit_offset;
+        // @todo 计算 offset bif_offset end_offset
+        this.buffer = buff.slice(begin_offset, end_offset);
+        this.#offset = begin_offset;
+        this.#bit_offset = begin_bit_offset;
+        // @todo 计算插入后的末尾偏移值
+        return [end_offset, end_bit_offset];
     }
 
     join(parent, offset = 0, bit_offset = 0) {
@@ -120,4 +80,3 @@ export class S7Tag {
     }
 
 };
-

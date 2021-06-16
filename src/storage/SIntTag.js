@@ -4,14 +4,14 @@ export class SIntTag extends S7Tag {
      * @return {number}
      */
     get value() {
-        return super.value.readInt8(0); // 调用基类确保已绑定
+        return super.value.readInt8(0); // 调用基类确保已加载
     }
     /**
      * 只接受整数
      * @param {number} value 
      */
     set value(value) {
-        let buff = super.value; // 调用基类确保已绑定
+        let buff = super.value; // 调用基类确保已加载
         if (value < -128 || value > 127) {
             console.log("Invalid value");
             return;
@@ -19,7 +19,7 @@ export class SIntTag extends S7Tag {
         buff.writeInt8(value, 0);
     }
     constructor({ name = "", type = "SINT" } = { name: "", type: "SINT" }) {
-        const bytes = 1;
-        super({ name, type, bytes });
+        const size = 1;
+        super({ name, type, size });
     }
 }

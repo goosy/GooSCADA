@@ -5,13 +5,13 @@ export class DateTag extends WordTag {
      * @return {number}
      */
     get rawValue() {
-        return super.value; // 调用基类确保已绑定
+        return super.value; // 调用基类确保已加载
     }
     /**
      * @return {Date}
      */
     get value() {
-        let ms = super.value * DateTag.msPerDay; // 调用基类确保已绑定
+        let ms = super.value * DateTag.msPerDay; // 调用基类确保已加载
         return new Date(ms);
     }
     /**
@@ -31,7 +31,7 @@ export class DateTag extends WordTag {
             throw new Error("input error, parameter must be a string or Date or Number object.");
         }
         let ms = date.valueOf();
-        super.value = (ms - ms % DateTag.msPerDay) / DateTag.msPerDay; // 调用基类确保已绑定
+        super.value = (ms - ms % DateTag.msPerDay) / DateTag.msPerDay; // 调用基类确保已加载
     }
     constructor({ name = "", type = "DATE" } = { name: "", type: "DATE" }) {
         super({ name, type });

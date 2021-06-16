@@ -4,7 +4,7 @@ export class CharTag extends ByteTag {
      * @return {string}
      */
     get value() {
-        // 确保已绑定
+        // 确保已加载
         if (!this.mounted) throw new Error(`S7Tag:${this.name} have not mount a area`);
         return this.buffer.toString('utf8');
     }
@@ -13,7 +13,7 @@ export class CharTag extends ByteTag {
      * @param {string} value 
      */
     set value(value) {
-        // 确保已绑定
+        // 确保已加载
         if (!this.mounted) throw new Error(`S7Tag:${this.name} have not mount a area`);
         if (value.length > 1) {
             console.log("Invalid value");
@@ -22,7 +22,7 @@ export class CharTag extends ByteTag {
         this.buffer[0] = value.charCodeAt(0);
     }
     constructor({ name = "", type = "CHAR" } = { name: "", type: "CHAR" }) {
-        // bytes 继承
+        // size 继承
         super({ name, type });
     }
 }

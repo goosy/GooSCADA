@@ -12,7 +12,7 @@ t = createTag("STRING", {
 t.mount(buff, 32);
 console.log(`S7Tag ${t.name} :`);
 t.value = "I hate CCP";
-console.log('bytes:', t.bytes);
+console.log('size:', t.size);
 console.log('length:', t.length);
 console.log('value:', t.value);
 console.log('buffer:', t.buffer);
@@ -24,11 +24,11 @@ t = createTag("ARRAY", {
     elmType: "DINT",
     length: 5
 });
-t.bytes = 8;
+t.size = 8;
 t.mount(buff, 0);
 console.log(`S7Tag ${t.name} :`);
 t.value = "";
-console.log('bytes:', t.bytes);
+console.log('size:', t.size);
 console.log('length:', t.length);
 console.log('value:', t.value);
 console.log('buffer:', t.buffer);

@@ -10,13 +10,13 @@ export class TODTag extends DWordTag {
      * @return {number}
      */
     get rawValue() {
-        return super.value; // 调用基类确保已绑定
+        return super.value; // 调用基类确保已加载
     }
     /**
      * @return {string}
      */
     get value() {
-        let value = super.value; // 调用基类确保已绑定
+        let value = super.value; // 调用基类确保已加载
         let strList = [];
         let remainder;
         remainder = value % TODTag.msPerSecond;
@@ -48,7 +48,7 @@ export class TODTag extends DWordTag {
                 + TODList[3];
         }
         if (num < 0 || num > 86399999) throw new Error('input error, 0 ~ 86399999 or "TOD#0:0:0.0" ~ "TOD#23:59:59.999"');
-        super.value = num; // 调用基类确保已绑定
+        super.value = num; // 调用基类确保已加载
     }
     constructor({ name, type = "TOD" } = { name: "", type: "TOD" }) {
         super({ name, type });
