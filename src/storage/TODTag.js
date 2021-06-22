@@ -1,4 +1,4 @@
-import { DWordTag } from './DWordTag.js';
+import { DWordTag } from './index.js';
 export class TODTag extends DWordTag {
     static msPerDay = 86400000;
     static msPerHour = 3600000;

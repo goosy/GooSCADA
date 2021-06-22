@@ -1,5 +1,5 @@
-import { S7Tag } from './S7Tag.js';
-export class BoolTag extends S7Tag {
+import { ElementaryTag } from './index.js';
+export class BoolTag extends ElementaryTag {
     /**
      * @return {boolean}
      */
@@ -20,7 +20,7 @@ export class BoolTag extends S7Tag {
         this.buffer[0] = byte;
     }
     constructor({ name = "", type = "BOOL" } = { name: "", type: "BOOL" }) {
-        const size = 1;
-        super({ name, type, size });
+        const bytes = 1;
+        super({ name, type, bytes });
     }
 }

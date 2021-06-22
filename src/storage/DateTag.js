@@ -1,37 +1,50 @@
-import { WordTag } from './WordTag.js';
+import { WordTag } from './index.js';
+
+const msPerDay = 86400000;
 export class DateTag extends WordTag {
-    static msPerDay = 86400000;
+    static msPerDay = msPerDay;
     /**
+     * 原始值
      * @return {number}
      */
     get rawValue() {
-        return super.value; // 调用基类确保已加载
+        // 所有获值的入口，通过调用基类确保tag已加载
+        return super.value;
     }
-    /**
-     * @return {Date}
-     */
+    /** @type {String} */
     get value() {
-        let ms = super.value * DateTag.msPerDay; // 调用基类确保已加载
+        const date = this.JSDate;
+        const Y = date.getFullYear();
+        const M = date.getMonth()+1;
+        const D = date.getDate();
+        return `DATE#${Y}-${M}-${D}`;
+    }
+    /** @type {Date} */
+    get JSDate(){
+        let ms = this.rawValue * msPerDay;
         return new Date(ms);
     }
+
     /**
-     * 接受 Data 字面量 或 JS Date 对象
-     * @param {string|Date} value
+     * 接受 S7 Data 字面量，或 JS Date 对象，或原始天数
+     * @param {string|Date|number} value
      */
     set value(value) {
+        if (typeof (value) == "number") {
+            super.value = value;
+            return;
+        }
         let date;
         if (value instanceof Date) date = value;
-        else if (typeof (value) == "number") date = new Date(value);
         else if (typeof (value) == "string") {
             let valStr = value.toLowerCase().replace("date#", "").replace("d#", "");
-            console.log(/\d+-\d+-\d+/.test(valStr));
             if (!/\d+-\d+-\d+/.test(valStr)) throw new Error('input error, must like "DATE#2021-5-6"!');
             date = new Date(valStr);
         } else {
             throw new Error("input error, parameter must be a string or Date or Number object.");
         }
         let ms = date.valueOf();
-        super.value = (ms - ms % DateTag.msPerDay) / DateTag.msPerDay; // 调用基类确保已加载
+        super.value = (ms - ms % msPerDay) / msPerDay; // 调用基类确保已加载
     }
     constructor({ name = "", type = "DATE" } = { name: "", type: "DATE" }) {
         super({ name, type });

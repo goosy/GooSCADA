@@ -1,5 +1,5 @@
-import { S7Tag } from './S7Tag.js';
-export class SIntTag extends S7Tag {
+import { ElementaryTag } from './index.js';
+export class SIntTag extends ElementaryTag {
     /**
      * @return {number}
      */
@@ -19,7 +19,7 @@ export class SIntTag extends S7Tag {
         buff.writeInt8(value, 0);
     }
     constructor({ name = "", type = "SINT" } = { name: "", type: "SINT" }) {
-        const size = 1;
-        super({ name, type, size });
+        const bytes = 1;
+        super({ name, type, bytes });
     }
 }

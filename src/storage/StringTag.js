@@ -1,7 +1,7 @@
 import { S7Tag } from './index.js';
 export class StringTag extends S7Tag {
     get length() {
-        return this.size - 2;
+        return this.bytes - 2;
     }
     /**
      * @return {string}
@@ -33,16 +33,16 @@ export class StringTag extends S7Tag {
             = { name: "", length: 254, type: "STRING" }
     ) {
         if (length < 1 || length > 254) throw new Error('length must be between 1 and 254');
-        let size = length + 2;
-        super({ name, size, type });
+        let bytes = length + 2;
+        super({ name, bytes, type });
     }
     /**
      * 同一个数据区域加载
      * @param {Buffer} buff 
      * @param {number} offset 
      */
-    mount(buff, offset = 0) {
-        super.mount(buff, offset);
+    mount(buff) {
+        super.mount(buff);
         // S7 STRING 数据区第0字节为最大长度，第1字节为实际长度
         this.buffer[0] = this.length;
     }

@@ -1,11 +1,21 @@
+import { MemoryBlock } from './index.js';
+/**
+ * @typedef {[number, number]} Offset
+ */
+/**
+ * @typedef {object} S7MParamter
+ * @property {string} name
+ * @property {string} type
+ * @property {number} bytes
+ * @property {Offset} offset
+ */
+
 export class S7Memory {
     /** @type {string} */
     #name;
     /**
-     * 变量名称
-     * 初始化时指定。
+     * 存储名称，初始化时指定。
      * @readonly
-     * @return {Buffer}
      */
     get name() {
         return this.#name;
@@ -14,93 +24,101 @@ export class S7Memory {
     /** @type {string} */
     #type;
     /**
-     * S7Tag type 
-     * initial on constructor
+     * 存储类型，初始化时指定
      * @readonly 
-     * @returns {string}
      */
     get type() {
         return this.#type;
     }
 
-    /** @type {number} */
-    #size; //字节数，
+
+    // #region memory
+    /**
+     * 存储大小及位置
+     * @type {MemoryBlock}
+     * */
+    #memoryblock = new MemoryBlock();
+    /**
+     * 相对于父存储区的开始偏移值
+     * @type {Offset}
+     */
+    get start_offset() {
+        return [...this.#memoryblock.start];
+    }
+    /**
+     * 相对于父存储区的结束偏移值
+     * @type {Offset}
+     */
+    get end_offset() {
+        return [...this.#memoryblock.end];
+    }
+    /**
+     * 相对于本存储区的可插入偏移值
+     * @type {Offset}
+     */
+    get append_offset() {
+        return [...this.#memoryblock.append];
+    }
+    set append_offset(offset) {
+        this.#memoryblock.append = offset;
+    }
     /**
      * 存储字节数
-     * @readonly
      */
-    get size() {
-        return this.#size;
+    get bytes() {
+        return this.#memoryblock.bytes;
     }
     /**
      * 必须在mount()之前设值，即mount()之后，本字段不可变
      * 基本数据类型由子类设定为永不可改
      */
-    set size(value) {
-        if (this.mounted) throw new Error(`S7Tag:${this.name} have mount a area, cant change size.`);
-        this.#size = value;
+    set bytes(bytes) {
+        if (this.mounted) throw new Error(`S7Tag:${this.name} have mount a area, cant change bytes.`);
+        this.#memoryblock.bytes = bytes;
     }
+    // #endregion
 
-    /**
-     * 空白存储区起始位置，用于插入子存储区 
-     * @type {number}
-     * */
-    #append_offset = 0;
-    /**
-     * 空白存储区起始位置的位偏移值，用于插入子存储区
-     * @type {number}
-     * */
-    #append_bit_offset = 0;
-
-    // @TODO {S7Tag}
-    /** @type {S7Memory[]} */ 
-    children = [];
-    //@TODO {S7Tag} tag
-    /**
-     * 装载Tag
-     * @param {S7Memory} tag 
-     * @returns {S7Memory}
-     */
-    append(tag, offset = this.#append_offset, bit_offset = this.#append_bit_offset) {
-        tag.parent = this;
-        this.children.push(tag);
-        const [new_offset, new_bit_offset] = tag.mount(this.buffer, offset, bit_offset);
-        if (this.#append_offset < new_offset) {
-            this.#append_offset = new_offset;
-            this.#append_bit_offset = new_bit_offset;
-        }
-        if (this.#append_offset = new_offset && this.#append_bit_offset < new_bit_offset){
-            this.#append_bit_offset = new_bit_offset;
-        }
-        return tag;
-    }
 
     /** @type {Buffer} */
     buffer;
 
-    #mounted = false;
     /**
      * 指示是否加载存储区域
      * readonly
      * @returns {boolean}
      */
     get mounted() {
-        return this.#mounted;
+        return this.#memoryblock.mounted;
     }
 
     /**
-     * 加载一个数据区域，设置装载标志
-     * S7Area,S7Tag子类应扩展这个方法
+     * 加入到一个数据区域，设置存储区位移和尺寸
+     * 设定memory的位置，由子类扩展方法完成内元素的加入
      * @abstract
+     * @returns {Offset}
+     */
+    join(offset = [0, 0]) {
+        const block = this.#memoryblock;
+        block.start = offset;
+        return block.end;
+    }
+    /**
+     * 装载数据区域，设置装载标志
+     * 本类不实际加载由子类扩展方法完成加载
+     * @abstract
+     * @param {Offset?} offset
      */
     mount() {
-        this.#mounted = true;
-        return [0, 0];
+        this.#memoryblock.mounted = true;
     }
 
-    constructor({ name = "", type = "BYTE", size = 0 } = { name: "", type: "BYTE", size: 0 }) {
+    /**
+     * @constructor
+     * @param {S7MParamter}
+     */
+    constructor({ name = "", type = "BYTE", bytes = 1 } = { name: "", type: "BYTE", bytes: 1 }) {
         this.#name = name;
         this.#type = type;
-        this.#size = size;
+        this.bytes = bytes;
     }
 }

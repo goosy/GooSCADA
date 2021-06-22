@@ -1,5 +1,5 @@
-import { S7Tag } from './S7Tag.js';
-export class IntTag extends S7Tag {
+import { ElementaryTag } from './index.js';
+export class IntTag extends ElementaryTag {
     /**
      * @return {number}
      */
@@ -19,8 +19,8 @@ export class IntTag extends S7Tag {
         this.buffer.writeInt16BE(value, 0);
     }
     constructor({ name, type = "WORD" } = { name: "", type: "WORD" }) {
-        const size = 2;
-        super({ name, type, size });
+        const bytes = 2;
+        super({ name, type, bytes });
     }
 }
 

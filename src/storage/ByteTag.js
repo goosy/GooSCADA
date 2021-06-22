@@ -1,6 +1,6 @@
-import { S7Tag } from './index.js'
+import { ElementaryTag } from './index.js'
 
-export class ByteTag extends S7Tag {
+export class ByteTag extends ElementaryTag {
     /**
      * @return {number}
      */
@@ -20,7 +20,7 @@ export class ByteTag extends S7Tag {
         buff[0] = value;
     }
     constructor({ name = "", type = "BYTE" } = { name: "", type: "BYTE" }) {
-        const size = 1;
-        super({ name, type, size });
+        const bytes = 1;
+        super({ name, type, bytes });
     }
 }

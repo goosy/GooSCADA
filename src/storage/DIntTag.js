@@ -1,5 +1,5 @@
-import { S7Tag } from './S7Tag.js';
-export class DIntTag extends S7Tag {
+import { ElementaryTag } from './index.js';
+export class DIntTag extends ElementaryTag {
     /**
      * @return {number}
      */
@@ -19,7 +19,7 @@ export class DIntTag extends S7Tag {
         buff.writeInt32BE(value, 0);
     }
     constructor({ name = "", type = "DWORD" } = { name: "", type: "DWORD" }) {
-        const size = 4;
-        super({ name, type, size });
+        const bytes = 4;
+        super({ name, type, bytes });
     }
 }

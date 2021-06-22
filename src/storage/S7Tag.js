@@ -1,29 +1,16 @@
-import { S7Memory } from "./S7Memory.js";
+import { S7Memory } from "./index.js";
+/**
+ * @typedef {[number, number]} Offset
+ */
+/**
+ * @typedef {object} S7MParamter
+ * @property {string} name
+ * @property {string} type
+ * @property {number} bytes
+ * @property {Offset} offset
+ */
 
 export class S7Tag extends S7Memory {
-    /** @type {number} */
-    #offset;
-    /**
-     * 偏移值，相对于父存储区而言
-     * 该值仅在加入父存储区时修改改
-     * @readonly
-     */
-    get offset() {
-        return this.#offset;
-    }
-    /** @type {number} */
-    #bit_offset; //位偏移量
-    /**
-     * 位偏移值，相对于父存储区而言
-     * 该值仅在加入父存储区时修改改
-     * @readonly
-     * @return {number}
-     */
-    get bit_offset() {
-        return this.#bit_offset;
-    }
-
-    // this.buffer 继承自父类
     /**
      * 读S7Tag值，通过buffer存储变量值，具体子类应覆盖
      */
@@ -36,47 +23,45 @@ export class S7Tag extends S7Memory {
      * @abstract
      */
     set value(value) {
-        value;
+        if (!this.mounted) throw new Error(`S7Tag:${this.name} = ${value} cant assign value, Tag have not mount a area`);
+    }
+
+    /** 
+     * @constructor
+     * @param {S7MParamter} 
+     */
+    constructor({ name = "", type = "BYTE", bytes = 0 } = { name: "", type: "BYTE", bytes: 0 }) {
+        super({ name, type, bytes });
     }
 
     /**
-     * @typedef {object} S7TagParamter
-     * @property {string} name
-     * @property {string} type
-     * @property {number} size
+     * 仅join()改变本属性
+     *  @type {S7Memory} 
      */
-    /** @param {S7TagParamter} */
-    constructor({ name = "", type = "BYTE", size = 0 } = { name: "", type: "BYTE", size: 0 }) {
-        super({ name, type, size })
+    #parent;
+    get parent() {
+        return this.#parent;
     }
-
-    /** @type {S7Memory} */
-    parent;
+    /**
+     * 加入到一个数据区域，设置存储区位移和尺寸
+     * @returns {Offset}
+     */
+    join(parent, offset = this.start_offset) {
+        this.#parent = parent;
+        return super.join(offset);
+    }
 
     /**
      * 加载至一数据区域
+     * 具体子类应判断起始offset的边界条件，特别是 WORD 等 Tag class
      * @param {Buffer} buff
-     * @param {number} offset 
-     * @param {number} bit_offset 
+     * @param {Offset} offset
      */
-    mount(buff, offset = 0, bit_offset = 0) {
-        super.mount();
-        let begin_offset = offset,
-            begin_bit_offset = bit_offset,
-            end_offset,
-            end_bit_offset;
-        // @todo 计算 offset bif_offset end_offset
-        this.buffer = buff.slice(begin_offset, end_offset);
-        this.#offset = begin_offset;
-        this.#bit_offset = begin_bit_offset;
-        // @todo 计算插入后的末尾偏移值
-        return [end_offset, end_bit_offset];
+    mount(buff) {
+        super.mount(); // 调用父类 mount() 以更新 mounted 标志
+        // 重新计算本Tag挂载位置
+        let [begin_offset,] = this.start_offset;
+        let bytes = this.bytes == 0 ? 1 : this.bytes;
+        this.buffer = buff.slice(begin_offset, begin_offset + bytes);
     }
-
-    join(parent, offset = 0, bit_offset = 0) {
-        this.parent = parent;
-        this.#offset = offset;
-        this.#bit_offset = bit_offset;
-    }
-
 };
