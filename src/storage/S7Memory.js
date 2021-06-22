@@ -92,6 +92,28 @@ export class S7Memory {
     }
 
     /**
+     * 检查指定偏移量的下一个有效字节边界
+     * @param {Offset}
+     * @returns {Offset}
+     */
+    next_byte_bound([byte_offset = 0, bit_offset = 0] = [0, 0]) {
+        if (bit_offset > 0) {
+            byte_offset += 1;
+        }
+        return [byte_offset, 0];
+    }
+    /**
+     * 检查指定偏移量的下一个有效字边界
+     * @param {Offset}
+     * @returns {Offset}
+     */
+    next_word_bound(offset) {
+        let [byte_offset, ] = this.next_byte_bound(offset);
+        byte_offset = byte_offset % 2 == 0 ? byte_offset : byte_offset + 1;
+        return [byte_offset, 0];
+    }
+
+    /**
      * 加入到一个数据区域，设置存储区位移和尺寸
      * 设定memory的位置，由子类扩展方法完成内元素的加入
      * @abstract

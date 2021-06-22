@@ -53,6 +53,17 @@ export class ComplexTag extends S7Tag {
     }
 
     /**
+     * 加入到一个数据区域，设置存储区位移和尺寸
+     * @param {S7Memory} parent
+     * @param {Offset} offset
+     * @returns {Offset}
+     */
+    join(parent, offset = this.start_offset) {
+        // 起始地址必须在WORD的边界上
+        return super.join(parent, this.next_word_bound(offset));
+    }
+
+    /**
      * 加载至一数据区域
      * 具体子类应判断起始offset的边界条件，特别是 WORD 等 Tag class
      * @param {Buffer} buff

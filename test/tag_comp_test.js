@@ -45,8 +45,16 @@ console.log("\n");
 t = createTag("STRUCT", {
     name: "myStruct",
     tags: [
-        { name: "isOn", type: "BOOL" },
-        { name: "error", type: "BOOL" },
+        { name: "bool0", type: "BOOL" },
+        { name: "bool1", type: "BOOL" },
+        { name: "bool2", type: "BOOL" },
+        { name: "bool3", type: "BOOL" },
+        { name: "bool4", type: "BOOL" },
+        { name: "bool5", type: "BOOL" },
+        { name: "bool6", type: "BOOL" },
+        { name: "bool7", type: "BOOL" },
+        { name: "bool8", type: "BOOL" },
+        { name: "bool9", type: "BOOL" },
         { name: "status", type: "BYTE" },
         { name: "process", type: "DINT" },
         { name: "member", type: "STRUCT" , tags: [
@@ -57,8 +65,10 @@ t = createTag("STRUCT", {
 });
 t.join({}, [36, 0]);
 t.mount(buff);
-t.get_tag("isOn").value = true;
-t.get_tag("error").value = true;
+t.get_tag("bool0").value = true;
+t.get_tag("bool7").value = true;
+t.get_tag("bool8").value = true;
+t.get_tag("bool9").value = true;
 t.get_tag("process").value = 65535;
 t.get_tag("member").get_tag("count").value = 32767;
 console.log(`S7Tag ${t.name} :`);

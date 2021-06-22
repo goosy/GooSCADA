@@ -55,7 +55,7 @@ export class S7Tag extends S7Memory {
 
     /**
      * 加载至一数据区域
-     * 具体子类应判断起始offset的边界条件，特别是 WORD 等 Tag class
+     * 具体子类应判断起始offset的边界条件，特别是 BYTE WORD 等
      * @param {Buffer} buff
      * @param {Offset} offset
      */
