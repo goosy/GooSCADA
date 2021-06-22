@@ -1,22 +1,22 @@
-import { ElementaryTag } from './index.js';
-export class SIntTag extends ElementaryTag {
+import { ByteTag } from './index.js';
+export class SIntTag extends ByteTag {
     /**
      * @return {number}
      */
     get value() {
-        return super.value.readInt8(0); // 调用基类确保已加载
+        let v = super.value;
+        return v > 127 ? v - 256 : v; // 调用基类确保已加载
     }
     /**
      * 只接受整数
      * @param {number} value 
      */
     set value(value) {
-        let buff = super.value; // 调用基类确保已加载
         if (value < -128 || value > 127) {
             console.log("Invalid value");
             return;
         }
-        buff.writeInt8(value, 0);
+        super.value = value < 0 ? 256 + value : value; // 调用基类确保已加载
     }
     constructor({ name = "", type = "SINT" } = { name: "", type: "SINT" }) {
         const bytes = 1;

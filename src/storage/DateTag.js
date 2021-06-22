@@ -1,7 +1,7 @@
-import { WordTag } from './index.js';
+import { UIntTag } from './index.js';
 
 const msPerDay = 86400000;
-export class DateTag extends WordTag {
+export class DateTag extends UIntTag {
     static msPerDay = msPerDay;
     /**
      * 原始值
@@ -39,7 +39,7 @@ export class DateTag extends WordTag {
         else if (typeof (value) == "string") {
             let valStr = value.toLowerCase().replace("date#", "").replace("d#", "");
             if (!/\d+-\d+-\d+/.test(valStr)) throw new Error('input error, must like "DATE#2021-5-6"!');
-            date = new Date(valStr);
+            date = new Date(Date.UTC(...valStr.split('-')));
         } else {
             throw new Error("input error, parameter must be a string or Date or Number object.");
         }

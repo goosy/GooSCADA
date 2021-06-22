@@ -70,6 +70,7 @@ t.get_tag("bool7").value = true;
 t.get_tag("bool8").value = true;
 t.get_tag("bool9").value = true;
 t.get_tag("process").value = 65535;
+t.get_tag("status").value = 0x8f;
 t.get_tag("member").get_tag("count").value = 32767;
 console.log(`S7Tag ${t.name} :`);
 console.log('bytes:', t.bytes);

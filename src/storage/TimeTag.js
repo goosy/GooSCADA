@@ -1,4 +1,4 @@
-import { WordTag, DIntTag } from './index.js';
+import { IntTag, DIntTag } from './index.js';
 import { BCD2Decimal, Decimal2BCD } from "../BCD.js"
 /**
  * @typedef {[number, number]} Offset
@@ -140,7 +140,7 @@ export class TimeTag extends DIntTag {
     }
 }
 
-export class S5TimeTag extends WordTag {
+export class S5TimeTag extends IntTag {
 
     /**
      * 原始值

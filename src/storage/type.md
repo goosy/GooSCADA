@@ -8,18 +8,18 @@
         * BcdTag
         * CharTag
         * USIntTag
-      * SIntTag
+        * SIntTag
       * WordTag
         * UIntTag
-        * DateTag
-        * S5TimeTag
-      * IntTag
+          * DateTag
+        * IntTag
+          * S5TimeTag
       * DWordTag
         * UDIntTag
-        * TodTag
-      * RealTag
-      * DIntTag
-        * TimeTag
+          * TODTag
+        * DIntTag
+          * TimeTag
+        * RealTag
     * ComplexTag
       * ArrayTag
       * StringTag

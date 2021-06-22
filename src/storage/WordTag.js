@@ -1,21 +1,19 @@
 import { ElementaryTag } from './index.js';
 export class WordTag extends ElementaryTag {
     /**
-     * @return {number}
+     * @return {Buffer}
      */
     get value() {
-        return super.value.readUInt16BE(0); // 调用基类确保已加载
+        return super.value; // 调用基类确保已加载
     }
     /**
-     * 只接受0-65535整数
-     * @param {number} value
+     * 只接受字节数组
+     * @param {number[]} value
      */
     set value(value) {
-        super.value; // 调用基类确保已加载
-        if (value < 0 || value > 65535) {
-            console.log("Invalid value");
-            return;
-        }
+        let buff = super.value; // 调用基类确保已加载
+        buff[0] = value[0];
+        buff[1] = value[1];
     }
 
     /**
@@ -28,6 +26,7 @@ export class WordTag extends ElementaryTag {
         // 起始地址必须在WORD的边界上
         return super.join(parent, this.next_word_bound(offset));
     }
+
     constructor({ name = "", type = "WORD" } = { name: "", type: "WORD" }) {
         const bytes = 2;
         super({ name, type, bytes });

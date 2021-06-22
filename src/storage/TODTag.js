@@ -1,11 +1,13 @@
-import { DWordTag } from './index.js';
-export class TODTag extends DWordTag {
-    static msPerDay = 86400000;
-    static msPerHour = 3600000;
-    static msPerMinute = 60000;
-    static msPerSecond = 1000;
-    static secondsPerMinute = 60;
-    static minutesPerHour = 60;
+import { UDIntTag } from './index.js';
+
+const msPerDay = 86400000;
+const msPerHour = 3600000;
+const msPerMinute = 60000;
+const msPerSecond = 1000;
+const secondsPerMinute = 60;
+const minutesPerHour = 60;
+
+export class TODTag extends UDIntTag {
     /**
      * @return {number}
      */
@@ -19,15 +21,15 @@ export class TODTag extends DWordTag {
         let value = super.value; // 调用基类确保已加载
         let strList = [];
         let remainder;
-        remainder = value % TODTag.msPerSecond;
+        remainder = value % msPerSecond;
         strList.unshift(remainder); // 毫秒值
-        value = (value - remainder) / TODTag.msPerSecond;
-        remainder = value % TODTag.secondsPerMinute;
+        value = (value - remainder) / msPerSecond;
+        remainder = value % secondsPerMinute;
         strList.unshift(remainder); //秒值
-        value = (value - remainder) / TODTag.secondsPerMinute;
-        remainder = value % TODTag.minutesPerHour;
+        value = (value - remainder) / secondsPerMinute;
+        remainder = value % minutesPerHour;
         strList.unshift(remainder);//分值
-        value = (value - remainder) / TODTag.minutesPerHour;
+        value = (value - remainder) / minutesPerHour;
         strList.unshift(value);//时值
         return `TOD#${strList[0]}:${strList[1]}:${strList[2]}.${strList[3]}`;
     }
@@ -42,12 +44,12 @@ export class TODTag extends DWordTag {
             let valStr = value.toLowerCase().replace(/^(tod|time_of_day)#/, "");
             if (!/\d+:\d+:\d+\.\d+$/.test(valStr)) throw new Error('input error, must like "TOD#22:0:56.248"!');
             let TODList = valStr.split(/:|\./).map((str) => parseInt(str));
-            num = TODList[0] * TODTag.msPerHour
-                + TODList[1] * TODTag.msPerMinute
-                + TODList[2] * TODTag.msPerSecond
+            num = TODList[0] * msPerHour
+                + TODList[1] * msPerMinute
+                + TODList[2] * msPerSecond
                 + TODList[3];
         }
-        if (num < 0 || num > 86399999) throw new Error('input error, 0 ~ 86399999 or "TOD#0:0:0.0" ~ "TOD#23:59:59.999"');
+        if (num < 0 || num >= msPerDay) throw new Error('input error, 0 ~ 86399999 or "TOD#0:0:0.0" ~ "TOD#23:59:59.999"');
         super.value = num; // 调用基类确保已加载
     }
     constructor({ name, type = "TOD" } = { name: "", type: "TOD" }) {

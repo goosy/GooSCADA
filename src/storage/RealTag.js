@@ -1,5 +1,5 @@
-import { ElementaryTag } from "./index.js";
-export class RealTag extends ElementaryTag {
+import { DWordTag } from "./index.js";
+export class RealTag extends DWordTag {
     /**
      * @return {number}
      */

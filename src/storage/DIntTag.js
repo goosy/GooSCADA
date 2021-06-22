@@ -1,5 +1,5 @@
-import { ElementaryTag } from './index.js';
-export class DIntTag extends ElementaryTag {
+import { DWordTag } from './index.js';
+export class DIntTag extends DWordTag {
     /**
      * @return {number}
      */
@@ -11,12 +11,11 @@ export class DIntTag extends ElementaryTag {
      * @param {number} value
      */
     set value(value) {
-        let buff = super.value; // 调用基类确保已加载
         if (value < -2147483648 || value > 2147483647) {
             console.log("Invalid value");
             return;
         }
-        buff.writeInt32BE(value, 0);
+        super.value.writeInt32BE(value, 0); // 调用基类确保已加载
     }
     constructor({ name = "", type = "DWORD" } = { name: "", type: "DWORD" }) {
         const bytes = 4;

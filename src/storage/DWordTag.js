@@ -1,22 +1,23 @@
 import { ElementaryTag } from './index.js';
 export class DWordTag extends ElementaryTag {
     /**
-     * @return {number}
+     * @return {Buffer}
      */
     get value() {
-        return super.value.readUInt32BE(0); // 调用基类确保已加载
+        return super.value; // 调用基类确保已加载
     }
     /**
-     * 只接受 0 ~ 4,294,967,295 整数
-     * @param {number} value
+     * 只接受字节数组
+     * @param {number[]} value
      */
     set value(value) {
-        super.value; // 调用基类确保已加载
-        if (value < 0 || value > 4294967295) {
-            console.log("Invalid value");
-            return;
-        }
+        let buff = super.value; // 调用基类确保已加载
+        buff[0] = value[0];
+        buff[1] = value[1];
+        buff[2] = value[2];
+        buff[3] = value[3];
     }
+
     /**
      * 加入到一个数据区域，设置存储区位移和尺寸
      * @param {S7Memory} parent
