@@ -1,5 +1,17 @@
 import { S7Tag } from './index.js';
 
+/**
+ * @typedef {[number, number]} Offset
+ */
+/**
+ * @typedef {object} S7MParamter
+ * @property {string} name
+ * @property {string} type
+ * @property {number} bytes
+ * @property {JSON} element
+ * @property {Offset} offset
+ */
+
 export class ComplexTag extends S7Tag {
     /**
      * 子tag，不可变
@@ -9,6 +21,11 @@ export class ComplexTag extends S7Tag {
     get tags() {
         return [...this.#tags];
     }
+    get_tag(name) {
+        for (const tag of this.#tags) {
+            if (tag.name === name) return tag;
+        }
+    }
 
     /**
      * 加入一个子Tag
@@ -17,7 +34,6 @@ export class ComplexTag extends S7Tag {
      */
     addTag(tag, offset = this.append_offset) {
         this.#tags.push(tag);
-        // this.bytes += tag.bytes; 由子类决定是否增加长度
         const [new_byte_offset, new_bit_offset] = tag.join(this, offset);
         const [append_byte_offset, append_bit_offset] = this.append_offset;
         if (append_byte_offset < new_byte_offset) {
@@ -37,14 +53,6 @@ export class ComplexTag extends S7Tag {
     }
 
     /**
-     * 加入到一个数据区域，设置存储区位移和尺寸
-     * @returns {Offset}
-     */
-    // join(parent, offset = [0, 0]) {
-    //     const end_offset = super.join(parent, offset);
-    //     return end_offset;
-    // }
-    /**
      * 加载至一数据区域
      * 具体子类应判断起始offset的边界条件，特别是 WORD 等 Tag class
      * @param {Buffer} buff
@@ -57,5 +65,18 @@ export class ComplexTag extends S7Tag {
         const this_buffer = this.buffer;
         this.tags.forEach(tag => tag.mount(this_buffer, tag.start_offset));
         return this.end_offset;
+    }
+
+    /**
+     * 复合变量构造器
+     * @constructor
+     * @param {S7MParamter}
+     * @param {S7Tag[]} tags
+     */
+    constructor({ name = "" } = { name: "" }, tags = []) {
+        super({ name, type: "STRUCT" });
+        this.addTags(tags);
+        const new_bytes = this.append_offset[0];
+        this.bytes = this.bytes < new_bytes ? new_bytes : this.bytes;
     }
 }

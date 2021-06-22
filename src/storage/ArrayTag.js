@@ -8,7 +8,7 @@ import { ComplexTag, createTag } from './index.js';
  * @property {string} name
  * @property {string} type
  * @property {number} bytes
- * @property {(string|JSON)} element
+ * @property {JSON} element
  * @property {Offset} offset
  */
 
@@ -22,6 +22,9 @@ export class ArrayTag extends ComplexTag {
 
     /** @type {string} */
     #element_type;
+    get element_type(){
+        return this.#element_type;
+    }
 
     /**
      * 数组S7Tag
@@ -31,7 +34,7 @@ export class ArrayTag extends ComplexTag {
     constructor(
         {
             name = "",
-            element = { type: "BYTE" }, // 元素结构，仅 element_type = ("ARRAY" | "STRUCT") 时
+            element = { type: "BYTE" }, // 元素结构
             length = 256,
         } = {
                 name: "",
@@ -39,14 +42,11 @@ export class ArrayTag extends ComplexTag {
                 length: 256
             }
     ) {
-        super({ name, type: "ARRAY" });
-        let bytes = 0;
+        let tags = [];
         for (let i = 0; i < length; i++) {
-            const tag = createTag(element.type, element);
-            this.addTag(tag);
-            bytes += tag.bytes;
+            tags.push(createTag(element.type, element));
         }
-        this.bytes = bytes;
+        super({ name, type: "ARRAY" }, tags);
         this.#length = length;
         this.#element_type = element.type;
     }

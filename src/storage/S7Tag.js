@@ -44,6 +44,8 @@ export class S7Tag extends S7Memory {
     }
     /**
      * 加入到一个数据区域，设置存储区位移和尺寸
+     * @param {S7Memory} parent
+     * @param {Offset} offset=this.start_offset
      * @returns {Offset}
      */
     join(parent, offset = this.start_offset) {
