@@ -103,3 +103,12 @@ console.log(t.value);
 console.log(t.buffer);
 console.log(buff);
 console.log("\n\n");
+
+t = createTag("REAL", { name: "myReal" });
+t.mount(buff, [28]);
+console.log(`Tag ${t.name} :`);
+t.value = -366.55;
+console.log(t.value);
+console.log(t.buffer);
+console.log(buff);
+console.log("\n\n");
