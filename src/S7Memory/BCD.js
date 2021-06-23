@@ -5,10 +5,10 @@ export class BcdByteTag extends ByteTag {
      * @return {number}
      */
     get value() {
-        return BCD2DEC(super.value); // 调用基类确保已加载
+        return BCD2DEC(super.value[0]); // 调用基类确保已加载
     }
     /**
-     * 只接受BCD字节
+     * 只接受数字
      * @param {number} value 
      */
     set value(value) {

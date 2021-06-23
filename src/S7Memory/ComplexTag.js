@@ -70,8 +70,8 @@ export class ComplexTag extends S7Tag {
      * @param {Offset} offset
      * @return {Offset}
      */
-    mount(buff, offset = [0, 0]) {
-        super.mount(buff, offset); // 调用父类 mount()
+    mount(buff) {
+        super.mount(buff); // 调用父类 mount()
         // 重新计算本Tag挂载位置
         const this_buffer = this.buffer;
         this.tags.forEach(tag => tag.mount(this_buffer, tag.start_offset));

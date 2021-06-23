@@ -42,7 +42,7 @@ console.log('raw:', buff);
 console.log("\n");
 
 t = createTag("TIME", { name: "myTime" });
-t.join(null,[8]);
+t.join(null, [8]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);
 t.value = "T#-22d_20m_876ms";
@@ -52,3 +52,14 @@ console.log('buffer:', t.buffer);
 console.log('raw:', buff);
 console.log("\n");
 
+t = createTag("DT", { name: "myDateAndTime" });
+t.join(null, [12]);
+t.mount(buff);
+console.log(`S7Tag ${t.name} :`);
+t.value = "DT#2015-12-22-10:20:55.876";
+console.log('value:', t.value);
+console.log('date:', t.date);
+console.log('get_tag("year").value:', t.get_tag("year").value);
+console.log('buffer:', t.buffer);
+console.log('raw:', buff);
+console.log("\n");

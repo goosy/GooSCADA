@@ -1,5 +1,6 @@
-import { IntTag, DIntTag } from './index.js';
-import { BCD2Decimal, Decimal2BCD } from "./BCD.js"
+import { IntTag, UIntTag, DIntTag } from './index.js';
+import { ComplexTag } from './ComplexTag.js';
+import { BCD2DEC, DEC2BCD, BCD2Decimal, Decimal2BCD, BcdByteTag } from "./BCD.js"
 /**
  * @typedef {[number, number]} Offset
  */
@@ -17,19 +18,13 @@ import { BCD2Decimal, Decimal2BCD } from "./BCD.js"
  * @readonly
  * @enum {number}
  */
-export const ms_per = {
+const ms_per = {
     day: 86400000,
     hour: 3600000,
     minute: 60000,
     second: 1000,
 }
-export const time_base2ms = [10, 100, 1000, 10000];
-export const TIME_BASE = {
-    ms_10: 0,
-    ms_100: 1,
-    ms_1000: 2,
-    ms_10000: 3,
-}
+const time_base2ms = [10, 100, 1000, 10000];
 
 /**
  * 将毫秒数转换成类似 24d_56h_33m_250ms 格式
@@ -207,3 +202,126 @@ export class S5TimeTag extends IntTag {
         super({ name, type });
     }
 }
+
+export class DateTag extends UIntTag {
+    /**
+     * 原始值
+     * @return {number}
+     */
+    get rawValue() {
+        // 所有获值的入口，通过调用基类确保tag已加载
+        return super.value;
+    }
+    /** @type {String} */
+    get value() {
+        const date = this.JSDate;
+        const Y = date.getFullYear();
+        const M = date.getMonth() + 1;
+        const D = date.getDate();
+        return `DATE#${Y}-${M}-${D}`;
+    }
+    /** @type {Date} */
+    get JSDate() {
+        let ms = this.rawValue * ms_per.day;
+        return new Date(ms);
+    }
+
+    /**
+     * 接受 S7 Data 字面量，或 JS Date 对象，或原始天数
+     * @param {string|Date|number} value
+     */
+    set value(value) {
+        if (typeof (value) == "number") {
+            super.value = value;
+            return;
+        }
+        let date;
+        if (value instanceof Date) date = value;
+        else if (typeof (value) == "string") {
+            let valStr = value.toLowerCase().replace("date#", "").replace("d#", "");
+            if (!/\d+-\d+-\d+/.test(valStr)) throw new Error('input error, must like "DATE#2021-5-6"!');
+            date = new Date(Date.UTC(...valStr.split('-')));
+        } else {
+            throw new Error("input error, parameter must be a string or Date or Number object.");
+        }
+        let ms = date.valueOf();
+        super.value = (ms - ms % ms_per.day) / ms_per.day; // 调用基类确保已加载
+    }
+    constructor({ name = "", type = "DATE" } = { name: "", type: "DATE" }) {
+        super({ name, type });
+    }
+}
+
+
+let year = new BcdByteTag({ name: "year" });
+let month = new BcdByteTag({ name: "month" });
+let day = new BcdByteTag({ name: "day" });
+let hours = new BcdByteTag({ name: "hours" });
+let minutes = new BcdByteTag({ name: "minutes" });
+let seconds = new BcdByteTag({ name: "seconds" });
+let msL = new BcdByteTag({ name: "msL" });
+let msH = new BcdByteTag({ name: "msH" });
+function getDTList() {
+    let Y = year.value;
+    return [
+        Y < 90 ? Y + 2000 : Y + 1900,
+        month.value,
+        day.value,
+        hours.value,
+        minutes.value,
+        seconds.value,
+        msL.value + (msH.value - msH.value % 10) * 10
+    ];
+}
+export class DTTag extends ComplexTag {
+
+    /** @type {string} */
+    get value() {
+        let [Y, M, D, H, I, S, MS] = getDTList();
+        return `DATE_AND_TIME#${Y}-${M}-${D}-${H}:${I}:${S}.${MS}`;
+    };
+    /** @type {Date} */
+    get date() {
+        let [Y, M, D, H, I, S, MS] = getDTList();
+        return new Date(Y, M - 1, D, H, I, S, MS);
+    };
+
+    /**
+     * 接受 S7 DT 字面量，或 JS Date 对象
+     * 范围 DT#1990-1-1-0:0:0.0 to DT#2089-12-31-23:59:59.999
+     * @param {string|Date} dt
+     */
+    set value(dt) {
+        let datestr, week = -1;
+        if (dt instanceof Date) {
+            datestr = dt.toISOString().replace("Z", "").replace("T", "-");
+            week = dt.getDay();
+        } else if (typeof (dt) == "string") {
+            datestr = dt.toLowerCase().replace("date_and_time#", "").replace("dt#", "");
+            if (!/^\d+-\d+-\d+-\d+:\d+:\d+\.\d+/.test(datestr)) throw new Error('input error, must like "DT#2089-12-31-23:59:59.999"!');
+        } else {
+            throw new Error("input error, parameter must be a string or Date or Number object.");
+        }
+        let [Y, M, D, H, I, S, MS] = datestr.split(/[-_:\.]/).map(str => parseInt(str));
+        if (week == -1) week = new Date(Y, M - 1, D, H, I, S, MS).getDay();
+        if (week == 0) week = 7;
+        // 调用子Tag写值确保已加载
+        year.value = Y % 100;
+        month.value = M;
+        day.value = D;
+        hours.value = H;
+        minutes.value = I;
+        seconds.value = S;
+        msL.value = MS % 100;
+        msH.value = (MS - msL.value) / 10 + week;
+    }
+
+    /**
+     * DT变量构造器
+     * @constructor
+     * @param {S7MParamter}
+     */
+    constructor({ name = "" }) {
+        super({ name, type: "DT" }, [year, month, day, hours, minutes, seconds, msL, msH]);
+    }
+};

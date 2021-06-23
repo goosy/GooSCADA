@@ -12,14 +12,13 @@ import { CharTag } from "./CharTag.js";
 import { SIntTag } from "./SIntTag.js";
 import { WordTag } from "./WordTag.js";
 import { UIntTag } from "./UIntTag.js";
-import { DateTag } from "./DateTag.js";
 import { IntTag } from "./IntTag.js";
 import { DWordTag } from "./DWordTag.js";
 import { UDIntTag } from "./UDIntTag.js";
 import { RealTag } from "./RealTag.js";
 import { TODTag } from "./TODTag.js";
 import { DIntTag } from "./DIntTag.js";
-import { TimeTag, S5TimeTag } from "./TimeTag.js";
+import { TimeTag, S5TimeTag, DateTag, DTTag } from "./DataTime.js";
 
 import { ComplexTag } from "./ComplexTag.js";
 import { StringTag } from "./StringTag.js";
@@ -43,6 +42,7 @@ const S7TagType = {
     "TOD": TODTag,
     "DINT": DIntTag,
     "TIME": TimeTag,
+    "DT": DTTag,
     "STRING": StringTag,
     "ARRAY": ArrayTag,
     "STRUCT": StructTag,
@@ -87,6 +87,7 @@ export {
     DIntTag,
     TimeTag,
     // Complex Tag
+    DTTag,
     StringTag,
     ArrayTag,
     StructTag,
