@@ -1,4 +1,4 @@
-import { S5TimeTag, createTag } from "../src/storage/index.js"
+import { S5TimeTag, createTag } from "../src/S7Memory/index.js"
 
 console.log("================================\n")
 
@@ -10,7 +10,7 @@ t.join(null,[0]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);
 // t.pair_value = [789, 3];
-t.value = "S5T#3m_26s_300ms";
+t.value = "S5T#1h_13m_26s_990ms";
 console.log('value:', t.value);
 console.log('pair_value:', t.pair_value);
 console.log('buffer:', t.buffer);

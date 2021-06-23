@@ -1,4 +1,4 @@
-import { createTag } from "../src/storage/index.js"
+import { createTag } from "../src/S7Memory/index.js"
 
 console.log("================================\n")
 

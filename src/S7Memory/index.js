@@ -64,12 +64,12 @@ export {
     S7Memory,
     S7Area,
     S7Tag,
-    //
+    // base
     ElementaryTag,
     ComplexTag,
-    // struct
+    // factory
     createTag,
-    // 基本类型 BOOL BYTE CHAR WORD DWORD INT DINT REAL S5TIME TIME
+    // Elementary Tag
     BoolTag,
     ByteTag,
     USIntTag,
@@ -86,7 +86,7 @@ export {
     TODTag,
     DIntTag,
     TimeTag,
-    // 复杂类型 DATE_AND_TIME STRING ARRAY STRUCT
+    // Complex Tag
     StringTag,
     ArrayTag,
     StructTag,
