@@ -1,5 +1,5 @@
 import { IntTag, DIntTag } from './index.js';
-import { BCD2Decimal, Decimal2BCD } from "../BCD.js"
+import { BCD2Decimal, Decimal2BCD } from "./BCD.js"
 /**
  * @typedef {[number, number]} Offset
  */

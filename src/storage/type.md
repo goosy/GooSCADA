@@ -5,10 +5,10 @@
     * ElementaryTag
       * BoolTag
       * ByteTag
-        * BcdTag
         * CharTag
         * USIntTag
         * SIntTag
+        * BcdByteTag
       * WordTag
         * UIntTag
           * DateTag

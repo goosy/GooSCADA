@@ -1,3 +1,29 @@
+import { ByteTag } from "./index.js";
+
+export class BcdByteTag extends ByteTag {
+    /**
+     * @return {number}
+     */
+    get value() {
+        return BCD2DEC(super.value); // 调用基类确保已加载
+    }
+    /**
+     * 只接受BCD字节
+     * @param {number} value 
+     */
+    set value(value) {
+        if (value < 0 || value > 0x99) {
+            console.log("Invalid value");
+            return;
+        }
+        super.value[0] = DEC2BCD(value);
+    }
+    constructor({ name = "", type = "BCDBYTE" } = { name: "", type: "BCDBYTE" }) {
+        // bytes 继承
+        super({ name, type });
+    }
+}
+
 /**
  * BCD字节转换为十进制数
  * @param {number} BCD_BYTE
