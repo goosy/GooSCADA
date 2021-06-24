@@ -18,9 +18,9 @@ export class IntTag extends WordTag {
         }
         super.value.writeInt16BE(value, 0);// 调用基类确保已加载
     }
-    constructor({ name, type = "INT" } = { name: "", type: "INT" }) {
+    constructor({ name, type = "INT", value = 0 } = { name: "", type: "INT", value: 0 }) {
         const bytes = 2;
-        super({ name, type, bytes });
+        super({ name, type, bytes, value });
     }
 }
 

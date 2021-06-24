@@ -29,8 +29,8 @@ export class DWordTag extends ElementaryTag {
         return super.join(parent, this.next_word_bound(offset));
     }
 
-    constructor({ name = "", type = "DWORD" } = { name: "", type: "DWORD" }) {
+    constructor({ name = "", type = "DWORD", value = 0 } = { name: "", type: "DWORD", value: 0 }) {
         const bytes = 4;
-        super({ name, type, bytes });
+        super({ name, type, bytes, value });
     }
 }

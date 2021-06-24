@@ -2,6 +2,7 @@ import { MemoryBlock } from "./MemoryBlock.js";
 import { S7Memory } from "./S7Memory.js";
 
 import { S7Area } from "./S7Area.js";
+import { DBArea } from "./DBArea.js";
 
 import { S7Tag } from "./S7Tag.js";
 import { ElementaryTag } from "./ElementaryTag.js";
@@ -25,7 +26,7 @@ import { StringTag } from "./StringTag.js";
 import { ArrayTag } from "./ArrayTag.js";
 import { StructTag } from "./StructTag.js";
 
-const S7TagType = {
+const S7MemoryType = {
     "BOOL": BoolTag,
     "BYTE": ByteTag,
     "USINT": USIntTag,
@@ -57,10 +58,22 @@ const S7TagType = {
  * @returns {S7Tag}
  */
 function createTag(type, argus={type}) {
-    return new S7TagType[type](argus);
+    return new S7MemoryType[type](argus);
+}
+/**
+ * 建立指定类型Area
+ * @param {string} type
+ * @param {JSON} argus
+ * @returns {S7Tag}
+ */
+function createArea(type, argus={type}) {
+    return new S7MemoryType[type](argus);
 }
 
 export {
+    // factory
+    createTag,
+    createArea,
     // base
     MemoryBlock,
     S7Memory,
@@ -71,8 +84,6 @@ export {
     // base
     ElementaryTag,
     ComplexTag,
-    // factory
-    createTag,
     // Elementary Tag
     BoolTag,
     ByteTag,

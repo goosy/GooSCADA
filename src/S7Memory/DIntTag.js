@@ -17,8 +17,8 @@ export class DIntTag extends DWordTag {
         }
         super.value.writeInt32BE(value, 0); // 调用基类确保已加载
     }
-    constructor({ name = "", type = "DWORD" } = { name: "", type: "DWORD" }) {
+    constructor({ name = "", type = "DWORD", value = 0 } = { name: "", type: "DWORD", value: 0 }) {
         const bytes = 4;
-        super({ name, type, bytes });
+        super({ name, type, bytes, value });
     }
 }

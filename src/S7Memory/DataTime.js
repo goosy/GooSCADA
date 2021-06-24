@@ -118,10 +118,18 @@ export class TimeTag extends DIntTag {
     }
 
     /**
-     * 只接受 TIME 字面量  TIME#-24d_20h_31m_23s_648ms ~ TIME#24d_20h_31m_23s_647ms
-     * @param {string} value
+     * 接受 TIME 字面量或毫秒数 
+     * 范围： TIME#-24d_20h_31m_23s_648ms ~ TIME#24d_20h_31m_23s_647ms
+     * @param {string|number} value
      */
     set value(value) {
+        if (typeof value === 'number') {
+            super.value = value;
+            return;
+        }
+        if (typeof value !== "string") {
+            throw new Error("input error, parameter must be a string or a Number.");
+        }
         let valStr = value.toLowerCase().replace("time#", "").replace("t#", "");
         let sign = 1;
         if (valStr[0] == '-') {
@@ -130,8 +138,8 @@ export class TimeTag extends DIntTag {
         }
         super.value = sign * parse2ms(valStr); // 调用基类确保已加载
     }
-    constructor({ name = "", type = "TIME" } = { name: "", type: "TIME" }) {
-        super({ name, type });
+    constructor({ name = "", type = "TIME", value = 0 } = { name: "", type: "TIME" }) {
+        super({ name, type, value });
     }
 }
 
@@ -198,8 +206,8 @@ export class S5TimeTag extends IntTag {
      * @constructor
      * @param {S7MParamter}
      */
-    constructor({ name, type = 'S5TIME' } = { name: "", type: 'S5TIME' }) {
-        super({ name, type });
+    constructor({ name, type = 'S5TIME', value = 0 } = { name: "", type: 'S5TIME', value: 0 }) {
+        super({ name, type, value });
     }
 }
 
@@ -247,8 +255,8 @@ export class DateTag extends UIntTag {
         let ms = date.valueOf();
         super.value = (ms - ms % ms_per.day) / ms_per.day; // 调用基类确保已加载
     }
-    constructor({ name = "", type = "DATE" } = { name: "", type: "DATE" }) {
-        super({ name, type });
+    constructor({ name = "", type = "DATE", value = 0 } = { name: "", type: "DATE" }) {
+        super({ name, type, value });
     }
 }
 

@@ -31,8 +31,8 @@ export class ByteTag extends ElementaryTag {
         return super.join(parent, this.next_byte_bound(offset));
     }
 
-    constructor({ name = "", type = "BYTE" } = { name: "", type: "BYTE" }) {
+    constructor({ name = "", type = "BYTE", value = 0 } = { name: "", type: "BYTE", value: 0 }) {
         const bytes = 1;
-        super({ name, type, bytes });
+        super({ name, type, bytes, value });
     }
 }

@@ -18,8 +18,8 @@ export class SIntTag extends ByteTag {
         }
         super.value = value < 0 ? 256 + value : value; // 调用基类确保已加载
     }
-    constructor({ name = "", type = "SINT" } = { name: "", type: "SINT" }) {
+    constructor({ name = "", type = "SINT", value = 0 } = { name: "", type: "SINT", value: 0 }) {
         const bytes = 1;
-        super({ name, type, bytes });
+        super({ name, type, bytes, value });
     }
 }

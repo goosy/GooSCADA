@@ -20,8 +20,8 @@ export class BoolTag extends ElementaryTag {
         this.buffer[0] = byte;
     }
 
-    constructor({ name = "", type = "BOOL" } = { name: "", type: "BOOL" }) {
+    constructor({ name = "", type = "BOOL", value = false } = { name: "", type: "BOOL", value: false }) {
         const bytes = 0;
-        super({ name, type, bytes });
+        super({ name, type, bytes, value });
     }
 }

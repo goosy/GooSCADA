@@ -19,7 +19,7 @@ export class USIntTag extends ByteTag {
         buff.writeUInt8(value, 0);
     }
 
-    constructor({ name = "", type = "USINT" } = { name: "", type: "USINT" }) {
-        super({ name, type });
+    constructor({ name = "", type = "USINT", value = 0 } = { name: "", type: "USINT", value: 0 }) {
+        super({ name, type, value });
     }
 }

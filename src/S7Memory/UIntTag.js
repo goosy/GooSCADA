@@ -19,7 +19,7 @@ export class UIntTag extends WordTag {
         super.value.writeUInt16BE(value, 0);// 调用基类确保已加载
     }
 
-    constructor({ name = "", type = "UINT" } = { name: "", type: "UINT" }) {
-        super({name, type});
+    constructor({ name = "", type = "UINT", value = 0 } = { name: "", type: "UINT" }) {
+        super({ name, type, value });
     }
 }

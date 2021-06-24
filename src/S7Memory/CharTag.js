@@ -17,8 +17,8 @@ export class CharTag extends ByteTag {
         }
         super.value[0] = value.charCodeAt(0);
     }
-    constructor({ name = "", type = "CHAR" } = { name: "", type: "CHAR" }) {
+    constructor({ name = "", type = "CHAR", value = '\0' } = { name: "", type: "CHAR", value: '\0' }) {
         // bytes 继承
-        super({ name, type });
+        super({ name, type, value });
     }
 }

@@ -52,7 +52,7 @@ export class TODTag extends UDIntTag {
         if (num < 0 || num >= msPerDay) throw new Error('input error, 0 ~ 86399999 or "TOD#0:0:0.0" ~ "TOD#23:59:59.999"');
         super.value = num; // 调用基类确保已加载
     }
-    constructor({ name, type = "TOD" } = { name: "", type: "TOD" }) {
-        super({ name, type });
+    constructor({ name, type = "TOD", value = 0 } = { name: "", type: "TOD", value: 0 }) {
+        super({ name, type, value });
     }
 }

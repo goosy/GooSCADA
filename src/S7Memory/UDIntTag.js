@@ -18,7 +18,7 @@ export class UDIntTag extends DWordTag {
         super.value.writeUInt32BE(value, 0); // 调用基类确保已加载
     }
 
-    constructor({ name = "", type = "UDINT" } = { name: "", type: "UDINT" }) {
-        super({ name, type });
+    constructor({ name = "", type = "UDINT", value = 0 } = { name: "", type: "UDINT", value: 0 }) {
+        super({ name, type, value });
     }
 }
