@@ -46,12 +46,14 @@ const S7TagType = {
     "STRING": StringTag,
     "ARRAY": ArrayTag,
     "STRUCT": StructTag,
+    // S7Area
+    "DB": DBArea,
 };
 
 /**
  * 建立指定类型Tag
  * @param {string} type
- * @param {any} argus
+ * @param {JSON} argus
  * @returns {S7Tag}
  */
 function createTag(type, argus={type}) {
@@ -62,8 +64,10 @@ export {
     // base
     MemoryBlock,
     S7Memory,
-    S7Area,
     S7Tag,
+    // Area
+    S7Area,
+    DBArea,
     // base
     ElementaryTag,
     ComplexTag,

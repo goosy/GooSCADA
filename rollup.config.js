@@ -4,9 +4,9 @@ import commonjs from '@rollup/plugin-commonjs';
 import copy from 'rollup-plugin-copy'
 
 export default {
-    input: 'index.js',
+    input: './src/index.js',
     output: {
-        file: pkg.exports['.'],
+        file: pkg.exports['./lib'],
         format: 'es',
     },
     plugins: [

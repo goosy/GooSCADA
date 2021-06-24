@@ -44,6 +44,14 @@ export class S7Area extends S7Memory {
     }
 
     /**
+     * 仅join()改变本属性
+     *  @type {import("../S7PLC.js").S7PLC} 
+     */
+    #parent;
+    get parent() {
+        return this.#parent;
+    }
+    /**
      * 加入到一个数据区域，设置存储区位移和尺寸
      * 设定memory的位置，由子类扩展方法完成内元素的加入
      * @abstract
