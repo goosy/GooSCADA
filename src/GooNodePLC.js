@@ -96,5 +96,5 @@ export class GooNodePLC {
     }
 }
 
-Goonode.super_ = events.EventEmitter;
-Object.setPrototypeOf(Goonode.prototype, events.EventEmitter.prototype);
+GooNodePLC.super_ = events.EventEmitter;
+Object.setPrototypeOf(GooNodePLC.prototype, events.EventEmitter.prototype);

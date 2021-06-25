@@ -119,7 +119,7 @@ export class S7Memory {
      * @abstract
      * @returns {Offset}
      */
-    join(offset = [0, 0]) {
+    join(offset = [0, 0]) { 
         const block = this.#memoryblock;
         block.start = offset;
         return block.end;

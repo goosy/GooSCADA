@@ -5,7 +5,7 @@ export let channels = [
 		"name":"gb_goosyds", // 通道1 名称
 		"host":"home.goosy.org", // 通道 1 地址
 		"port":2000, // 通道 1 端口
-		"type": "TCP" // 通信协议类型
+		"type": "TCP", // 通信协议类型
 		"active": false, // 通道1是否为TCP客户端
 		"struct":["nodeGD"],//定义在 vplc中的对应结构位置，[区域名，变量名1, 变量名2, ...]
 	}, //通道 0 结束

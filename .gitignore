@@ -70,3 +70,4 @@ package-lock.json
 build-include/
 dist/
 lib/
+src/node_snap7.node

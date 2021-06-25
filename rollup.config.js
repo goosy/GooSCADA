@@ -16,7 +16,8 @@ export default {
         commonjs(), // converts XX to ES modules
         copy({
             targets: [
-            { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'lib' },
+                { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'src' },
+                { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'lib' },
             ]
         }),
     ],

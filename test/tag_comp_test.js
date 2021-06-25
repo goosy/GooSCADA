@@ -61,7 +61,6 @@ t = createTag("STRUCT", {
              { name: "count", type: "INT" },
         ]},
     ],
-    length: 5
 });
 t.join({}, [36, 0]);
 t.mount(buff);
