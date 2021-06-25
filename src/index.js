@@ -4,6 +4,8 @@ export {
     // factory
     createTag,
     createArea,
+    // area
+    DBArea,
     // base
     MemoryBlock,
     S7Memory,

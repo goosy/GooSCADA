@@ -46,7 +46,6 @@ export class ComplexTag extends S7Tag {
     /**
      * 存储区中增加一组 Tag
      * @param {S7Tag[]} tags
-     * @param {Offset} offset
      */
     addTags(tags) {
         tags.forEach(tag => this.addTag(tag));

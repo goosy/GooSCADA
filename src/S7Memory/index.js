@@ -64,7 +64,7 @@ function createTag(type, argus={type}) {
  * 建立指定类型Area
  * @param {string} type
  * @param {JSON} argus
- * @returns {S7Tag}
+ * @returns {S7Area}
  */
 function createArea(type, argus={type}) {
     return new S7MemoryType[type](argus);
