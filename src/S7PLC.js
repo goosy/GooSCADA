@@ -4,21 +4,29 @@
  */
 import snap7 from "./node-snap7.js";
 
-// "PE": s7server.srvAreaPE = 0	Process inputs
-// "PA": s7server.srvAreaPA = 1	Process outputs
-// "MK": s7server.srvAreaMK = 2	Merkers
-// "CT": s7server.srvAreaCT = 3	Counters
-// "TM": s7server.srvAreaTM = 4	Timers
-// "DB": s7server.srvAreaDB = 5	DB
 export class S7PLC extends snap7.S7Server {
 
     #areas = new Map();
     /** 
-     * @param {string} name
+     * 获得数据区
+     * @param {string} area_name
      * @return {import('./S7Memory/S7Area.js').S7Area}
     */
-    get_area(name) {
-        return this.#areas.get(name);
+    get_area(area_name) {
+        return this.#areas.get(area_name);
+    }
+    /**
+     * 获得指定Tag
+     * 用tag的层级名称做为参数：数据区名,Tag名1,...,Tagn
+     * 比如 get_tag("DB8","node","flow")
+     * 如不存在，则返回null
+     * @param {string[]} path
+     * @return {import('./S7Memory/S7Tag.js').S7Tag|null}
+    */
+    get_tag(...path) {
+        let area = this.get_area(path.shift());
+        if (area === undefined) return null;
+        return area.get_tag(...path);
     }
     /**
      * 增加一个S7区域
@@ -42,7 +50,7 @@ export class S7PLC extends snap7.S7Server {
         this.#host = value;
     }
 
-    start_serve(){
+    start_serve() {
         this.StartTo(this.#host);
     }
 

@@ -21,19 +21,18 @@ export class ComplexTag extends S7Tag {
     get tags() {
         return [...this.#tags];
     }
-    get_tag(name) {
-        for (const tag of this.#tags) {
-            if (tag.name === name) return tag;
+    get_tag(...path) {
+        const name = path.shift();
+        for (const tag of this.tags) {
+            if (tag.name === name) {
+                if (path.length == 0) return tag;
+                return tag.get_tag(...path);
+            }
         }
+        return null;
     }
 
-    /**
-     * 加入一个子Tag
-     * @param {S7Tag} tag
-     * @param {Offset} offset
-     */
-    addTag(tag, offset = this.append_offset) {
-        this.#tags.push(tag);
+    add_tag(tag, offset = this.append_offset){
         const [new_byte_offset, new_bit_offset] = tag.join(this, offset);
         const [append_byte_offset, append_bit_offset] = this.append_offset;
         if (append_byte_offset < new_byte_offset) {
@@ -42,6 +41,16 @@ export class ComplexTag extends S7Tag {
         if (append_byte_offset == new_byte_offset && append_bit_offset < new_bit_offset) {
             this.append_offset = [new_byte_offset, new_bit_offset];
         }
+    }
+
+    /**
+     * 加入一个子Tag
+     * @param {S7Tag} tag
+     * @param {Offset} offset
+     */
+    addTag(tag, offset) {
+        this.#tags.push(tag);
+        this.add_tag(tag, offset);
     }
     /**
      * 存储区中增加一组 Tag

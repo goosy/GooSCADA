@@ -1,5 +1,5 @@
 import { S7Memory } from "./S7Memory.js";
-import { S7Tag } from "./S7Tag.js";
+import { ComplexTag } from "./ComplexTag.js";
 
 /**
  * @typedef {[number, number]} Offset
@@ -16,43 +16,41 @@ import { S7Tag } from "./S7Tag.js";
 export class S7Area extends S7Memory {
     /**
      * 子tag，不可变
-     *  @type {S7Tag}
+     *  @type {S7Tag[]}
      */
     #tags = [];
     get tags() {
         return [...this.#tags];
     }
-    get_tag(name) {
-        for (const tag of this.#tags) {
-            if (tag.name === name) return tag;
-        }
+    /** 
+     * mixin with ComplexTag
+     * @param {string[]} path
+     * @return {S7Tag}
+     */
+    get_tag(...path) {
+        return ComplexTag.prototype.get_tag.apply(this, path);
     }
 
+    add_tag(tag, offset = this.append_offset) {
+        ComplexTag.prototype.add_tag.call(this, tag, offset);
+    }
     /**
      * 存储区中增加Tag
      * 必须在mount()之前完成
      * @param {S7Tag} tag 
      * @param {Offset} offset
      */
-    addTag(tag, offset = this.append_offset) {
+    addTag(tag, offset) {
         this.#tags.push(tag);
-        const [new_byte_offset, new_bit_offset] = tag.join(this, offset);
-        const [append_byte_offset, append_bit_offset] = this.append_offset;
-        if (append_byte_offset < new_byte_offset) {
-            this.append_offset = [new_byte_offset, new_bit_offset];
-        }
-        if (append_byte_offset == new_byte_offset && append_bit_offset < new_bit_offset) {
-            this.append_offset = [new_byte_offset, new_bit_offset];
-        }
+        this.add_tag(tag, offset);
     }
     /**
      * 存储区中增加一组 Tag
+     * mixin with ComplexTag
      * @param {S7Tag[]} tags
      */
     addTags(tags) {
-        tags.forEach(tag => this.addTag(tag));
-        const new_bytes = this.append_offset[0];
-        this.bytes = this.bytes < new_bytes ? new_bytes : this.bytes;
+        ComplexTag.prototype.addTags.call(this, tags);
     }
 
     /**

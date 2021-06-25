@@ -1,8 +1,33 @@
-import snap7 from "../src/node-snap7.js";
+import {
+    createMemory,
+    S7PLC,
+} from "../src/index.js";
 
-var s7client = new snap7.S7Client();
+async function createVPLC(config_file) {
+    const plc = new S7PLC();
 
-await s7client.ConnectTo('127.0.0.1', 0, 1);
-// Read the first byte from PLC process outputs...
-let res = await s7client.DBRead(8, 0, 50);
-console.log(res);
+    plc.on("event", (event) => {
+        console.log(plc.EventText(event));
+    });
+
+    const { vplc } = await import(config_file);
+    const areas = vplc.areas;
+    areas.forEach(areaJSON => {
+        const area = createMemory(areaJSON);
+        plc.add_area(area);
+    });
+
+    plc.host = vplc.host;
+    return plc;
+}
+
+console.log("================================\n")
+
+// 建立 VPLC
+const t = await createVPLC("../conf/config.js");
+t.get_tag("nodeGD7", "flow").value = 36.5;
+console.log('nodeGD7:', t.get_area('nodeGD7'));
+console.log('nodeGD7/pressure:', t.get_tag("nodeGD7", "pressure")?.value);
+console.log('nodeGD7/flow:', t.get_tag("nodeGD7", "flow")?.value);
+console.log('member/count:', t.get_tag("member", "count")?.value);
+console.log("\n");
