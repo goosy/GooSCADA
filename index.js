@@ -4,7 +4,7 @@
  */
 
 import {
-    createArea,
+    createMemory,
     S7PLC,
     GooNodeDriver
 } from "./src/index.js";
@@ -23,7 +23,7 @@ async function createVPLC(config_file) {
     const { vplc } = await import(config_file);
     const areas = vplc.areas;
     areas.forEach(areaJSON => {
-        const area = createArea(areaJSON.type, areaJSON);
+        const area = createMemory(areaJSON);
         plc.add_area(area);
     });
 

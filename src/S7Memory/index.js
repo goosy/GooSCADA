@@ -1,11 +1,11 @@
-import { MemoryBlock } from "./MemoryBlock.js";
-import { S7Memory } from "./S7Memory.js";
+export { MemoryBlock } from "./MemoryBlock.js";
+export { S7Memory } from "./S7Memory.js";
+export { S7Area } from "./S7Area.js";
+export { S7Tag } from "./S7Tag.js";
+export { ElementaryTag } from "./ElementaryTag.js";
+export { ComplexTag } from "./ComplexTag.js";
 
-import { S7Area } from "./S7Area.js";
 import { DBArea } from "./DBArea.js";
-
-import { S7Tag } from "./S7Tag.js";
-import { ElementaryTag } from "./ElementaryTag.js";
 import { BoolTag } from "./BoolTag.js";
 import { ByteTag } from "./ByteTag.js";
 import { USIntTag } from "./USIntTag.js";
@@ -20,13 +20,11 @@ import { RealTag } from "./RealTag.js";
 import { TODTag } from "./TODTag.js";
 import { DIntTag } from "./DIntTag.js";
 import { TimeTag, S5TimeTag, DateTag, DTTag } from "./DataTime.js";
-
-import { ComplexTag } from "./ComplexTag.js";
 import { StringTag } from "./StringTag.js";
 import { ArrayTag } from "./ArrayTag.js";
 import { StructTag } from "./StructTag.js";
 
-const S7MemoryType = {
+export const S7MemoryType = {
     "BOOL": BoolTag,
     "BYTE": ByteTag,
     "USINT": USIntTag,
@@ -54,36 +52,31 @@ const S7MemoryType = {
 /**
  * 建立指定类型Tag
  * @param {string} type
- * @param {JSON} argus
- * @returns {S7Tag}
+ * @param {JSON} json
+ * @returns {S7Memory}
  */
-function createTag(type, argus={type}) {
-    return new S7MemoryType[type](argus);
-}
-/**
- * 建立指定类型Area
- * @param {string} type
- * @param {JSON} argus
- * @returns {S7Area}
- */
-function createArea(type, argus={type}) {
-    return new S7MemoryType[type](argus);
+export function createMemory(json = { type: '', tags: [] }) {
+    if (!S7MemoryType.hasOwnProperty(json.type)) throw new Error('not exist this type!');;
+    const memory = new S7MemoryType[json.type](json);
+    if (typeof memory.addTags === 'function') {
+        let tags = [];
+        if (json.type === 'ARRAY') {
+            for (let i = 0; i < json.length; i++) {
+                tags.push(createMemory(json.element));
+            }
+        } else if (Array.isArray(json.tags)) {
+            for (const tag of json.tags) {
+                tags.push(createMemory(tag));
+            }
+        }
+        memory.addTags(tags);
+    }
+    return memory;
 }
 
 export {
-    // factory
-    createTag,
-    createArea,
-    // base
-    MemoryBlock,
-    S7Memory,
-    S7Tag,
     // Area
-    S7Area,
     DBArea,
-    // base
-    ElementaryTag,
-    ComplexTag,
     // Elementary Tag
     BoolTag,
     ByteTag,

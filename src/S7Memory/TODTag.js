@@ -1,4 +1,4 @@
-import { UDIntTag } from './index.js';
+import { UDIntTag } from './UDIntTag.js';
 
 const msPerDay = 86400000;
 const msPerHour = 3600000;

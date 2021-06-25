@@ -1,4 +1,4 @@
-import { ByteTag } from "./index.js";
+import { ByteTag } from "./ByteTag.js";
 
 export class BcdByteTag extends ByteTag {
     /**

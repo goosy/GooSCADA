@@ -1,4 +1,4 @@
-import { ElementaryTag } from './index.js';
+import { ElementaryTag } from './ElementaryTag.js';
 export class DWordTag extends ElementaryTag {
     /**
      * @return {Buffer}

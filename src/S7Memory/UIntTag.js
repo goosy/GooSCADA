@@ -1,4 +1,4 @@
-import { WordTag } from './index.js';
+import { WordTag } from './WordTag.js';
 export class UIntTag extends WordTag {
     /**
      * @return {number}

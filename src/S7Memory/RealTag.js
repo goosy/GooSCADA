@@ -1,4 +1,4 @@
-import { DWordTag } from "./index.js";
+import { DWordTag } from "./DWordTag.js";
 export class RealTag extends DWordTag {
     /**
      * @return {number}

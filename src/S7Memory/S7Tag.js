@@ -1,4 +1,4 @@
-import { S7Memory } from "./index.js";
+import { S7Memory } from "./S7Memory.js";
 /**
  * @typedef {[number, number]} Offset
  */

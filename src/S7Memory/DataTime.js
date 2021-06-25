@@ -1,6 +1,8 @@
-import { IntTag, UIntTag, DIntTag } from './index.js';
+import { IntTag } from './IntTag.js';
+import { UIntTag } from './UIntTag.js';
+import { DIntTag } from './DIntTag.js';
 import { ComplexTag } from './ComplexTag.js';
-import { BCD2DEC, DEC2BCD, BCD2Decimal, Decimal2BCD, BcdByteTag } from "./BCD.js"
+import { BCD2Decimal, Decimal2BCD, BcdByteTag } from "./BCD.js"
 /**
  * @typedef {[number, number]} Offset
  */
@@ -330,6 +332,7 @@ export class DTTag extends ComplexTag {
      * @param {S7MParamter}
      */
     constructor({ name = "" }) {
-        super({ name, type: "DT" }, [year, month, day, hours, minutes, seconds, msL, msH]);
+        super({ name, type: "DT" });
+        this.addTags([year, month, day, hours, minutes, seconds, msL, msH]);
     }
 };

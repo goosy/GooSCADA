@@ -2,18 +2,16 @@ export { S7PLC } from "./S7PLC.js";
 export { GooNodeDriver } from "./GooNodeDriver.js";
 export {
     // factory
-    createTag,
-    createArea,
-    // area
-    DBArea,
+    createMemory,
     // base
     MemoryBlock,
     S7Memory,
     S7Area,
     S7Tag,
-    // base
     ElementaryTag,
     ComplexTag,
+    // area
+    DBArea,
     // Elementary Tag
     BoolTag,
     ByteTag,

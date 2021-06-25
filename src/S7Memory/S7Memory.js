@@ -1,4 +1,4 @@
-import { MemoryBlock } from './index.js';
+import { MemoryBlock } from './MemoryBlock.js';
 /**
  * @typedef {[number, number]} Offset
  */

@@ -1,4 +1,4 @@
-import { ComplexTag, createTag } from './index.js';
+import { ComplexTag } from './ComplexTag.js';
 
 /**
  * @typedef {[number, number]} Offset
@@ -19,18 +19,9 @@ export class StructTag extends ComplexTag {
      * @constructor
      * @param {S7MParamter}
      */
-    constructor(
-        {
-            name = "",
-            tags = { type: "BYTE" }, // 结构
-        } = {
-                name: "",
-                tags: [],
-            }
-    ) {
+    constructor({ name = "" } = { name: "" }) {
         super(
             { name, type: "STRUCT" },
-            tags.map(/** @param {JSON} tagJSON */(tagJSON) => createTag(tagJSON.type, tagJSON))
         );
     }
 }

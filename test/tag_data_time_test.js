@@ -1,12 +1,12 @@
-import { S5TimeTag, createTag } from "../src/S7Memory/index.js"
+import { S5TimeTag, createMemory } from "../src/S7Memory/index.js"
 
 console.log("================================\n")
 
 let buff = Buffer.alloc(50);
 let t;
 
-t = createTag("S5TIME", { name: "myS5Time" });
-t.join(null,[0]);
+t = createMemory({ type: "S5TIME", name: "myS5Time" });
+t.join(null, [0]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);
 // t.pair_value = [789, 3];
@@ -17,8 +17,8 @@ console.log('buffer:', t.buffer);
 console.log('raw:', buff);
 console.log("\n");
 
-t = createTag("DATE", { name: "myDate" });
-t.join(null,[2]);
+t = createMemory({ type: "DATE", name: "myDate" });
+t.join(null, [2]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);
 t.value = "D#2015-4-16";
@@ -30,8 +30,8 @@ console.log('buffer:', t.buffer);
 console.log('raw:', buff);
 console.log("\n");
 
-t = createTag("TOD", { name: "myTOD" });
-t.join(null,[4]);
+t = createMemory({ type: "TOD", name: "myTOD" });
+t.join(null, [4]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);
 t.value = "TOD#23:00:12.999";
@@ -41,7 +41,7 @@ console.log('buffer:', t.buffer);
 console.log('raw:', buff);
 console.log("\n");
 
-t = createTag("TIME", { name: "myTime" });
+t = createMemory({ type: "TIME", name: "myTime" });
 t.join(null, [8]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);
@@ -52,7 +52,7 @@ console.log('buffer:', t.buffer);
 console.log('raw:', buff);
 console.log("\n");
 
-t = createTag("DT", { name: "myDateAndTime" });
+t = createMemory({ type: "DT", name: "myDateAndTime" });
 t.join(null, [12]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);

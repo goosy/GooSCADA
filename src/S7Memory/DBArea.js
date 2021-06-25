@@ -1,4 +1,4 @@
-import { S7Area } from "./index.js";
+import { S7Area } from "./S7Area.js";
 export class DBArea extends S7Area {
     #DBNO;
     /**
@@ -10,9 +10,9 @@ export class DBArea extends S7Area {
     get DBNO(){
         return this.#DBNO;
     }
-    constructor({ name = "", DBNO=1, bytes = 256, tags = [] } = { name: "", DBNO: 1}) {
+    constructor({ name = "", DBNO=1, bytes = 256} = { name: "", DBNO: 1}) {
         const type = "DB";
-        super({ name, type, bytes, tags });
+        super({ name, type, bytes });
         this.#DBNO = DBNO;
     }
 

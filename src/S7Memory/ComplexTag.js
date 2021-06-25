@@ -1,4 +1,4 @@
-import { S7Tag } from './index.js';
+import { S7Tag } from './S7Tag.js';
 
 /**
  * @typedef {[number, number]} Offset
@@ -49,6 +49,8 @@ export class ComplexTag extends S7Tag {
      */
     addTags(tags) {
         tags.forEach(tag => this.addTag(tag));
+        const new_bytes = this.append_offset[0];
+        this.bytes = this.bytes < new_bytes ? new_bytes : this.bytes;
     }
 
     /**
@@ -83,10 +85,7 @@ export class ComplexTag extends S7Tag {
      * @param {S7MParamter}
      * @param {S7Tag[]} tags
      */
-    constructor({ name = "" } = { name: "" }, tags = []) {
-        super({ name, type: "STRUCT" });
-        this.addTags(tags);
-        const new_bytes = this.append_offset[0];
-        this.bytes = this.bytes < new_bytes ? new_bytes : this.bytes;
+    constructor({ name = "", type = "COMPLEX" } = { name: "", type: "COMPLEX" }) {
+        super({ name, type });
     }
 }

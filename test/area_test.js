@@ -1,4 +1,4 @@
-import { createArea, createTag } from '../src/S7Memory/index.js'
+import { createMemory } from '../src/S7Memory/index.js'
 
 
 console.log("================================\n")
@@ -6,9 +6,11 @@ console.log("================================\n")
 let buff = Buffer.alloc(50);
 let t;
 
-t = createArea("DB", {
+t = createMemory({
+    type: "DB",
     name: "myDB",
     DBNO: 8,
+    bytes: 20,
     tags: [
         { name: "bool0", type: "BOOL" },
         { name: "bool1", type: "BOOL" },
@@ -23,7 +25,9 @@ t = createArea("DB", {
         { name: "status", type: "BYTE" },
         { name: "process", type: "DINT" },
         {
-            name: "member", type: "STRUCT", tags: [
+            name: "member",
+            type: "STRUCT",
+            tags: [
                 { name: "count", type: "INT" },
             ]
         },

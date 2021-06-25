@@ -1,4 +1,4 @@
-import { S7Tag } from './index.js';
+import { S7Tag } from './S7Tag.js';
 export class StringTag extends S7Tag {
     get length() {
         return this.bytes - 2;
