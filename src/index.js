@@ -1,5 +1,5 @@
-export {GooNodePLC} from "./GooNodePLC.js";
-export {S7PLC} from "./S7PLC.js";
+export { S7PLC } from "./S7PLC.js";
+export { GooNodeDriver } from "./GooNodeDriver.js";
 export {
     // factory
     createTag,

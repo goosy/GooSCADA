@@ -8,7 +8,7 @@
 import events from 'events';
 import net from "net";
 
-export class GooNodePLC {
+export class GooNodeDriver {
 
     constructor(path = null) {
         this.tags = {};
@@ -96,5 +96,5 @@ export class GooNodePLC {
     }
 }
 
-GooNodePLC.super_ = events.EventEmitter;
-Object.setPrototypeOf(GooNodePLC.prototype, events.EventEmitter.prototype);
+GooNodeDriver.super_ = events.EventEmitter;
+Object.setPrototypeOf(GooNodeDriver.prototype, events.EventEmitter.prototype);

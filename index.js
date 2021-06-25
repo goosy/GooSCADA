@@ -4,23 +4,39 @@
  */
 
 import {
+    createArea,
     S7PLC,
-    Goonode
-} from "./lib/index.js";
+    GooNodeDriver
+} from "./src/index.js";
 
-// 数据获取适配器 —— goonode
-// 这是一个调用Goonode类产生tags的例子
+/**
+ * create a VPLC server
+ * @param {string} config_file
+ */
+async function createVPLC(config_file) {
+    const plc = new S7PLC();
+
+    plc.on("event", (event) => {
+        console.log(plc.EventText(event));
+    });
+
+    const { vplc } = await import(config_file);
+    const areas = vplc.areas;
+    areas.forEach(areaJSON => {
+        const area = createArea(areaJSON.type, areaJSON);
+        plc.add_area(area);
+    });
+
+    plc.host = vplc.host;
+    return plc;
+}
+
+// 数据获取适配器 —— GooNodeDriver
+// 这是一个调用GooNodeDriver类产生数据的例子
 // todo: 其它适配器 
-var goonode = new Goonode("./conf/channels.js");
-goonode.createConns();
+// var driver = new GooNodeDriver("./conf/channels.js");
+// driver.createConns();
 
 // 建立 VPLC
-let server = new S7PLC("./conf/config.js");
-
-goonode.on("change", tag => {
-    let t = server.getTag(tag.name);
-    t.value = tag.value;
-    server.setTag(t);
-});
-
-server.startServe();
+const plc = await createVPLC("./conf/config.js");
+plc.start_serve();//vplc.host

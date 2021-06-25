@@ -1,8 +1,8 @@
-export let vplc = {
+export const vplc = {
 	"host": "127.0.0.1", //S7服务地址
 	"areas": [ // 可以设置多个数据区
 		{ //数据区 1 开始
-			"name": "nodeGD",
+			"name": "nodeGD7",
 			"type": "DB", // DB块
 			"DBNO": 8, // DB块号
 			"bytes": 50, // DB块长度
@@ -10,7 +10,7 @@ export let vplc = {
 				{ // 变量nodeID
 					"name": "nodeID",
 					"type": "INT",
-					"value": 0, //初始值
+					"value": 8017, //初始值
 				},
 				{ // workOK
 					"name": "workOK",
@@ -38,7 +38,7 @@ export let vplc = {
 					"value": false, //初始值
 				},
 				{ // 
-					"name": pump_run_4"pump_run_4",
+					"name": "pump_run_4",
 					"type": "BOOL",
 					"value": false, //初始值
 				},
