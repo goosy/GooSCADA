@@ -1,4 +1,4 @@
-import { S5TimeTag, createMemory } from "../src/S7Memory/index.js"
+import { createMemory } from "../src/S7Memory/index.js"
 
 console.log("================================\n")
 

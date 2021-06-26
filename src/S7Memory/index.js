@@ -1,9 +1,9 @@
-export { MemoryBlock } from "./MemoryBlock.js";
-export { S7Memory } from "./S7Memory.js";
-export { S7Area } from "./S7Area.js";
-export { S7Tag } from "./S7Tag.js";
-export { ElementaryTag } from "./ElementaryTag.js";
-export { ComplexTag } from "./ComplexTag.js";
+// export { MemoryBlock } from "./MemoryBlock.js";
+// export { S7Memory } from "./S7Memory.js";
+// export { S7Area } from "./S7Area.js";
+// export { S7Tag } from "./S7Tag.js";
+// export { ElementaryTag } from "./ElementaryTag.js";
+// export { ComplexTag } from "./ComplexTag.js";
 
 import { DBArea } from "./DBArea.js";
 import { BoolTag } from "./BoolTag.js";
@@ -24,7 +24,8 @@ import { StringTag } from "./StringTag.js";
 import { ArrayTag } from "./ArrayTag.js";
 import { StructTag } from "./StructTag.js";
 
-export const S7MemoryType = {
+export const S7Type = {
+    // S7Tag
     "BOOL": BoolTag,
     "BYTE": ByteTag,
     "USINT": USIntTag,
@@ -56,8 +57,8 @@ export const S7MemoryType = {
  * @returns {S7Memory}
  */
 export function createMemory(json = { type: '', tags: [] }) {
-    if (!S7MemoryType.hasOwnProperty(json.type)) throw new Error('not exist this type!');;
-    const memory = new S7MemoryType[json.type](json);
+    if (!S7Type.hasOwnProperty(json.type)) throw new Error('not exist this type!');;
+    const memory = new S7Type[json.type](json);
     if (typeof memory.addTags === 'function') {
         let tags = [];
         if (json.type === 'ARRAY') {
@@ -72,32 +73,5 @@ export function createMemory(json = { type: '', tags: [] }) {
         memory.addTags(tags);
     }
     return memory;
-}
-
-export {
-    // Area
-    DBArea,
-    // Elementary Tag
-    BoolTag,
-    ByteTag,
-    USIntTag,
-    CharTag,
-    SIntTag,
-    WordTag,
-    UIntTag,
-    DateTag,
-    S5TimeTag,
-    IntTag,
-    DWordTag,
-    UDIntTag,
-    RealTag,
-    TODTag,
-    DIntTag,
-    TimeTag,
-    // Complex Tag
-    DTTag,
-    StringTag,
-    ArrayTag,
-    StructTag,
 }
 

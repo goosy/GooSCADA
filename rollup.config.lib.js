@@ -4,9 +4,9 @@ import commonjs from '@rollup/plugin-commonjs';
 import copy from 'rollup-plugin-copy'
 
 export default {
-    input: pkg.exports['.'],
+    input: './src/index.js',
     output: {
-        file: pkg.exports['./dist'],
+        file: pkg.exports['./lib'],
         format: 'es',
     },
     plugins: [
@@ -16,10 +16,10 @@ export default {
         commonjs(), // converts XX to ES modules
         copy({
             targets: [
-                { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'dist' },
-                { src: 'conf', dest: 'dist' },
+                { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'src' },
+                { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'lib' },
             ]
         }),
     ],
-    external: ['events', 'net', 'module', 'util', './conf/config.js'],
+    external: ['events', 'net', 'module', 'util'],
 }

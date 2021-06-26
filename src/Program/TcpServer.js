@@ -10,11 +10,14 @@ const __dirname = dirname(__filename);
  */
 class TcpServer extends Server {
 
-    constructor() {
+    conns = [];
+    message = null;
+    buffer = null;
+
+    constructor(vplc, conns_JSON) {
+        this.#vplc = vplc;
+        this.conns = conns_JSON;
         super();
-        this.conns = [];
-        this.message = null;
-        this.buffer = null;
     }
 
     sendInterval() {
