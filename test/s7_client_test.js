@@ -6,3 +6,5 @@ await s7client.ConnectTo('127.0.0.1', 0, 1);
 // Read the first byte from PLC process outputs...
 let res = await s7client.DBRead(8, 0, 50);
 console.log(res);
+res = await s7client.DBRead(10, 0, 50);
+console.log(res);

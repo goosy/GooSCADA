@@ -3,7 +3,7 @@
  * MIT License
  */
 import snap7 from "./node-snap7.js";
-
+import { createMemory } from "./S7Memory/index.js";
 export class S7PLC extends snap7.S7Server {
 
     #areas = new Map();
@@ -40,6 +40,14 @@ export class S7PLC extends snap7.S7Server {
         this.RegisterArea(this['srvArea' + area.type], area.DBNO, buff);
     }
 
+    init(confJSON) {
+        this.host = confJSON.host;
+        confJSON.areas.forEach(areaJSON => {
+            const area = createMemory(areaJSON);
+            this.add_area(area);
+        });
+    }
+
     /** @type {string} */
     #host;
     /**
@@ -52,6 +60,11 @@ export class S7PLC extends snap7.S7Server {
 
     start_serve() {
         this.StartTo(this.#host);
+    }
+
+    constructor(confJSON) {
+        super();
+        this.init(confJSON);
     }
 
 }
