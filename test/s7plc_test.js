@@ -2,32 +2,33 @@ import {
     createMemory,
     S7PLC,
 } from "../src/index.js";
+import { plc_config_JSON } from "../conf/config.js";
 
-async function createVPLC(config_file) {
-    const plc = new S7PLC();
+// 建立 VPLC
+const plc = new S7PLC();
 
-    plc.on("event", (event) => {
-        console.log(plc.EventText(event));
-    });
+plc.on("event", (event) => {
+    console.log(plc.EventText(event));
+});
 
-    const { vplc } = await import(config_file);
-    const areas = vplc.areas;
-    areas.forEach(areaJSON => {
-        const area = createMemory(areaJSON);
-        plc.add_area(area);
-    });
+const areas = plc_config_JSON.areas;
+areas.forEach(areaJSON => {
+    const area = createMemory(areaJSON);
+    plc.add_area(area);
+});
 
-    plc.host = vplc.host;
-    return plc;
-}
+plc.host = plc_config_JSON.host;
+// plc.start_serve();
 
 console.log("================================\n")
 
 // 建立 VPLC
-const t = await createVPLC("../conf/config.js");
-t.get_tag("nodeGD7", "flow").value = 36.5;
-console.log('nodeGD7:', t.get_area('nodeGD7'));
-console.log('nodeGD7/pressure:', t.get_tag("nodeGD7", "pressure")?.value);
-console.log('nodeGD7/flow:', t.get_tag("nodeGD7", "flow")?.value);
-console.log('member/count:', t.get_tag("member", "count")?.value);
+const t = plc;
+t.get_mem("nodeGD8", "flow").value = 36.5;
+console.log('nodeGD8:', t.get_mem('nodeGD8'));
+console.log('nodeGD8/pressure:', t.get_mem("nodeGD8", "pressure")?.value);
+console.log('nodeGD8/flow:', t.get_mem("nodeGD8", "flow")?.value);
+console.log('commands_GD8:', t.get_mem('commands_GD8'));
+console.log('commands_GD8/stopPumps:', t.get_mem("commands_GD8", "stopPumps")?.value);
+console.log('member/count:', t.get_mem("member", "count")?.value);
 console.log("\n");

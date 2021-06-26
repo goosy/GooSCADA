@@ -54,16 +54,6 @@ export class S7Area extends S7Memory {
     }
 
     /**
-     * 数据区域
-     * 建立实例时，如不给定buffer，构造器会自动分配一个给定大小的buffer
-     * @constructor
-     * @param {S7MParamter}
-     */
-    constructor({ name = "", type = "DB", bytes = 256 } = { name: "", type: "DB" }) {
-        super({ name, type, bytes })
-    }
-
-    /**
      * 仅join()改变本属性
      *  @type {import("../S7PLC.js").S7PLC} 
      */
@@ -99,4 +89,15 @@ export class S7Area extends S7Memory {
         this.#tags.forEach(tag => tag.mount(this_buffer));
         return this.end_offset;
     }
+
+    /**
+     * 数据区域
+     * 建立实例时，如不给定buffer，构造器会自动分配一个给定大小的buffer
+     * @constructor
+     * @param {S7MParamter}
+     */
+    constructor({ name = "", type = "DB", bytes = 256 } = { name: "", type: "DB" }) {
+        super({ name, type, bytes })
+    }
+
 }

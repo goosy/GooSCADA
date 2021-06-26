@@ -1,8 +1,8 @@
-export const vplc = {
+export const plc_config_JSON = {
 	"host": "127.0.0.1", //S7服务地址
 	"areas": [ // 可以设置多个数据区
 		{ //数据区 1 开始
-			"name": "nodeGD7",
+			"name": "nodeGD8",
 			"type": "DB", // DB块
 			"DBNO": 8, // DB块号
 			"bytes": 50, // DB块长度
@@ -10,7 +10,7 @@ export const vplc = {
 				{ // 变量nodeID
 					"name": "nodeID",
 					"type": "INT",
-					"value": 8017, //初始值
+					"value": 8078, //初始值
 				},
 				{ // workOK
 					"name": "workOK",
@@ -64,5 +64,48 @@ export const vplc = {
 				},
 			],
 		}, //数据区 1 完成
+
+		{ //数据区 2 开始
+			"name": "commands_GD8",
+			"type": "DB", // DB块
+			"DBNO": 10, // DB块号
+			"bytes": 50, // DB块长度
+			"tags": [ //分别定义各个变量在数据块中的位置
+				{ // 变量nodeID
+					"name": "nodeID",
+					"type": "INT",
+					"value": 8078, //初始值
+				},
+				{ // stopPumps
+					"name": "stopPumps",
+					"type": "BOOL",
+					"value": false, //初始值
+				},
+				{ // stopHeaters
+					"name": "stopHeaters",
+					"type": "BOOL",
+					"value": false, //初始值
+				},
+				{ // warning
+					"name": "warning",
+					"type": "BOOL",
+					"value": false, //初始值
+				},
+				{ // resetWarning
+					"name": "resetWarning",
+					"type": "BOOL",
+					"value": false, //初始值
+				},
+				{ // reserve
+					"name": "reserve",
+					"type": "ARRAY",
+					"element": {
+						type: "BYTE",
+						length: 46,
+					}, //初始值
+				},
+			],
+		}, //数据区 2 完成
+
 	]
 };

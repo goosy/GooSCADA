@@ -23,10 +23,10 @@ export class S7PLC extends snap7.S7Server {
      * @param {string[]} path
      * @return {import('./S7Memory/S7Tag.js').S7Tag|null}
     */
-    get_tag(...path) {
+    get_mem(...path) {
         let area = this.get_area(path.shift());
-        if (area === undefined) return null;
-        return area.get_tag(...path);
+        if (path.length === 0) return area;
+        return area?.get_tag(...path);
     }
     /**
      * 增加一个S7区域
