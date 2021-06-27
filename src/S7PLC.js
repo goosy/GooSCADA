@@ -4,6 +4,18 @@
  */
 import snap7 from "./node-snap7.js";
 import { createMemory } from "./S7Memory/index.js";
+const AreaType = {
+    /**
+     * @TODO 
+     * "PE": s7server.srvAreaPE : Process inputs
+     * "PA": s7server.srvAreaPA : Process outputs
+     * "MK": s7server.srvAreaMK : Merkers
+     * "CT": s7server.srvAreaCT : Counters
+     * "TM": s7server.srvAreaTM : Timers
+     */
+    131: "MK",
+    132: "DB"
+}
 export class S7PLC extends snap7.S7Server {
 
     #areas = new Map();
@@ -28,6 +40,8 @@ export class S7PLC extends snap7.S7Server {
         if (path.length === 0) return area;
         return area?.get_tag(...path);
     }
+
+    #areabuff = {};
     /**
      * 增加一个S7区域
      * @param {import('./S7Memory/S7Area.js').S7Area} area
@@ -37,7 +51,8 @@ export class S7PLC extends snap7.S7Server {
         area.join(this); // 偏移量强制为[0,0]
         let buff = Buffer.alloc(area.bytes);
         area.mount(buff);
-        this.RegisterArea(this['srvArea' + area.type], area.DBNO, buff);
+        this.#areabuff[area.type + (area.type == "DB" ? area.DBNO : "")] = buff;
+        // this.RegisterArea(this['srvArea' + area.type], , area.buffer);
     }
 
     init(confJSON) {
@@ -45,6 +60,24 @@ export class S7PLC extends snap7.S7Server {
         confJSON.areas.forEach(areaJSON => {
             const area = createMemory(areaJSON);
             this.add_area(area);
+        });
+        this.SetResourceless(true);
+        this.on("readWrite", (sender, operation, tagObj, buffer, callback) => {
+            // console.log('buffer   : ', buffer);
+            // console.log('Area     : ' + tagObj.Area);
+            // console.log('DBNumber : ' + tagObj.DBNumber);
+            // console.log('Start    : ' + tagObj.Start);
+            // console.log('Size     : ' + tagObj.Size);
+            // console.log('WordLen  : ' + tagObj.WordLen);
+            if (operation === this.operationRead) {
+                this.#areabuff[AreaType[tagObj.Area] + tagObj.DBNumber].copy(buffer, 0, tagObj.Start, tagObj.Start + tagObj.Size);
+                this.emit("read", tagObj, buffer);
+                return callback(buffer);
+            } else {
+                buffer.copy(this.#areabuff[AreaType[tagObj.Area] + tagObj.DBNumber], tagObj.Start);
+                this.emit("write", tagObj, buffer);
+                return callback();
+            }
         });
     }
 
@@ -64,7 +97,7 @@ export class S7PLC extends snap7.S7Server {
 
     constructor(confJSON) {
         super();
-        this.init(confJSON);
+        if(confJSON?.host)this.init(confJSON);
     }
 
 }

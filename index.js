@@ -10,11 +10,15 @@ import { S7TcpClient } from "./src/Program/TcpClient.js";
 
 // create a VPLC server
 const plc = new S7PLC(plc_config_JSON);
-
 plc.on("event", (event) => {
     console.log(plc.EventText(event));
 });
-
+plc.on("read", (tagObj, buffer) => {
+    console.log("read ret: ", buffer);
+})
+plc.on("write", (tagObj, buffer) => {
+    console.log("write: ", buffer);
+})
 plc.start_serve();
 
 /* 创建TCP连接 */
@@ -37,6 +41,8 @@ client.on("error", function (err) {
 client.on("close", function () {
     console.log("connection closed");
     this.stop_send();
+    client.destroy();
+    setTimeout(try_connect, 5000);
 })
 
 function try_connect() {
@@ -46,3 +52,4 @@ function try_connect() {
     });
 }
 try_connect();
+
