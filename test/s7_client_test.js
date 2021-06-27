@@ -7,10 +7,10 @@ let res;
 // let buff = Buffer.alloc(4, 0x80);
 // res = await s7client.DBWrite(8, 0, 4, buff);
 // console.log(res);
-res = await s7client.DBRead(10, 0, 4);
-console.log(res);
+// res = await s7client.DBRead(10, 0, 4);
+// console.log(res);
 
-// setInterval(async () => {
-//     let res = await s7client.DBRead(8, 0, 50);
-//     console.log(res);
-// }, 5000);
+setInterval(async () => {
+    let res = await s7client.DBRead(8, 0, 50);
+    console.log(res);
+}, 5000);

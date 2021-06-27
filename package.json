@@ -1,6 +1,6 @@
 {
 	"name": "goovplc",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
 	"type": "module",
 	"main": "./index.js",
@@ -17,7 +17,8 @@
 		"@rollup/plugin-node-resolve": "^13.0.0",
 		"node-snap7": "^1.0.6",
 		"rollup": "^2.51.1",
-		"rollup-plugin-copy": "^3.4.0"
+		"rollup-plugin-copy": "^3.4.0",
+		"ws": "^7.5.0"
 	},
 	"directories": {
 		"lib": "lib",
