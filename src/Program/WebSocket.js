@@ -11,25 +11,34 @@ function heartbeat() {
 function onMessage(ws, s7plc) {
     ws.on('message', (message) => {
         try {
-            const req = JSON.parse(message); 
+            const req = JSON.parse(message);
             const name = req?.name?.split('/');
-            const value = req?.value;
-            const action = req?.action;
+            let action = req?.action;
+            let value = req?.value;
+            let error = false;
             if (!name || !action || !s7plc?.get_mem) return;
             const mem = s7plc.get_mem(...name);
-            if (action == "read") {
-                if (mem instanceof ElementaryTag) ws.send(mem.value);
-                else ws.send(mem.buffer);
-            } else if (action == "write"){
+            if (!mem?.buffer) error = req.name + " memory does not exist!";
+            else if (action == "read") {
+                if (mem instanceof ElementaryTag) value = mem.value;
+                else value = mem.buffer;
+            } else if (action == "write") {
                 mem.value = value;
-                ws.send("write %s OK", value);
+                value = mem.value;
+            } else {
+                error = "wrong request action!";
             }
-        } catch (err) { console.error(err); }
+            const ret = error ? { error } : { action: action + "Response", name: req.name, value };
+            ws.send(JSON.stringify(ret));
+        } catch (err) {
+            console.error(err);
+        }
     });
 }
 
 /**
  * create a WebScoket Server
+ * @todo 增加变量订阅，变量改变时主动发送新值  {action:"update", name, value}
  * @param {Object} options
  * @param {number} options.port
  * @param {S7PLC} options.s7plc

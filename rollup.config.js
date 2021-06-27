@@ -18,6 +18,7 @@ export default {
             targets: [
                 { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'dist' },
                 { src: 'conf', dest: 'dist' },
+                { src: 'public', dest: 'dist' },
             ]
         }),
     ],

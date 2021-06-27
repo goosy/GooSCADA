@@ -1,0 +1,104 @@
+<html>
+
+<head>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <label for="nodeName">站名</label>
+        <input type="text" id="nodeName" v-model="nodeName" />
+        <ul>
+            <li v-for="item in node">
+                <label :for="item.name">{{item.name}}</label>
+                <span :id="item.name">{{item.value}}</span>
+                <input type="text" :id="'input'+item.name" v-model="item.newValue" v-show="item.is_changing" />
+                <button @click="prechange(item)" v-show="!item.is_changing">修改</button>
+                <button @click="change(item)" v-show="item.is_changing">完成</button>
+            </li>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript">
+    const ws = new WebSocket('ws://127.0.0.1:8080');
+    let nodeName = "nodeGD8";
+
+    ws.onopen = function (evt) {
+        console.log("Connection open ...");
+        for (const item of vm.node) {
+            get_ws_var(ws, item);
+        };
+    };
+
+    ws.onmessage = function (evt) {
+        console.log("Received Message: " + evt.data);
+        let ret = JSON.parse(evt.data);
+        if (ret?.error) return;
+        for (const item of vm.node) {
+            if (item.name == ret.name.replace(`${vm.nodeName}/`, "")) {
+                item.value = item.newValue = ret.value;
+                return;
+            }
+        }
+    };
+
+    ws.onclose = function (evt) {
+        console.log("Connection closed.");
+    };
+
+    function get_ws_var(ws, item) {
+        name = `${vm.nodeName}/${item.name}`;
+        ws.send(JSON.stringify({
+            action: "read",
+            name,
+        }));
+    }
+
+    function set_ws_var(ws, item) {
+        const name = `${vm.nodeName}/${item.name}`;
+        const value = Number(item.newValue);
+        ws.send(JSON.stringify({
+            action: "write",
+            name,
+            value
+        }));
+    }
+
+    const node = Object.entries({
+        nodeID: 0,
+        workOK: false,
+        commOK: false,
+        pump_run_1: false,
+        pump_run_2: false,
+        pump_run_3: false,
+        pump_run_4: false,
+        pump_run_5: false,
+        temperature: 0.0,
+        pressure: 0.0,
+        flow: 0.0,
+    }).map(([name, value]) => ({
+        name,
+        value,
+        is_changing: false,
+        newValue: value,
+    }));
+
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            nodeName,
+            node
+        },
+        methods: {
+            prechange: (item) => {
+                item.is_changing = true;
+            },
+            change: (item) => {
+                set_ws_var(ws, item);
+                item.is_changing = false;
+            }
+        }
+    })
+</script>
+
+</html>
