@@ -3,11 +3,9 @@
  * MIT License
  */
 
-import { S7PLC } from "./src/index.js";
 import { plc_config_JSON } from "./conf/config.js";
 import { connections } from "./conf/connections.js";
-import { S7TcpClient } from "./src/Program/TcpClient.js";
-import { S7WSServer } from "./src/Program/WebSocket.js";
+import { S7PLC, S7TcpClient, S7WSServer } from "./lib/index.js";
 
 // create a VPLC server
 const plc = new S7PLC(plc_config_JSON);

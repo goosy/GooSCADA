@@ -4,12 +4,12 @@
  * MIT License
  */
 
-import events from 'events';
+import { EventEmitter } from 'events';
 import util from "util";
 import { createRequire } from 'module';
 const requireESM = createRequire(import.meta.url);
 const snap7 = requireESM('./node_snap7.node');
-export {snap7 as default};
+export { snap7 as default };
 
 // promisify
 snap7.S7Client.prototype.ReadArea = util.promisify(snap7.S7Client.prototype.ReadArea);
@@ -63,5 +63,5 @@ snap7.S7Client.prototype.CTWrite = async function (start, size, buf) {
     return await this.WriteArea(this.S7AreaCT, 0, start, size, this.S7WLCounter, buf);
 }
 
-snap7.S7Server.super_ = events.EventEmitter;
-Object.setPrototypeOf(snap7.S7Server.prototype, events.EventEmitter.prototype);
+snap7.S7Server.super_ = EventEmitter;
+Object.setPrototypeOf(snap7.S7Server.prototype, EventEmitter.prototype);

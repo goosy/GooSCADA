@@ -22,5 +22,19 @@ export default {
             ]
         }),
     ],
-    external: ['events', 'net', 'module', 'util', './conf/config.js'],
+    external: [
+        'crypto',
+        'events',
+        'http',
+        'https',
+        'module',
+        'net',
+        'stream',
+        'tls',
+        'util',
+        'url',
+        'zlib',
+        './conf/config.js',
+        './conf/connections.js'
+    ],
 }

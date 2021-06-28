@@ -21,5 +21,13 @@ export default {
             ]
         }),
     ],
-    external: ['events', 'net', 'module', 'util'],
+    external: [
+        'events',
+        'http',
+        'module',
+        'net',
+        'util',
+        './conf/config.js',
+        './conf/connections.js'
+    ],
 }
