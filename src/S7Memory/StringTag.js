@@ -1,5 +1,5 @@
-import { S7Tag } from './S7Tag.js';
-export class StringTag extends S7Tag {
+import { ComplexTag } from './ComplexTag.js';
+export class StringTag extends ComplexTag {
     get length() {
         return this.bytes - 2;
     }
@@ -7,17 +7,18 @@ export class StringTag extends S7Tag {
      * @return {string}
      */
     get value() {
-        let buff = super.value; // 调用基类Tag确保已加载
-        return buff.toString('utf8');
+        if (!this.mounted) throw new Error(`S7Tag:${this.name} have not mount a area`);
+        return this.buffer.slice(2).toString('utf8');
     }
     /**
      * 只接受字符串
      * @param {string} value 
      */
     set value(str) {
-        let buff = super.value; // 调用基类Tag确保已加载
+        if (!this.mounted) throw new Error(`S7Tag:${this.name} have not mount a area`);
         // str 长度最大长度不得超过 this.length，否则只复制合法范围内的字串
         let length = str.length > this.length ? this.length : str.length;
+        const buff = this.buffer;
         for (let index = 0; index < length; index++) {
             buff[index + 2] = str.charCodeAt(index);
         }
