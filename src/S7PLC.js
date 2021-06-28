@@ -41,7 +41,7 @@ export class S7PLC extends snap7.S7Server {
         return area?.get_tag(...path);
     }
 
-    #areabuff = {};
+    #areabuffers = {};
     /**
      * 增加一个S7区域
      * @param {import('./S7Memory/S7Area.js').S7Area} area
@@ -51,7 +51,7 @@ export class S7PLC extends snap7.S7Server {
         area.join(this); // 偏移量强制为[0,0]
         let buff = Buffer.alloc(area.bytes);
         area.mount(buff);
-        this.#areabuff[area.type + (area.type == "DB" ? area.DBNO : "")] = buff;
+        this.#areabuffers[area.type + (area.type == "DB" ? area.DBNO : "")] = buff;
         // this.RegisterArea(this['srvArea' + area.type], , area.buffer);
     }
 
@@ -69,13 +69,17 @@ export class S7PLC extends snap7.S7Server {
             // console.log('Start    : ' + tagObj.Start);
             // console.log('Size     : ' + tagObj.Size);
             // console.log('WordLen  : ' + tagObj.WordLen);
+            const start = tagObj.Start;
+            const end = tagObj.Start + tagObj.Size;
+            const areabuffer = this.#areabuffers[AreaType[tagObj.Area] + tagObj.DBNumber];
             if (operation === this.operationRead) {
-                this.#areabuff[AreaType[tagObj.Area] + tagObj.DBNumber].copy(buffer, 0, tagObj.Start, tagObj.Start + tagObj.Size);
+                areabuffer.copy(buffer, 0, start, end);
                 this.emit("read", tagObj, buffer);
                 return callback(buffer);
             } else {
-                buffer.copy(this.#areabuff[AreaType[tagObj.Area] + tagObj.DBNumber], tagObj.Start);
+                buffer.copy(areabuffer, start);
                 this.emit("write", tagObj, buffer);
+                this.emit("bufferchange", tagObj.Start, end); // value change event
                 return callback();
             }
         });
@@ -97,7 +101,8 @@ export class S7PLC extends snap7.S7Server {
 
     constructor(confJSON) {
         super();
-        if(confJSON?.host)this.init(confJSON);
+        if (confJSON?.host) this.init(confJSON);
+        this.setMaxListeners(30);
     }
 
 }

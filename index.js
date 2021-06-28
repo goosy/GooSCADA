@@ -3,7 +3,7 @@
  * MIT License
  */
 
-import { S7PLC, GooNodeDriver } from "./src/index.js";
+import { S7PLC } from "./src/index.js";
 import { plc_config_JSON } from "./conf/config.js";
 import { connections } from "./conf/connections.js";
 import { S7TcpClient } from "./src/Program/TcpClient.js";
