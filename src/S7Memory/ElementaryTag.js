@@ -13,6 +13,22 @@ import { S7Tag } from './S7Tag.js';
 
 export class ElementaryTag extends S7Tag {
     #init_value;
+    #pre_value = null;
+
+    /**
+     * 读S7Tag值，通过buffer存储变量值，具体子类应覆盖
+     */
+    get value() {
+        return this.buffer;
+    }
+    /**
+     * 写S7Tag值，基类仅提供抽象，不实际写，具体子类应覆盖写入 buffer 存储区中。
+     * @abstract
+     */
+    set value(value) {
+        if (!this.mounted) throw new Error(`S7Tag:${this.name} = ${value} cant assign value, Tag have not mount a area`);
+    }
+
     /** 
      * @constructor
      * @param {S7MParamter}

@@ -32,7 +32,7 @@ export class ComplexTag extends S7Tag {
         return null;
     }
 
-    add_tag(tag, offset = this.append_offset){
+    adjust_tag_offset(tag, offset = this.append_offset) {
         const [new_byte_offset, new_bit_offset] = tag.join(this, offset);
         const [append_byte_offset, append_bit_offset] = this.append_offset;
         if (append_byte_offset < new_byte_offset) {
@@ -50,7 +50,7 @@ export class ComplexTag extends S7Tag {
      */
     addTag(tag, offset) {
         this.#tags.push(tag);
-        this.add_tag(tag, offset);
+        this.adjust_tag_offset(tag, offset);
     }
     /**
      * 存储区中增加一组 Tag
@@ -94,7 +94,7 @@ export class ComplexTag extends S7Tag {
      * @param {S7MParamter}
      * @param {S7Tag[]} tags
      */
-    constructor({ name = "", type = "COMPLEX" } = { name: "", type: "COMPLEX" }) {
-        super({ name, type });
+    constructor({ name = "", type = "COMPLEX", bytes = 0 } = { name: "", type: "COMPLEX", bytes: 0 }) {
+        super({ name, type, bytes });
     }
 }

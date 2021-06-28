@@ -31,8 +31,8 @@ export class S7Area extends S7Memory {
         return ComplexTag.prototype.get_tag.apply(this, path);
     }
 
-    add_tag(tag, offset = this.append_offset) {
-        ComplexTag.prototype.add_tag.call(this, tag, offset);
+    adjust_tag_offset(tag, offset = this.append_offset) {
+        ComplexTag.prototype.adjust_tag_offset.call(this, tag, offset);
     }
     /**
      * 存储区中增加Tag
@@ -42,7 +42,7 @@ export class S7Area extends S7Memory {
      */
     addTag(tag, offset) {
         this.#tags.push(tag);
-        this.add_tag(tag, offset);
+        this.adjust_tag_offset(tag, offset);
     }
     /**
      * 存储区中增加一组 Tag
@@ -54,24 +54,15 @@ export class S7Area extends S7Memory {
     }
 
     /**
-     * 仅join()改变本属性
-     *  @type {import("../S7PLC.js").S7PLC} 
+     * 加入到一个数据区域，设置存储区位移和尺寸
+     * 设定memory的位置，由子类扩展方法完成内元素的加入
+     * @param {import("../S7PLC.js").S7PLC} parent 
+     * @param {Offset} offset
+     * @returns {Offset}
      */
-    #parent;
-    get parent() {
-        return this.#parent;
-    }
-    /**
-    * 加入到一个数据区域，设置存储区位移和尺寸
-    * 设定memory的位置，由子类扩展方法完成内元素的加入
-    * @param {import("../S7PLC.js").S7PLC} parent 
-    * 
-    * @returns {Offset}
-    */
     join(parent, offset = this.start_offset) {
-        this.#parent = parent;
         // 起始地址必须在WORD的边界上
-        return super.join(this.next_word_bound(offset));
+        return super.join(parent, this.next_word_bound(offset));
     }
 
     /**

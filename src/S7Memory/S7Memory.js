@@ -80,7 +80,15 @@ export class S7Memory {
 
 
     /** @type {Buffer} */
-    buffer;
+    #buffer;
+    get buffer() {
+        if (!this.mounted) throw new Error(`${this.name} memory have not mounted!`);
+        return this.#buffer;
+    }
+    set buffer(newbuffer) {
+        if (!this.mounted) throw new Error(`${this.name} memory have not mounted!`);
+        this.#buffer = newbuffer;
+    }
 
     /**
      * 指示是否加载存储区域
@@ -108,18 +116,29 @@ export class S7Memory {
      * @returns {Offset}
      */
     next_word_bound(offset) {
-        let [byte_offset, ] = this.next_byte_bound(offset);
+        let [byte_offset,] = this.next_byte_bound(offset);
         byte_offset = byte_offset % 2 == 0 ? byte_offset : byte_offset + 1;
         return [byte_offset, 0];
     }
 
     /**
+     * 仅join()改变本属性
+     *  @type {S7Memory} 
+     */
+    #parent;
+    get parent() {
+        return this.#parent;
+    }
+    /**
      * 加入到一个数据区域，设置存储区位移和尺寸
-     * 设定memory的位置，由子类扩展方法完成内元素的加入
+     * 设定memory的位置，由复合子类扩充本方法以完成子元素的加入
      * @abstract
+     * @param {(S7Memory|import("../S7PLC.js").S7PLC)} parent
+     * @param {Offset} offset
      * @returns {Offset}
      */
-    join(offset = [0, 0]) { 
+    join(parent, offset = [0, 0]) {
+        this.#parent = parent;
         const block = this.#memoryblock;
         block.start = offset;
         return block.end;
