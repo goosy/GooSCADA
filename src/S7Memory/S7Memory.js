@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import { MemoryBlock } from './MemoryBlock.js';
 /**
  * @typedef {[number, number]} Offset
@@ -10,7 +11,7 @@ import { MemoryBlock } from './MemoryBlock.js';
  * @property {Offset} offset
  */
 
-export class S7Memory {
+export class S7Memory extends EventEmitter{
     /** @type {string} */
     #name;
     /**
@@ -129,6 +130,13 @@ export class S7Memory {
     get parent() {
         return this.#parent;
     }
+    change_value_capturing() {
+        this.#parent.on("bufferchange", (start, end) => {
+            start = start > this.start_offset[0] ? start : this.start_offset[0];
+            end = end < this.end_offset[0] ? end : this.end_offset[0];
+            if (start < end) this.emit("bufferchange", start, end);
+        })
+    }
     /**
      * 加入到一个数据区域，设置存储区位移和尺寸
      * 设定memory的位置，由复合子类扩充本方法以完成子元素的加入
@@ -141,6 +149,7 @@ export class S7Memory {
         this.#parent = parent;
         const block = this.#memoryblock;
         block.start = offset;
+        this.change_value_capturing();
         return block.end;
     }
     /**
@@ -158,8 +167,10 @@ export class S7Memory {
      * @param {S7MParamter}
      */
     constructor({ name = "", type = "BYTE", bytes = 1 } = { name: "", type: "BYTE", bytes: 1 }) {
+        super();
         this.#name = name;
         this.#type = type;
         this.bytes = bytes;
+        this.setMaxListeners(100);
     }
 }

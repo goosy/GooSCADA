@@ -1,16 +1,16 @@
 import { createMemory } from "../src/S7Memory/index.js"
-
-console.log("================================\n")
-
-let buff = Buffer.alloc(50);
+const db = createMemory({ type: "DB", name: "myDB", bytes: 50 });
+db.mount(Buffer.alloc(50));
+let buff = db.buffer;
 let t;
 
+console.log("================================\n")
 t = createMemory({
     type: "STRING",
     name: "myString",
     length: 16
 });
-t.join({}, [0, 0]);
+t.join(db, [0, 0]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);
 t.value = "I hate CCP";
@@ -21,13 +21,14 @@ console.log('buffer:', t.buffer);
 console.log('raw:', buff);
 console.log("\n");
 
+console.log("================================\n")
 t = createMemory({
     type: "ARRAY",
     name: "myArray",
     element: { type: "DINT" },
     length: 5
 });
-t.join({}, [16, 0]);
+t.join(db, [16, 0]);
 t.mount(buff);
 t.tags[0].value = 18990;
 t.tags[1].value = 0;
@@ -44,6 +45,7 @@ console.log('buffer:', t.buffer);
 console.log('raw:', buff);
 console.log("\n");
 
+console.log("================================\n")
 t = createMemory({
     type: "STRUCT",
     name: "myStruct",
@@ -64,7 +66,7 @@ t = createMemory({
         },
     ],
 });
-t.join({}, [36, 0]);
+t.join(db, [36, 0]);
 t.mount(buff);
 t.get_tag("workOK").value = true;
 t.get_tag("myArray").tags[0].value = true;
