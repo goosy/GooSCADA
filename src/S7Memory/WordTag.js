@@ -14,6 +14,7 @@ export class WordTag extends ElementaryTag {
         let buff = super.value; // 调用基类确保已加载
         buff[0] = value[0];
         buff[1] = value[1];
+        this.trigger_value_change();
     }
 
     /**

@@ -17,6 +17,7 @@ export class UIntTag extends WordTag {
             return;
         }
         super.value.writeUInt16BE(value, 0);// 调用基类确保已加载
+        this.trigger_value_change();
     }
 
     constructor({ name = "", type = "UINT", value = 0 } = { name: "", type: "UINT" }) {

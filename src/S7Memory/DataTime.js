@@ -201,6 +201,7 @@ export class S5TimeTag extends IntTag {
         if (count < 0 || count > 999) throw new Error(`S5TimeTag.count error : ${count} out of 0-999`);
         let dec = base * 1000 + count;
         this.rawValue = Decimal2BCD(dec);
+        this.trigger_value_change();
     }
 
     /**
@@ -302,6 +303,7 @@ export class DTTag extends ComplexTag {
      * @param {string|Date} dt
      */
     set value(dt) {
+        let oldvalue = this.value;
         let datestr, week = -1;
         if (dt instanceof Date) {
             datestr = dt.toISOString().replace("Z", "").replace("T", "-");
@@ -324,6 +326,7 @@ export class DTTag extends ComplexTag {
         seconds.value = S;
         msL.value = MS % 100;
         msH.value = (MS - msL.value) / 10 + week;
+        this.emit("valuechange", oldvalue, this.value);
     }
 
     /**

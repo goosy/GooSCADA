@@ -17,6 +17,7 @@
                 <button @click="change(item)" v-show="item.is_changing">完成</button>
             </li>
         </ul>
+        <p>{{ws.readyState}}</p>
     </div>
 </body>
 <script type="text/javascript">
@@ -26,7 +27,7 @@
     ws.onopen = function (evt) {
         console.log("Connection open ...");
         for (const item of vm.node) {
-            get_ws_var(ws, item);
+            sub_ws_var(ws, item);
         };
     };
 
@@ -45,6 +46,14 @@
     ws.onclose = function (evt) {
         console.log("Connection closed.");
     };
+
+    function sub_ws_var(ws, item) {
+        name = `${vm.nodeName}/${item.name}`;
+        ws.send(JSON.stringify({
+            action: "subscribe",
+            name,
+        }));
+    }
 
     function get_ws_var(ws, item) {
         name = `${vm.nodeName}/${item.name}`;
@@ -87,7 +96,8 @@
         el: '#app',
         data: {
             nodeName,
-            node
+            node,
+            ws
         },
         methods: {
             prechange: (item) => {

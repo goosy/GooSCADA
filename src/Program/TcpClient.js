@@ -33,6 +33,7 @@ export class S7TcpClient extends Socket {
         super(options);
         this.sendbuffer = send_buffer;
         this.receive_buffer = receive_buffer;
+        this.setMaxListeners(30);
     }
 }
 

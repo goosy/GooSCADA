@@ -15,6 +15,7 @@ export class StringTag extends ComplexTag {
      * @param {string} value 
      */
     set value(str) {
+        let pre_value = this.value;
         if (!this.mounted) throw new Error(`S7Tag:${this.name} have not mount a area`);
         // str 长度最大长度不得超过 this.length，否则只复制合法范围内的字串
         let length = str.length > this.length ? this.length : str.length;
@@ -24,6 +25,7 @@ export class StringTag extends ComplexTag {
         }
         // S7 STRING 数据区第0字节为最大长度，第1字节为实际长度
         buff[1] = str.length;
+        this.emit("valuechange", pre_value, str);
     }
 
     /**

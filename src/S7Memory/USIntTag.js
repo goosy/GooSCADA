@@ -17,6 +17,7 @@ export class USIntTag extends ByteTag {
             return;
         }
         buff.writeUInt8(value, 0);
+        this.trigger_value_change();
     }
 
     constructor({ name = "", type = "USINT", value = 0 } = { name: "", type: "USINT", value: 0 }) {

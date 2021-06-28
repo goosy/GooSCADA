@@ -18,6 +18,7 @@ export class BoolTag extends ElementaryTag {
         if (value) byte = byte | bit_number;
         else byte = byte & ~bit_number;
         this.buffer[0] = byte;
+        this.trigger_value_change();
     }
 
     constructor({ name = "", type = "BOOL", value = false } = { name: "", type: "BOOL", value: false }) {

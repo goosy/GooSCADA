@@ -17,6 +17,7 @@ export class RealTag extends DWordTag {
             return;
         }
         buff.writeFloatBE(value, 0);
+        this.trigger_value_change();
     }
     constructor({ name = "", value = 0.0 } = { name: "", value: 0.0 }) {
         const type = "REAL";

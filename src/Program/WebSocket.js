@@ -17,8 +17,23 @@ function onMessage(ws, s7plc) {
             let value = req?.value;
             let error = false;
             if (!name || !action || !s7plc?.get_mem) return;
-            const mem = s7plc.get_mem(...name);
+            const mem = s7plc.get_mem(...name); 
             if (!mem?.buffer) error = req.name + " memory does not exist!";
+            else if (action == "subscribe") {
+                const action = "subscribeResponse";
+                const name = req.name;
+                value = mem.value;
+                mem.on("valuechange", () => {
+                    if (ws.isAlive) {
+                        const value = mem.value;
+                        ws.send(JSON.stringify({
+                            action,
+                            name,
+                            value
+                        }));
+                    }
+                })
+            }
             else if (action == "read") {
                 if (mem instanceof ElementaryTag) value = mem.value;
                 else value = mem.buffer;
@@ -47,9 +62,10 @@ function onMessage(ws, s7plc) {
 export function S7WSServer({ port = 8080, s7plc } = { port: 8080 }) {
     const wss = new WebSocket.Server({ port });
 
-    wss.on('connection', (ws) => {
+    wss.on('connection', (ws, req) => {
         ws.isAlive = true;
         ws.on('pong', heartbeat);
+        console.log(req.socket.remoteAddress, " is connected");
         onMessage(ws, s7plc);
     });
 

@@ -16,6 +16,7 @@ export class DWordTag extends ElementaryTag {
         buff[1] = value[1];
         buff[2] = value[2];
         buff[3] = value[3];
+        this.trigger_value_change();
     }
 
     /**

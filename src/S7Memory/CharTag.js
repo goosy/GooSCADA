@@ -16,6 +16,7 @@ export class CharTag extends ByteTag {
             return;
         }
         super.value[0] = value.charCodeAt(0);
+        this.trigger_value_change();
     }
     constructor({ name = "", type = "CHAR", value = '\0' } = { name: "", type: "CHAR", value: '\0' }) {
         // bytes 继承

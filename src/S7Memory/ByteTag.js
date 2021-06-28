@@ -18,6 +18,7 @@ export class ByteTag extends ElementaryTag {
             return;
         }
         buff[0] = value;
+        this.trigger_value_change();
     }
 
     /**
