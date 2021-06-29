@@ -1,43 +1,73 @@
-import WebSocket from 'ws';
+import WebSocket from "faye-websocket";
+import { createInterface } from "readline";
+
 /**
  * alive check
  */
-
+let pingTimeout;
 function heartbeat() {
-    clearTimeout(this.pingTimeout);
-    this.pingTimeout = setTimeout(() => {
-        this.terminate();
-    }, 30000 + 1000);
+    console.log("heartbeat")
+    ws.alive = true;
+    clearTimeout(pingTimeout);
+    pingTimeout = setTimeout(() => {
+        ws.alive = false;
+        ws.close();
+    }, 30000 + 3000);
 }
 
-const ws = new WebSocket('ws://127.0.0.1:8080', {
-    perMessageDeflate: false
+let ws = new WebSocket.Client('ws://127.0.0.1:8080');
+// ws.on('ping', heartbeat); // faye-websocket have not event:"ping"
+ws.on('close', function (event) {
+    clearTimeout(pingTimeout);
+    console.log('close', event.code, event.reason);
+    ws = null;
+});
+ws.on('message', function (event) {
+    console.log('message', event.data);
+    rl.prompt();
+    // ws.close();
+});
+ws.on('open', function (event) {
+    ws.alive = true;// heartbeat(); // faye-websocket have not event:"ping"
 });
 
-ws.on('open', heartbeat);
-ws.on('ping', heartbeat);
-ws.on('close', function clear() {
-    clearTimeout(this.pingTimeout);
+const rl = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt: 'WS> '
 });
 
-
-ws.on('message', (data) => {
-    console.log(data);
-    ws.terminate();
-});
-
-let [, , action, value, ...name] = process.argv;
-if (action === 'read') {
-    name = [value, ...name];
-    value = 0;
-}
-value = Number(value);
-name = name.join('/');
-
-ws.on('open', () => {
-    ws.send(JSON.stringify({
-        action,
-        value,
-        name
-    }));
+rl.prompt();
+rl.on('line', (line) => {
+    line = line.trim()
+    switch (line) {
+        case 'help':
+            console.log('help are not prepared.');
+            break;
+        case 'exit':
+            ws?.close();
+            rl.close();
+            break;
+        default:
+            if (ws?.alive) {
+                let [cmd, value, ...name] = line.split(' ');
+                if (cmd === 'read' || cmd === 'subscribe') {
+                    name = [value, ...name];
+                    value = 0;
+                } else if (cmd !== 'write') break;
+                value = Number(value);
+                name = name.join('/');
+                ws.send(JSON.stringify({
+                    action: cmd,
+                    value,
+                    name
+                }));
+            }
+            break;
+    }
+    rl.prompt();
+})
+rl.on('close', () => {
+    console.log('goodbye!');
+    process.exit(0);
 });
