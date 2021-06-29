@@ -47,6 +47,11 @@ export const plc_config_JSON = {
 					"type": "BOOL",
 					"value": false, //初始值
 				},
+				{
+					"name": "datetime",
+					"type": "DT",
+					"value": "DT#2021-6-30-0:0:0.0", //初始值					
+				},
 				{ // 变量 temperature
 					"name": "temperature",
 					"type": "REAL",

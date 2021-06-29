@@ -1,14 +1,12 @@
 {
-	"name": "goovplc",
+	"name": "s7vplc",
 	"version": "0.6.1",
 	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
 	"type": "module",
 	"main": "./index.js",
 	"exports": {
-		".": "./index.js",
-		"./lib": "./lib/index.js",
-		"./dist": "./dist/app.js",
-		"./dist/": "./dist/"
+		".": "./lib/index.js",
+		"./wscli": "./lib/wscli.js"
 	},
 	"engines": {
 		"node": ">=14.8.0"
@@ -18,7 +16,7 @@
 		"@rollup/plugin-node-resolve": "^13.0.0",
 		"faye-websocket": "^0.11.4",
 		"node-snap7": "^1.0.6",
-		"rollup": "^2.51.1",
+		"rollup": "^2.52.3",
 		"rollup-plugin-copy": "^3.4.0"
 	},
 	"directories": {
