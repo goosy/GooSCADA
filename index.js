@@ -5,26 +5,39 @@
 
 import { plc_config_JSON } from "./conf/config.js";
 import { connections } from "./conf/connections.js";
-import { S7PLC, S7TcpClient, S7WSServer } from "./src/index.js";
+import { S7PLC, createS7Connection, S7WSServer } from "./src/index.js";
 
-// create a VPLC server
-const plc = new S7PLC(plc_config_JSON);
-plc.on("event", (event) => {
-    console.log(plc.EventText(event));
+// ===== create a VPLC server
+const s7plc = new S7PLC(plc_config_JSON);
+s7plc.on("event", (event) => {
+    console.log(s7plc.EventText(event));
 });
-plc.on("read", (tagObj, buffer) => {
+s7plc.on("read", (tagObj, buffer) => {
     console.log("read ret: ", buffer);
 })
-plc.on("write", (tagObj, buffer) => {
+s7plc.on("write", (tagObj, buffer) => {
     console.log("write: ", buffer);
 })
-plc.start_serve();
+s7plc.start_serve();
 
-/* 创建TCP连接 */
-const conn_control = connections[0];
-const send = plc.get_mem(...conn_control.send).buffer;
-const receive = plc.get_mem(...conn_control.receive).buffer;
-const client = new S7TcpClient(send, receive);
+// ===== create S7TcpClient to send and receive S7PLC data
+const conn_options = connections[0];
+const send = s7plc.get_mem(...conn_options.send).buffer;
+const receive = s7plc.get_mem(...conn_options.receive).buffer;
+const client = createS7Connection(send, receive, conn_options);
+let timeout = { _destroyed: true },
+    delay = 4000;
+function delay_connect() {
+    if (timeout._destroyed) timeout = setTimeout(() => {
+        client.connect(conn_options);
+        console.log("try connect to ", conn_options.host, conn_options.port);
+    }, delay);
+    delay = delay < 300000 ? delay * 2 : 300000;
+}
+client.on('connect', () => {
+    console.log("connect the ESD-JS-AS!", conn_options.name);
+    client.cyclic_send(1000);
+})
 client.on('data', (data) => {
     // 连接成功，接收 data
     client.receive(data);
@@ -33,23 +46,16 @@ client.on("end", function () {
     console.log("data end");
 })
 client.on("error", function (err) {
-    console.log(err);
+    console.log("can't connect.");
+    delay_connect();
     this.stop_send();
-    setTimeout(try_connect, 5000);
 })
 client.on("close", function () {
     console.log("connection closed");
     this.stop_send();
     client.destroy();
-    setTimeout(try_connect, 5000);
+    delay_connect();
 })
 
-function try_connect() {
-    client.connect(conn_control.port, conn_control.host, () => {
-        console.log("connect the ESD-JS-AS!");
-        client.cyclic_send(1000);
-    });
-}
-try_connect();
-
-S7WSServer({ s7plc: plc });
+// ===== create WebSocket Server for JSON serve
+S7WSServer({ s7plc });
