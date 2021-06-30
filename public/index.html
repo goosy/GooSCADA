@@ -11,7 +11,7 @@
             <select name="host_list" id="host_list" v-model="ip" @change="changeWS">
                 <option v-for="host in host_list" :value="host.id">{{host.name}}</option>
             </select><span>IP:{{ip}}</span>
-            <span>通信状态：{{wsstate()}}</span>
+            <span>通信状态：{{wsstate}}</span>
         </P>
         <p>
             <label for="DBName">数据块符号</label>
@@ -30,7 +30,7 @@
     </div>
 </body>
 <script type="text/javascript">
-    function sub_ws_var(item) {
+    function sub_ws_var(ws, item) {
         name = `${vm.DBName}/${item.name}`;
         ws.send(JSON.stringify({
             action: "subscribe",
@@ -38,7 +38,7 @@
         }));
     }
 
-    function get_ws_var(item) {
+    function get_ws_var(ws, item) {
         name = `${vm.DBName}/${item.name}`;
         ws.send(JSON.stringify({
             action: "read",
@@ -46,7 +46,7 @@
         }));
     }
 
-    function set_ws_var(item) {
+    function set_ws_var(ws, item) {
         const name = `${vm.DBName}/${item.name}`;
         const value = Number(item.newValue);
         ws.send(JSON.stringify({
@@ -56,7 +56,6 @@
         }));
     }
 
-    let ws;
     const goonode = Object.entries({
         nodeID: 0,
         workOK: false,
@@ -75,7 +74,8 @@
         is_changing: false,
         newValue: value,
     }));
-    ip = '';
+    let ws;
+    let ip = '';
 
     const vm = new Vue({
         el: '#app',
@@ -86,39 +86,40 @@
                 },
                 {
                     name: "孤岛孤永出口",
-                    id: "192.168.37.18:8080"
+                    id: "192.168.37.18:8078"
                 },
                 {
                     name: "永安孤永入口",
-                    id: "192.168.38.17:8080"
+                    id: "192.168.38.17:8087"
                 },
                 {
                     name: "永安孤永出口",
-                    id: "192.168.38.11:8080"
+                    id: "192.168.38.11:8081"
                 },
                 {
                     name: "东营孤永入口",
-                    id: "192.168.31.18:8080"
+                    id: "192.168.31.18:8018"
                 },
                 {
                     name: "孤岛孤罗出口",
-                    id: "192.168.37.19:8080"
+                    id: "192.168.37.19:8079"
                 },
                 {
                     name: "集贤孤罗入口",
-                    id: "192.168.39.17:8080"
+                    id: "192.168.39.17:8097"
                 },
                 {
                     name: "集贤孤罗出口",
-                    id: "192.168.39.11:8080"
+                    id: "192.168.39.11:8091"
                 },
                 {
                     name: "东营孤罗入口",
-                    id: "192.168.31.19:8080"
+                    id: "192.168.31.19:8019"
                 },
             ],
             ip,
             DBName: "nodeGD8",
+            ws_state_id: -1,
             goonode,
         },
         created() {
@@ -130,23 +131,8 @@
                 item.is_changing = true;
             },
             change: (item) => {
-                set_ws_var(item);
+                set_ws_var(ws, item);
                 item.is_changing = false;
-            },
-            wsstate() {
-                if(!ws?.readyState)return "未初始化";
-                switch (ws.readyState) {
-                    case ws.CONNECTING:
-                        return "正在连接";
-                    case ws.CLOSING:
-                        return "正在关闭";
-                    case ws.CLOSED:
-                        return "已关闭";
-                    case ws.OPEN:
-                        return "已打开";
-                    default:
-                        return "未初始化";
-                }
             },
             changeWS() {
                 ws?.close();
@@ -156,8 +142,9 @@
                 ws.onopen = evt => {
                     console.log("Connection open ...");
                     for (const item of this.goonode) {
-                        sub_ws_var(item);
+                        sub_ws_var(ws, item);
                     };
+                    this.ws_state_id = ws.readyState;
                 };
 
                 ws.onmessage = evt => {
@@ -174,8 +161,27 @@
 
                 ws.onclose = evt => {
                     console.log("Connection closed.");
+                    this.ws_state_id = ws.readyState;
                 };
             }
+        },
+        computed: {
+            wsstate() {
+                switch (this.ws_state_id) {
+                    case -1:
+                        return "未初始化";
+                    case ws.CONNECTING:
+                        return "正在连接";
+                    case ws.CLOSING:
+                        return "正在关闭";
+                    case ws.CLOSED:
+                        return "已关闭";
+                    case ws.OPEN:
+                        return "已打开";
+                    default:
+                        return "未初始化";
+                }
+            },
         }
     })
 </script>
