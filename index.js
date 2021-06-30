@@ -58,4 +58,5 @@ client.on("close", function () {
 })
 
 // ===== create WebSocket Server for JSON serve
-S7WSServer({ s7plc });
+const port = plc_config_JSON.wsport;
+S7WSServer({ port, s7plc });

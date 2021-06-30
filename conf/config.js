@@ -1,5 +1,6 @@
 export const plc_config_JSON = {
-	"host": "127.0.0.1", //S7服务地址
+	"host": "127.0.0.1", //S7服务主机地址
+	"wsport": "8078", //websocket服务端口
 	"areas": [ // 可以设置多个数据区
 		{ //数据区 1 开始
 			"name": "nodeGD8",
