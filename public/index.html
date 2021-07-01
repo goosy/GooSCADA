@@ -1,9 +1,8 @@
 <html>
 
 <head>
-    <script src="./vue.js"></script>
+    <!-- <script src="./vue.js"></script> -->
 </head>
-
 <body>
     <div id="app">
         <P>
@@ -13,21 +12,22 @@
             </select><span>IP:{{ip}}</span>
             <span>通信状态：{{wsstate}}</span>
         </P>
-        <p>
+        <div>
             <label for="DBName">发送数据块符号</label>
             <input type="text" id="DBName" v-model="DBName" />
-        </p>
-        <div><label for="DBTags">数据块内部变量</label>
-        <ul id="DBTags">
-            <li v-for="item in goonode">
-                <label :for="item.name">{{item.name}}</label>
-                <span :id="item.name">{{item.value}}</span>
-                <input type="text" :id="'input'+item.name" v-model="item.newValue" v-show="item.is_changing" />
-                <button @click="prechange(item)" v-show="!item.is_changing">修改</button>
-                <button @click="change(item)" v-show="item.is_changing">完成</button>
-            </li>
-        </ul></div>
+            <label for="DBTags"> 内部变量：</label>
+            <ul id="DBTags">
+                <li v-for="item in goonode">
+                    <label :for="item.name">{{item.name}}</label>
+                    <span :id="item.name">{{item.value}}</span>
+                    <input type="text" :id="'input'+item.name" v-model="item.newValue" v-show="item.is_changing" />
+                    <button @click="prechange(item)" v-show="!item.is_changing">修改</button>
+                    <button @click="change(item)" v-show="item.is_changing">完成</button>
+                </li>
+            </ul>
+        </div>
     </div>
 </body>
 <script type="text/javascript" src="index.js"></script>
+
 </html>

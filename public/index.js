@@ -1,4 +1,4 @@
-// import {  } from './Vue.js';
+import Vue from './vue.esm.browser.js';
 
 function sub_ws_var(ws, item) {
     name = `${vm.DBName}/${item.name}`;
@@ -8,13 +8,13 @@ function sub_ws_var(ws, item) {
     }));
 }
 
-function get_ws_var(ws, item) {
-    name = `${vm.DBName}/${item.name}`;
-    ws.send(JSON.stringify({
-        action: "read",
-        name,
-    }));
-}
+// function get_ws_var(ws, item) {
+//     name = `${vm.DBName}/${item.name}`;
+//     ws.send(JSON.stringify({
+//         action: "read",
+//         name,
+//     }));
+// }
 
 function set_ws_var(ws, item) {
     const name = `${vm.DBName}/${item.name}`;
