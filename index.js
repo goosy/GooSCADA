@@ -57,7 +57,8 @@ client.on("close", function () {
     delay_connect();
 })
 
+const port = plc_config_JSON.port;
 // ===== create HTTP Server for HMI serve
-createHttpServer(plc_config_JSON.port, "0.0.0.0")
+createHttpServer(port, "0.0.0.0")
 // ===== create WebSocket Server for JSON serve
-S7WSServer({ s7plc });
+S7WSServer({ port, s7plc });

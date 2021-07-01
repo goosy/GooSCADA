@@ -1,5 +1,5 @@
 export const plc_config_JSON = {
-	"host": "127.0.0.1", //S7服务地址
+	"host": "127.0.0.1", //S7 http websocket 服务主机地址
 	"port": 8078, //http and ws serve port
 	"areas": [ // 可以设置多个数据区
 		{ //数据区 1 开始
