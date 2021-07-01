@@ -5,7 +5,7 @@
 
 import { plc_config_JSON } from "./conf/config.js";
 import { connections } from "./conf/connections.js";
-import { S7PLC, createS7Connection, createHttpServer, S7WSServer } from "./src/index.js";
+import { S7PLC, createS7Connection, createHttpServer, attachWSServer } from "./src/index.js";
 
 // ===== create a VPLC server
 const s7plc = new S7PLC(plc_config_JSON);
@@ -20,11 +20,23 @@ s7plc.on("write", (tagObj, buffer) => {
 })
 s7plc.start_serve();
 
+// ===== create HTTP Server for HMI serve and create WebSocket Server for JSON serve
+const host = "0.0.0.0"; // plc_config_JSON.host;
+const port = plc_config_JSON.port;
+const httpserver = createHttpServer();
+attachWSServer(httpserver, s7plc);
+httpserver.listen(port, host, () => {
+    console.log(`HTTP Server is running on http://${host}:${port}`);
+});
+
 // ===== create S7TcpClient to send and receive S7PLC data
 const conn_options = connections[0];
-const send = s7plc.get_mem(...conn_options.send).buffer;
-const receive = s7plc.get_mem(...conn_options.receive).buffer;
-const client = createS7Connection(send, receive, conn_options);
+const client = createS7Connection(
+    s7plc.get_mem(...conn_options.send).buffer,
+    s7plc.get_mem(...conn_options.receive).buffer,
+    conn_options
+);
+
 let timeout = { _destroyed: true },
     delay = 4000;
 function delay_connect() {
@@ -56,9 +68,3 @@ client.on("close", function () {
     client.destroy();
     delay_connect();
 })
-
-const port = plc_config_JSON.port;
-// ===== create HTTP Server for HMI serve
-createHttpServer(port, "0.0.0.0")
-// ===== create WebSocket Server for JSON serve
-S7WSServer({ port, s7plc });

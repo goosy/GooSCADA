@@ -1,5 +1,4 @@
 import WebSocket from "faye-websocket";
-import { createServer } from 'http';
 import { S7PLC } from "../S7PLC.js";
 import { ElementaryTag } from "../S7Memory/ElementaryTag.js";
 
@@ -70,14 +69,11 @@ const interval = setInterval(() => {
 }, 30000);
 /**
  * create a WebScoket Server
- * @todo 增加变量订阅，变量改变时主动发送新值  {action:"update", name, value}
- * @param {Object} options
- * @param {number} options.port
- * @param {S7PLC} options.s7plc
+ * @param {import('http').Server} httpserver
+ * @param {S7PLC} s7plc
  */
-export function S7WSServer({ port = 8080, s7plc } = { port: 8080 }) {
-    const server = createServer();
-    server.on('upgrade', function (request, socket, body) {
+export function attachWSServer(httpserver, s7plc) {
+    httpserver.on('upgrade', function (request, socket, body) {
         if (WebSocket.isWebSocket(request)) {
             let ws = new WebSocket(request, socket, body);
             ws.isAlive = true;
@@ -92,8 +88,9 @@ export function S7WSServer({ port = 8080, s7plc } = { port: 8080 }) {
 
         }
     });
-    server.on("close", () => {
+    httpserver.on("close", () => {
         clearInterval(interval);
     })
-    server.listen(port);
+    httpserver.wsclients = clients;
+    console.log("WebSocket server started.")
 }

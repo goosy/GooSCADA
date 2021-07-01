@@ -68,6 +68,10 @@ rl.on('line', (line) => {
         case 'close':
             websocket?.close();
             break;
+        case 'ws':
+            if (websocket?.alive) console.log(websocket?.url, websocket?.statusCode);
+            else console.log("ws isnt alive.");
+            break;
         case 'read':
         case 'subscribe':
             [cmd, ...namepath] = line;
