@@ -5,7 +5,7 @@
 
 import { plc_config_JSON } from "./conf/config.js";
 import { connections } from "./conf/connections.js";
-import { S7PLC, createS7Connection, S7WSServer } from "./src/index.js";
+import { S7PLC, createS7Connection, createHttpServer, S7WSServer } from "./src/index.js";
 
 // ===== create a VPLC server
 const s7plc = new S7PLC(plc_config_JSON);
@@ -57,5 +57,7 @@ client.on("close", function () {
     delay_connect();
 })
 
+// ===== create HTTP Server for HMI serve
+createHttpServer(plc_config_JSON.port, "0.0.0.0")
 // ===== create WebSocket Server for JSON serve
 S7WSServer({ s7plc });

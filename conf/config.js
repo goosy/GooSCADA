@@ -1,5 +1,6 @@
 export const plc_config_JSON = {
 	"host": "127.0.0.1", //S7服务地址
+	"port": 8078, //http and ws serve port
 	"areas": [ // 可以设置多个数据区
 		{ //数据区 1 开始
 			"name": "nodeGD8",
@@ -15,12 +16,12 @@ export const plc_config_JSON = {
 				{ // workOK
 					"name": "workOK",
 					"type": "BOOL",
-					"value": false, //初始值
+					"value": true, //初始值
 				},
 				{ // commOK
 					"name": "commOK",
 					"type": "BOOL",
-					"value": false, //初始值
+					"value": true, //初始值
 				},
 				{ // pump_run_1
 					"name": "pump_run_1",
