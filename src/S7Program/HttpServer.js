@@ -39,6 +39,7 @@ async function requestListener(request, response) {
 
     request.on('end', async function () {
         body = querystring.parse(body);
+        /** @type {string} */
         const pathname =  request.url;
         console.log(request.mothod, pathname);
         switch (pathname) {
@@ -85,7 +86,9 @@ async function requestListener(request, response) {
                 });
                 break;
             default: // 处理静态文件
-                const filename = staticpath + pathname;
+                let filename;
+                if(pathname.startsWith('/conf/')) filename = '.' + pathname;
+                else filename = staticpath + pathname;
                 // console.log(filename);
                 const type = getFileType(filename.substring(filename.lastIndexOf('.') + 1));
                 try {

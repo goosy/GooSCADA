@@ -1,7 +1,67 @@
 import Vue from './vue.esm.browser.js';
+import { plc_config_JSON } from '../conf/config.js'
 
-function sub_ws_var(ws, item) {
-    name = `${vm.DBName}/${item.name}`;
+let ws;
+function createWS(url) {
+    ws = new WebSocket(url);
+
+    ws.onopen = evt => {
+        console.log("Connection open ...");
+        // 暂不刷新DB及描述
+        // ws_get(ws, "getSendDBName");
+        // ws_get(ws, "getReceiveDBName");
+        // ws_get(ws, "getDesc"); 
+        vm.sendDB.tags.forEach(tag => ws_sub_var(ws, vm.sendDB.name, tag));
+        vm.recvDB.tags.forEach(tag => ws_sub_var(ws, vm.recvDB.name, tag));
+        vm.ws_state_id = ws.readyState;
+    };
+
+    ws.onmessage = evt => {
+        console.log("Received Message: " + evt.data);
+        let ret = JSON.parse(evt.data);
+        if (ret?.error) return;
+        switch (ret.action) {
+            case "getSendDBNameResponse":
+                vm.sendDBName = ret.value;
+                break;
+            case "getReceiveDBNameResponse":
+                vm.recvDBName = ret.value;
+                break;
+            case "getDescResponse":
+                vm.hostdesc = ret.value;
+                break;
+            case "readResponse":
+            case "writeResponse":
+            case "subscribeResponse":
+                const [dbname, tagname] = ret.name.split('/');
+                let db;
+                if (dbname == vm.sendDB.name) db = vm.sendDB;
+                else if (dbname == vm.recvDB.name) db = vm.recvDB;
+                else break;
+                const tag = db.tags.find(tag => tag.name == tagname)
+                tag.value = tag.newValue = ret.value;
+                break;
+            default:
+                "cant recognize";
+        }
+
+    };
+
+    ws.onclose = evt => {
+        console.log("Connection closed.");
+        vm.ws_state_id = ws.readyState;
+    };
+}
+
+function ws_get(ws, cmd) {
+    if (["getSendDBName", "getReceiveDBName", "getDesc"].indexOf(cmd) == -1) return;
+    ws.send(JSON.stringify({
+        action: cmd,
+    }));
+}
+
+function ws_sub_var(ws, db, tag) {
+    name = `${db}/${tag.name}`;
     ws.send(JSON.stringify({
         action: "subscribe",
         name,
@@ -16,9 +76,9 @@ function sub_ws_var(ws, item) {
 //     }));
 // }
 
-function set_ws_var(ws, item) {
-    const name = `${vm.DBName}/${item.name}`;
-    const value = Number(item.newValue);
+function ws_set_var(ws, db, tag) {
+    const name = `${db}/${tag.name}`;
+    const value = Number(tag.newValue);
     ws.send(JSON.stringify({
         action: "write",
         name,
@@ -26,115 +86,36 @@ function set_ws_var(ws, item) {
     }));
 }
 
-const goonode = Object.entries({
-    nodeID: 0,
-    workOK: false,
-    commOK: false,
-    pump_run_1: false,
-    pump_run_2: false,
-    pump_run_3: false,
-    pump_run_4: false,
-    pump_run_5: false,
-    temperature: 0.0,
-    pressure: 0.0,
-    flow: 0.0,
-}).map(([name, value]) => ({
-    name,
-    value,
-    is_changing: false,
-    newValue: value,
-}));
-let ws;
-let ip = '';
+function convert(tags) {
+    return tags.map(tag => ({ is_changing: false, newValue: tag.value, ...tag }));
+}
 
 const vm = new Vue({
     el: '#app',
     data: {
-        host_list: [{
-            name: "本机",
-            id: "127.0.0.1:8080",
-            dbname: "nodeGD8"
-        }, {
-            name: "孤岛孤永出口",
-            id: "192.168.37.18:8078",
-            dbname: "nodeGD8"
-        }, {
-            name: "永安孤永入口",
-            id: "192.168.38.17:8087",
-            dbname: "nodeYA7"
-        }, {
-            name: "永安孤永出口",
-            id: "192.168.38.11:8081",
-            dbname: "nodeYA1"
-        }, {
-            name: "东营孤永入口",
-            id: "192.168.31.18:8018",
-            dbname: "nodeDY8"
-        }, {
-            name: "孤岛孤罗出口",
-            id: "192.168.37.19:8079",
-            dbname: "nodeGD9"
-        }, {
-            name: "集贤孤罗入口",
-            id: "192.168.39.17:8097",
-            dbname: "nodeJX7"
-        }, {
-            name: "集贤孤罗出口",
-            id: "192.168.39.11:8091",
-            dbname: "nodeJX1"
-        }, {
-            name: "东营孤罗入口",
-            id: "192.168.31.19:8019",
-            dbname: "nodeDY9"
+        hostdesc: plc_config_JSON.description,
+        host: plc_config_JSON.host + ':' + plc_config_JSON.port,
+        sendDB: {
+            name: plc_config_JSON.areas[0].name,
+            tags: convert(plc_config_JSON.areas[0].tags),
         },
-        ],
-        ip,
-        DBName: "nodeGD8",
+        recvDB: {
+            name: plc_config_JSON.areas[1].name,
+            tags: convert(plc_config_JSON.areas[1].tags),
+        },
         ws_state_id: -1,
-        goonode,
     },
     created() {
-        this.ip = this.host_list[0].id;
-        this.changeWS();
+        createWS(`ws://${this.host}`);
     },
     methods: {
-        prechange: (item) => {
-            item.is_changing = true;
+        prechange: (tag) => {
+            tag.is_changing = true;
         },
-        change: (item) => {
-            set_ws_var(ws, item);
-            item.is_changing = false;
+        change: (db, tag) => {
+            ws_set_var(ws, db, tag);
+            tag.is_changing = false;
         },
-        changeWS() {
-            ws?.close();
-            ws = new WebSocket(`ws://${this.ip}`);
-            this.DBName = this.host_list.find(item => item.id == this.ip).dbname;
-
-            ws.onopen = evt => {
-                console.log("Connection open ...");
-                for (const item of this.goonode) {
-                    sub_ws_var(ws, item);
-                };
-                this.ws_state_id = ws.readyState;
-            };
-
-            ws.onmessage = evt => {
-                console.log("Received Message: " + evt.data);
-                let ret = JSON.parse(evt.data);
-                if (ret?.error) return;
-                for (const item of this.goonode) {
-                    if (item.name == ret.name.replace(`${this.DBName}/`, "")) {
-                        item.value = item.newValue = ret.value;
-                        return;
-                    }
-                }
-            };
-
-            ws.onclose = evt => {
-                console.log("Connection closed.");
-                this.ws_state_id = ws.readyState;
-            };
-        }
     },
     computed: {
         wsstate() {
