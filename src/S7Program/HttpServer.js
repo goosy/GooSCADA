@@ -28,6 +28,7 @@ function getFileType(endTag) {
     }
     return type;
 }
+const staticpath = "./public";
 
 async function requestListener(request, response) {
 
@@ -35,15 +36,15 @@ async function requestListener(request, response) {
     request.on('data', function (chunk) {
         body += chunk;
     });
-    const staticpath = "./public/"
 
     request.on('end', async function () {
         body = querystring.parse(body);
-        const url = new URL(request.url, `http://${host}`);
-        switch (url.pathname) {
+        const pathname =  request.url;
+        console.log(request.mothod, pathname);
+        switch (pathname) {
             case '' || '/':
                 try {
-                    const content = await readFile(staticpath + 'index.html');
+                    const content = await readFile(staticpath + '/index.html');
                     response.writeHead(200, {
                         'Content-Type': 'text/html; charset=UTF-8'
                     });
@@ -84,9 +85,9 @@ async function requestListener(request, response) {
                 });
                 break;
             default: // 处理静态文件
-                var filename = staticpath + url.pathname.substring(1);
-                console.log(filename);
-                var type = getFileType(filename.substring(filename.lastIndexOf('.') + 1));
+                const filename = staticpath + pathname;
+                // console.log(filename);
+                const type = getFileType(filename.substring(filename.lastIndexOf('.') + 1));
                 try {
                     // const controller = new AbortController();
                     // const { signal } = controller;
