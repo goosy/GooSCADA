@@ -1,7 +1,6 @@
 import { createServer } from 'http';
 import { readFile } from 'fs/promises';
 import querystring from 'querystring';
-import { URL } from 'url';
 
 function getFileType(endTag) {
     var type = null;

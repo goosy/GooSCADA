@@ -1,5 +1,6 @@
 import Vue from './vue.esm.browser.js';
 import { plc_config_JSON } from '../conf/config.js'
+import { connections } from "../conf/connections.js";
 
 let ws;
 function createWS(url) {
@@ -89,12 +90,13 @@ function ws_set_var(ws, db, tag) {
 function convert(tags) {
     return tags.map(tag => ({ is_changing: false, newValue: tag.value, ...tag }));
 }
-
+const host = connections[0].localAddress + ':' + plc_config_JSON.port;
+const hostdesc = plc_config_JSON.description;
 const vm = new Vue({
     el: '#app',
     data: {
-        hostdesc: plc_config_JSON.description,
-        host: plc_config_JSON.host + ':' + plc_config_JSON.port,
+        hostdesc,
+        host,
         sendDB: {
             name: plc_config_JSON.areas[0].name,
             tags: convert(plc_config_JSON.areas[0].tags),

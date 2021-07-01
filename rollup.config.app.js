@@ -5,6 +5,7 @@ import copy from 'rollup-plugin-copy'
 const external = [
     'crypto',
     'events',
+    'fs/promises',
     'http',
     'https',
     'module',
@@ -31,9 +32,11 @@ export default {
         copy({
             targets: [
                 { src: 'node_modules/node-snap7/build/Release/node_snap7.node', dest: 'dist' },
-                { src: 'conf', dest: 'dist' },
-                { src: 'lib/wscli.js', dest: 'dist' },
-                { src: 'package.json', dest: 'dist' },
+                { src: 'conf', dest: 'dist/' },
+                { src: 'lib/wscli.js', dest: 'dist/' },
+                { src: 'package.json', dest: 'dist/' },
+                { src: 'public/index.html', dest: 'dist/public/' },
+                { src: 'public/bundler.js', dest: 'dist/public/' },
             ]
         }),
     ],

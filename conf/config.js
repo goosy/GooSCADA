@@ -1,5 +1,5 @@
 export const plc_config_JSON = {
-	"host": "127.0.0.1", //S7 http websocket 服务主机地址
+	"host": "0.0.0.0", //S7 http websocket 服务主机地址
 	"port": 8078, //http and ws serve port
 	"description": "孤岛站孤永线出口",
 	"areas": [ // 可以设置多个数据区
@@ -82,28 +82,23 @@ export const plc_config_JSON = {
 					"name": "nodeID",
 					"type": "INT",
 					"value": 8078, //初始值
-				},
-				{ // stopPumps
+				}, { // stopPumps
 					"name": "stopPumps",
 					"type": "BOOL",
 					"value": false, //初始值
-				},
-				{ // stopHeaters
+				}, { // stopHeaters
 					"name": "stopHeaters",
 					"type": "BOOL",
 					"value": false, //初始值
-				},
-				{ // warning
+				}, { // warning
 					"name": "warning",
 					"type": "BOOL",
 					"value": false, //初始值
-				},
-				{ // resetWarning
+				}, { // resetWarning
 					"name": "resetWarning",
 					"type": "BOOL",
 					"value": false, //初始值
-				},
-				{ // reserve
+				}, { // reserve
 					"name": "reserve",
 					"type": "ARRAY",
 					"element": {

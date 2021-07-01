@@ -6,6 +6,7 @@ import copy from 'rollup-plugin-copy'
 const external = [
     'crypto',
     'events',
+    'fs/promises',
     'http',
     'https',
     'module',
@@ -18,7 +19,15 @@ const external = [
     './conf/config.js',
     './conf/connections.js'
 ]
-export default [{
+export default [{ // web
+    input: './public/index.js',
+    output: {
+        file: './public/bundler.js',
+        format: 'es',
+    },
+    plugins: [],
+    external: ['../conf/config.js', '../conf/connections.js'],
+}, { // main lib
     input: './src/wscli.js',
     output: {
         file: pkg.exports['./wscli'],
@@ -31,7 +40,7 @@ export default [{
         commonjs(), // converts XX to ES modules
     ],
     external,
-}, {
+}, { // main lib
     input: './src/index.js',
     output: {
         file: pkg.exports['.'],
