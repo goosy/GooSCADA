@@ -10,7 +10,7 @@ export const connections = [
 		"family": 4,                      // IP 栈版本。默认 4
 		"type": "TCP",                    // 通信协议类型
 		"active": true,                   // 连接1是否为TCP客户端
-		"send": ["nodeGD8"],              // 定义发送区在 vplc中的对应结构位置，[区域名，变量名1, 变量名2, ...]
+		"send": ["nodes"],              // 定义发送区在 vplc中的对应结构位置，[区域名，变量名1, 变量名2, ...]
 		"receive": ["commands_GD8"],      // 定义接收区在 vplc中的对应结构位置，[区域名，变量名1, 变量名2, ...]
 	}, //连接 0 结束
 ];

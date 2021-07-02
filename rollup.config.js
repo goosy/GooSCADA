@@ -26,7 +26,6 @@ export default [{ // web
         format: 'es',
     },
     plugins: [],
-    external: ['../conf/config.js', '../conf/connections.js'],
 }, { // main lib
     input: './src/wscli.js',
     output: {

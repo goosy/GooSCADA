@@ -2,6 +2,31 @@ import { createServer } from 'http';
 import { readFile } from 'fs/promises';
 import querystring from 'querystring';
 
+// for realtime data
+import { plc_config_JSON } from '../../conf/config.js'
+import { connections } from "../../conf/connections.js";
+function getConf() {
+    const sendDB = plc_config_JSON.areas[0];
+    const recvDB = plc_config_JSON.areas[1];
+    function addProp(tag) {
+        if (tag.hasOwnProperty("value")) {
+            tag.is_changing = false;
+            tag.newValue = tag.value;
+        } else if (tag.hasOwnProperty("tags")) {
+            tag.tags.forEach(addProp)
+        }
+    }
+    sendDB.tags.forEach(addProp);
+    recvDB.tags.forEach(addProp);
+    return `// auto gen
+const host = '${connections[0].localAddress + ":" + plc_config_JSON.port}';
+const hostdesc = '${plc_config_JSON.description}';
+const sendDB = ${JSON.stringify(sendDB)};
+const recvDB = ${JSON.stringify(recvDB)};
+
+`;
+}
+
 function getFileType(endTag) {
     var type = null;
     switch (endTag) {
@@ -39,7 +64,7 @@ async function requestListener(request, response) {
     request.on('end', async function () {
         body = querystring.parse(body);
         /** @type {string} */
-        const pathname =  request.url;
+        const pathname = request.url;
         console.log(request.mothod, pathname);
         switch (pathname) {
             case '' || '/':
@@ -86,7 +111,7 @@ async function requestListener(request, response) {
                 break;
             default: // 处理静态文件
                 let filename;
-                if(pathname.startsWith('/conf/')) filename = '.' + pathname;
+                if (pathname.startsWith('/conf/')) filename = '.' + pathname;
                 else filename = staticpath + pathname;
                 // console.log(filename);
                 const type = getFileType(filename.substring(filename.lastIndexOf('.') + 1));
@@ -97,9 +122,11 @@ async function requestListener(request, response) {
                     // Abort the request before the promise settles.
                     // controller.abort();
                     const content = await promise;
+
                     response.writeHead(200, {
                         'Content-Type': type
                     });
+                    if (filename === './public/bundler.js') response.write(getConf());
                     response.write(content);
                     response.end();
                 } catch (err) {

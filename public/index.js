@@ -1,6 +1,4 @@
-import Vue from './vue.esm.browser.js';
-import { plc_config_JSON } from '../conf/config.js'
-import { connections } from "../conf/connections.js";
+import { createApp } from './vue.esm-browser.js';
 
 let ws;
 function createWS(url) {
@@ -87,37 +85,28 @@ function ws_set_var(ws, db, tag) {
     }));
 }
 
-function convert(tags) {
-    return tags.map(tag => ({ is_changing: false, newValue: tag.value, ...tag }));
-}
-const host = connections[0].localAddress + ':' + plc_config_JSON.port;
-const hostdesc = plc_config_JSON.description;
-const vm = new Vue({
-    el: '#app',
-    data: {
+const RootComponent = {
+    // el: '#app',
+    data: () => ({
         hostdesc,
         host,
-        sendDB: {
-            name: plc_config_JSON.areas[0].name,
-            tags: convert(plc_config_JSON.areas[0].tags),
-        },
-        recvDB: {
-            name: plc_config_JSON.areas[1].name,
-            tags: convert(plc_config_JSON.areas[1].tags),
-        },
+        sendDB,
+        recvDB,
         ws_state_id: -1,
-    },
+    }),
     created() {
         createWS(`ws://${this.host}`);
     },
-    methods: {
-        prechange: (tag) => {
-            tag.is_changing = true;
-        },
-        change: (db, tag) => {
-            ws_set_var(ws, db, tag);
-            tag.is_changing = false;
-        },
+    methods() {
+        return {
+            prechange: (tag) => {
+                tag.is_changing = true;
+            },
+            change: (db, tag) => {
+                ws_set_var(ws, db, tag);
+                tag.is_changing = false;
+            },
+        };
     },
     computed: {
         wsstate() {
@@ -137,4 +126,5 @@ const vm = new Vue({
             }
         },
     }
-})
+};
+const vm = createApp(RootComponent).mount('#app');
