@@ -23,9 +23,9 @@ const external = [
     './conf/connections.js',
 ]
 export default {
-    input: './index.js',
+    input: './example/index.js',
     output: {
-        file: './dist/app.js',
+        file:'./dist/app.js',
         format: 'es',
     },
     plugins: [

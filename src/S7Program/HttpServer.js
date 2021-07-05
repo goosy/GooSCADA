@@ -2,31 +2,6 @@ import { createServer } from 'http';
 import { readFile } from 'fs/promises';
 import querystring from 'querystring';
 
-// for realtime data
-import { plc_config_JSON } from '../../conf/config.js'
-import { connections } from "../../conf/connections.js";
-function getConf() {
-    const sendDB = plc_config_JSON.areas[0];
-    const recvDB = plc_config_JSON.areas[1];
-    function addProp(tag) {
-        if (tag.hasOwnProperty("value")) {
-            tag.is_changing = false;
-            tag.newValue = tag.value;
-        } else if (tag.hasOwnProperty("tags")) {
-            tag.tags.forEach(addProp)
-        }
-    }
-    sendDB.tags.forEach(addProp);
-    recvDB.tags.forEach(addProp);
-    return `// auto gen
-const host = '${connections[0].localAddress + ":" + plc_config_JSON.port}';
-const hostdesc = '${plc_config_JSON.description}';
-const sendDB = ${JSON.stringify(sendDB)};
-const recvDB = ${JSON.stringify(recvDB)};
-export {host, hostdesc, sendDB, recvDB};
-`;
-}
-
 function getFileType(endTag) {
     var type = null;
     switch (endTag) {
@@ -54,8 +29,7 @@ function getFileType(endTag) {
 }
 const staticpath = "./public";
 
-async function requestListener(request, response) {
-
+async function requestListener(request, response, caseOptions) {
     let body = "";
     request.on('data', function (chunk) {
         body += chunk;
@@ -66,6 +40,10 @@ async function requestListener(request, response) {
         /** @type {string} */
         const pathname = request.url;
         console.log(request.mothod, pathname);
+        if (caseOptions.hasOwnProperty(pathname)) {
+            await caseOptions[pathname](body, response);
+            return;
+        }
         switch (pathname) {
             case '' || '/':
                 try {
@@ -109,13 +87,6 @@ async function requestListener(request, response) {
                     response.end();
                 });
                 break;
-            case '/data.js': // 动态生成配置
-                response.writeHead(200, {
-                    'Content-Type': 'application/javascript; charset="UTF-8"'
-                });
-                response.write(getConf());
-                response.end();
-                break;
             default: // 处理静态文件
                 let filename;
                 if (pathname.startsWith('/conf/')) filename = '.' + pathname;
@@ -149,7 +120,6 @@ async function requestListener(request, response) {
     });
 }
 
-export function createHttpServer() {
-    const server = createServer(requestListener);
-    return server;
+export function createHttpServer(caseOptions) {
+    return createServer((request, response) => requestListener(request, response, caseOptions));
 }
