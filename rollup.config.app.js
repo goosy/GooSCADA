@@ -15,13 +15,17 @@ const external = [
     'util',
     'url',
     'zlib',
+    '../../conf/config.js',
+    '../../conf/connections.js',
+    '../conf/config.js',
+    '../conf/connections.js',
     './conf/config.js',
-    './conf/connections.js'
+    './conf/connections.js',
 ]
 export default {
     input: './index.js',
     output: {
-        file:'./dist/app.js',
+        file: './dist/app.js',
         format: 'es',
     },
     plugins: [

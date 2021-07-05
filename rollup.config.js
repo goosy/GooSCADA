@@ -16,9 +16,9 @@ const external = [
     'util',
     'url',
     'zlib',
-    './conf/config.js',
-    './conf/connections.js'
-]
+    '../../conf/config.js',
+    '../../conf/connections.js',
+];
 export default [{ // WSCLI
     input: './src/wscli.js',
     output: {

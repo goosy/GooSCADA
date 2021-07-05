@@ -5,7 +5,7 @@
 
 import { plc_config_JSON } from "./conf/config.js";
 import { connections } from "./conf/connections.js";
-import { S7PLC, createS7Connection, createHttpServer, attachWSServer } from "./src/index.js";
+import { S7PLC, createS7Connection, createHttpServer, attachWSServer } from "./lib/index.js";
 
 // ===== create a VPLC server
 const s7plc = new S7PLC(plc_config_JSON);
