@@ -1,8 +1,6 @@
 # source
 src/
 node_modules/
-# rollup.config.js
-rollup.config.app.js
 
 # test & production
 conf/
