@@ -19,14 +19,7 @@ const external = [
     './conf/config.js',
     './conf/connections.js'
 ]
-export default [{ // web
-    input: './public/index.js',
-    output: {
-        file: './public/bundler.js',
-        format: 'es',
-    },
-    plugins: [],
-}, { // main lib
+export default [{ // WSCLI
     input: './src/wscli.js',
     output: {
         file: pkg.exports['./wscli'],

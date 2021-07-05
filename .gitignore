@@ -71,4 +71,4 @@ build-include/
 dist/
 lib/
 src/node_snap7.node
-public/bundler.js
+public/

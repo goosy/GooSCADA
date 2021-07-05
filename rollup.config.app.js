@@ -35,8 +35,7 @@ export default {
                 { src: 'conf', dest: 'dist/' },
                 { src: 'lib/wscli.js', dest: 'dist/' },
                 { src: 'package.json', dest: 'dist/' },
-                { src: 'public/index.html', dest: 'dist/public/' },
-                { src: 'public/bundler.js', dest: 'dist/public/' },
+                { src: 'public/', dest: 'dist/' },
             ]
         }),
     ],

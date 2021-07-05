@@ -23,7 +23,7 @@ const host = '${connections[0].localAddress + ":" + plc_config_JSON.port}';
 const hostdesc = '${plc_config_JSON.description}';
 const sendDB = ${JSON.stringify(sendDB)};
 const recvDB = ${JSON.stringify(recvDB)};
-
+export {host, hostdesc, sendDB, recvDB};
 `;
 }
 
@@ -109,6 +109,13 @@ async function requestListener(request, response) {
                     response.end();
                 });
                 break;
+            case '/data.js': // 动态生成配置
+                response.writeHead(200, {
+                    'Content-Type': 'application/javascript; charset="UTF-8"'
+                });
+                response.write(getConf());
+                response.end();
+                break;
             default: // 处理静态文件
                 let filename;
                 if (pathname.startsWith('/conf/')) filename = '.' + pathname;
@@ -122,11 +129,9 @@ async function requestListener(request, response) {
                     // Abort the request before the promise settles.
                     // controller.abort();
                     const content = await promise;
-
                     response.writeHead(200, {
                         'Content-Type': type
                     });
-                    if (filename === './public/bundler.js') response.write(getConf());
                     response.write(content);
                     response.end();
                 } catch (err) {
