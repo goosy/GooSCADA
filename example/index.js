@@ -51,8 +51,8 @@ httpserver.listen(port, host, () => {
 // ===== create S7TcpClient to send and receive S7PLC data
 const conn_options = connections[0];
 const client = createS7Connection(
-    s7plc.get_mem(...conn_options.send).buffer,
-    s7plc.get_mem(...conn_options.receive).buffer,
+    s7plc.get_mem(...conn_options.send),
+    s7plc.get_mem(...conn_options.receive),
     conn_options
 );
 

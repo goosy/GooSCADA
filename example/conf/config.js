@@ -60,6 +60,11 @@ export const plc_config_JSON = {
 						"name": "flow",
 						"type": "REAL",
 						"value": 0.0, //初始值
+					}, { // reserve
+						"name": "reserve",
+						"type": "ARRAY",
+						"element": { type: "BYTE" },
+						"length": 26, 
 					}]
 				}, {
 					"name": "nodeSC1",
@@ -112,6 +117,11 @@ export const plc_config_JSON = {
 						"name": "flow",
 						"type": "REAL",
 						"value": 0.0, //初始值
+					}, { // reserve
+						"name": "reserve",
+						"type": "ARRAY",
+						"element": { type: "BYTE" },
+						"length": 26, 
 					}]
 				}, {
 					"name": "nodeKX1",
@@ -164,6 +174,11 @@ export const plc_config_JSON = {
 						"name": "flow",
 						"type": "REAL",
 						"value": 0.0, //初始值
+					}, { // reserve
+						"name": "reserve",
+						"type": "ARRAY",
+						"element": { type: "BYTE" },
+						"length": 26, 
 					}]
 				}, {
 					"name": "nodeSC2",
@@ -204,8 +219,6 @@ export const plc_config_JSON = {
 						"name": "datetime",
 						"type": "DT",
 						"value": "DT#2021-6-30-0:0:0.0", //初始值					
-					"value": "DT#2021-6-30-0:0:0.0", //初始值					
-						"value": "DT#2021-6-30-0:0:0.0", //初始值					
 					}, { // 变量 temperature
 						"name": "temperature",
 						"type": "REAL",
@@ -218,6 +231,11 @@ export const plc_config_JSON = {
 						"name": "flow",
 						"type": "REAL",
 						"value": 0.0, //初始值
+					}, { // reserve
+						"name": "reserve",
+						"type": "ARRAY",
+						"element": { type: "BYTE" },
+						"length": 26, 
 					}]
 				},
 			],
@@ -254,8 +272,8 @@ export const plc_config_JSON = {
 					"type": "ARRAY",
 					"element": {
 						type: "BYTE",
-						length: 46,
-					}, //初始值
+					}, 
+					"length": 46,
 				},
 			],
 		}, //数据区 2 完成

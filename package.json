@@ -1,6 +1,6 @@
 {
 	"name": "s7vplc",
-	"version": "0.6.2",
+	"version": "0.7.0",
 	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
 	"type": "module",
 	"main": "./index.js",
