@@ -37,15 +37,17 @@ export class ElementaryTag extends S7Tag {
     constructor({ name = "", type = "BYTE", bytes = 0, value } = { name: "", type: "BYTE", bytes: 0 }) {
         super({ name, type, bytes });
         this.#init_value = value;
-        this.on("bufferchange", () => {
-            this.trigger_value_change();
+        this.on("bufferchange", (start, end) => {
+            this.trigger_value_change(start == end); // only BoolTag start == end
         });
     }
 
-    trigger_value_change(){
+    trigger_value_change(isBoolTag) {
+        if (isBoolTag && this.#pre_value == this.value) return;
         this.emit("valuechange", this.#pre_value, this.value);
         this.#pre_value = this.value;
     }
+
     /**
      * 加载至一数据区域
      * 具体子类应判断起始offset的边界条件，特别是 BYTE WORD 等

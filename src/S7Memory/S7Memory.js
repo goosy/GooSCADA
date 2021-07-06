@@ -147,7 +147,7 @@ export class S7Memory extends EventEmitter{
         this.#parent.on("bufferchange", (start, end) => {
             start = start > this.start_offset[0] ? start : this.start_offset[0];
             end = end < this.end_offset[0] ? end : this.end_offset[0];
-            if (start < end) this.emit("bufferchange", start, end);
+            if (start <= end) this.emit("bufferchange", start, end);
         })
     }
     /**
