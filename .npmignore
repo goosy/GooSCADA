@@ -3,7 +3,7 @@ src/
 node_modules/
 
 # test & production
+.vscode/
 conf/
 dist/
-index.js
-test/
+public/
