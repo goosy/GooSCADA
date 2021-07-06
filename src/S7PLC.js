@@ -18,8 +18,23 @@ const AreaType = {
 }
 export class S7PLC extends snap7.S7Server {
 
+    /**
+     * 一个私有的数据区字典，为 {数据区自定名称或S7名称:数据区} 键值对
+     * 大致结构为：
+     * {
+     *      "node": s7area1, 
+     *      "DB1": s7area1, 
+     *      "DB8": s7area2, 
+     *      "send_data": s7area2, 
+     *      "counter": s7area3, 
+     *      "CT": s7area3, 
+     *      ...
+     * }
+     * @type {Map<string,import('./S7Memory/S7Area.js').S7Area}
+     */
     #areas = new Map();
-    /** 
+
+    /**
      * 获得数据区
      * @param {string} area_name
      * @return {import('./S7Memory/S7Area.js').S7Area}
@@ -41,18 +56,16 @@ export class S7PLC extends snap7.S7Server {
         return area?.get_tag(...path);
     }
 
-    #areabuffers = {};
     /**
      * 增加一个S7区域
      * @param {import('./S7Memory/S7Area.js').S7Area} area
      */
     add_area(area) {
         this.#areas.set(area.name, area);
+        this.#areas.set(area.type + (area.type == "DB" ? area.DBNO : ""), area);
         area.join(this); // 偏移量强制为[0,0]
         let buff = Buffer.alloc(area.bytes);
         area.mount(buff);
-        this.#areabuffers[area.type + (area.type == "DB" ? area.DBNO : "")] = buff;
-        // this.RegisterArea(this['srvArea' + area.type], , area.buffer);
     }
 
     init(confJSON) {
@@ -71,15 +84,15 @@ export class S7PLC extends snap7.S7Server {
             // console.log('WordLen  : ' + tagObj.WordLen);
             const start = tagObj.Start;
             const end = tagObj.Start + tagObj.Size;
-            const areabuffer = this.#areabuffers[AreaType[tagObj.Area] + tagObj.DBNumber];
+            // 获得对应区域的buffer
+            const area = this.get_area(AreaType[tagObj.Area] + tagObj.DBNumber);
             if (operation === this.operationRead) {
-                areabuffer.copy(buffer, 0, start, end);
+                area.buffer.copy(buffer, 0, start, end);
                 this.emit("read", tagObj, buffer);
                 return callback(buffer);
             } else {
-                buffer.copy(areabuffer, start);
+                area.update_buffer(buffer, start);
                 this.emit("write", tagObj, buffer);
-                this.emit("bufferchange", tagObj.Start, end); // value change event
                 return callback();
             }
         });

@@ -90,6 +90,16 @@ export class S7Memory extends EventEmitter{
         if (!this.mounted) throw new Error(`${this.name} memory have not mounted!`);
         this.#buffer = newbuffer;
     }
+    /**
+     * 更新内存值，用新buffer覆盖内存指定位置，同时触发 bufferchange 事件
+     * @param {Buffer} buffer
+     * @param {number} start
+     * @param {number} end
+     */
+    update_buffer(buffer, start, end){
+        buffer.copy(this.#buffer, start, 0, end);
+        this.emit("bufferchange", start, end);
+    }
 
     /**
      * 指示是否加载存储区域
@@ -130,6 +140,9 @@ export class S7Memory extends EventEmitter{
     get parent() {
         return this.#parent;
     }
+    /**
+     * 父容器的 bufferchange 事件触发本内存的 bufferchange 事件
+     */
     change_value_capturing() {
         this.#parent.on("bufferchange", (start, end) => {
             start = start > this.start_offset[0] ? start : this.start_offset[0];
