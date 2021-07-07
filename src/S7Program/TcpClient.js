@@ -1,15 +1,16 @@
 import { Socket } from "net";
+/** @typedef {import('../S7Memory/S7Memory.js').S7Memory} S7Memory */
 /**
  * 通过继承net.Socket类来创建一个TCP客户端
  */
 export class S7TcpClient extends Socket {
-    /** @type {import(../S7Memory/S7Memory.js).S7Memory} */
+    /** @type {S7Memory} */
     #send;
     send() {
         this.write(this.#send.buffer);
         // console.log("send:", this.sendbuffer)
     }
-    /** @type {import(../S7Memory/S7Memory.js).S7Memory} */
+    /** @type {S7Memory} */
     #receive;
     /**
      * 接收数据
@@ -32,8 +33,8 @@ export class S7TcpClient extends Socket {
     /**
      * a tcp scoket class with send and receive buffer supplied
      * @constructor
-     * @param {import(../S7Memory/S7Memory.js).S7Memory} send_mem
-     * @param {import(../S7Memory/S7Memory.js).S7Memory} receive_mem
+     * @param {S7Memory} send_mem
+     * @param {S7Memory} receive_mem
      * @param {SocketConnectOpts} options
      */
     constructor(send_mem, receive_mem, options) {
@@ -47,8 +48,8 @@ export class S7TcpClient extends Socket {
 
 /**
  * create a S7TcpClient and connect to TCPServer supplied
- * @param {import(../S7Memory/S7Memory.js).S7Memory} send_mem
- * @param {import(../S7Memory/S7Memory.js).S7Memory} receive_mem
+ * @param {S7Memory} send_mem
+ * @param {S7Memory} receive_mem
  * @param {SocketConnectOpts&TcpSocketConnectOpts} options
  * @param {function} connectListener
  * @returns {S7TcpClient}
