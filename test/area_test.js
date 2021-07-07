@@ -33,7 +33,7 @@ t = createMemory({
         },
     ],
 });
-t.join({}, [0, 0]);
+t.join({on:function(){}}, [0, 0]);
 t.mount(buff);
 t.get_tag("bool0").value = true;
 t.get_tag("bool7").value = true;

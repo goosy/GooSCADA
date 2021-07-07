@@ -61,11 +61,7 @@ export function createMemory(json = { type: '', tags: [] }) {
     const memory = new S7Type[json.type](json);
     if (typeof memory.addTags === 'function') {
         let tags = [];
-        if (json.type === 'ARRAY') {
-            for (let i = 0; i < json.length; i++) {
-                tags.push(createMemory(json.element));
-            }
-        } else if (Array.isArray(json.tags)) {
+        if (Array.isArray(json.tags)) {
             for (const tag of json.tags) {
                 tags.push(createMemory(tag));
             }

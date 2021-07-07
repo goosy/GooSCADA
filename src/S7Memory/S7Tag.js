@@ -1,3 +1,6 @@
+/**
+ * @file 本类过时，不再使用
+ */
 import { S7Memory } from "./S7Memory.js";
 /**
  * @typedef {[number, number]} Offset

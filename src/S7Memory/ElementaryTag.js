@@ -1,4 +1,4 @@
-import { S7Tag } from './S7Tag.js';
+import { S7Memory } from "./S7Memory.js";
 
 /**
  * @typedef {[number, number]} Offset
@@ -11,7 +11,7 @@ import { S7Tag } from './S7Tag.js';
  * @property {Offset} offset
  */
 
-export class ElementaryTag extends S7Tag {
+export class ElementaryTag extends S7Memory {
     #init_value;
     #pre_value = null;
 
@@ -57,6 +57,9 @@ export class ElementaryTag extends S7Tag {
     mount(buff) {
         super.mount(buff); // 调用父类 mount() 以更新 mounted 标志
         // 重新计算本Tag挂载位置
+        let [begin_offset,] = this.start_offset;
+        let bytes = this.bytes == 0 ? 1 : this.bytes;
+        this.buffer = buff.slice(begin_offset, begin_offset + bytes);
         this.value = this.#init_value; // 设置初始值
         this.trigger_value_change();
     }

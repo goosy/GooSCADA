@@ -2,6 +2,9 @@
  * Copyright (c) 2019, goosy.jo@gmail.com
  * MIT License
  */
+/**
+ * @typedef {import('./ElementaryTag.js').ElementaryTag|import('./ComplexTag.js').ComplexTag} S7Tag
+ */
 import snap7 from "./node-snap7.js";
 import { createMemory } from "./S7Memory/index.js";
 const AreaType = {
@@ -48,7 +51,7 @@ export class S7PLC extends snap7.S7Server {
      * 比如 get_tag("DB8","node","flow")
      * 如不存在，则返回null
      * @param {string[]} path
-     * @return {import('./S7Memory/S7Tag.js').S7Tag|null}
+     * @return {S7Tag|null}
     */
     get_mem(...path) {
         let area = this.get_area(path.shift());

@@ -1,5 +1,4 @@
-import { S7Memory } from "./S7Memory.js";
-import { ComplexTag } from "./ComplexTag.js";
+import { Complex } from "./Complex.js";
 
 /**
  * @typedef {[number, number]} Offset
@@ -13,72 +12,18 @@ import { ComplexTag } from "./ComplexTag.js";
  * @property {Offset} offset
  */
 
-export class S7Area extends S7Memory {
-    /**
-     * 子tag，不可变
-     *  @type {S7Tag[]}
-     */
-    #tags = [];
-    get tags() {
-        return [...this.#tags];
-    }
-    /** 
-     * mixin with ComplexTag
-     * @param {string[]} path
-     * @return {S7Tag}
-     */
-    get_tag(...path) {
-        return ComplexTag.prototype.get_tag.apply(this, path);
-    }
-
-    adjust_tag_offset(tag, offset = this.append_offset) {
-        ComplexTag.prototype.adjust_tag_offset.call(this, tag, offset);
-    }
-    /**
-     * 存储区中增加Tag
-     * 必须在mount()之前完成
-     * @param {S7Tag} tag 
-     * @param {Offset} offset
-     */
-    addTag(tag, offset) {
-        this.#tags.push(tag);
-        this.adjust_tag_offset(tag, offset);
-    }
-    /**
-     * 存储区中增加一组 Tag
-     * mixin with ComplexTag
-     * @param {S7Tag[]} tags
-     */
-    addTags(tags) {
-        ComplexTag.prototype.addTags.call(this, tags);
-    }
+export class S7Area extends Complex {
 
     /**
-     * 加入到一个数据区域，设置存储区位移和尺寸
+     * 加入到一个S7PLC CPU中，设置存储区位移和尺寸
      * 设定memory的位置，由子类扩展方法完成内元素的加入
-     * @param {import("../S7PLC.js").S7PLC} parent 
+     * @param {import("../S7PLC.js").S7PLC} parent
      * @param {Offset} offset
      * @returns {Offset}
      */
     join(parent, offset = this.start_offset) {
-        // 起始地址必须在WORD的边界上
-        return super.join(parent, this.next_word_bound(offset));
-    }
-
-    /**
-     * 加载一个数据区域
-     * @override
-     * @param {Buffer} buff
-     * @param {number=} offset 
-     * @return {number[]}
-     */
-    mount(buff) {
-        super.mount(); // 调用父类 mount() 以更新 mounted 标志
-        const [begin_offset,] = this.start_offset;
-        this.buffer = buff.slice(begin_offset, begin_offset + this.bytes);
-        const this_buffer = this.buffer;
-        this.#tags.forEach(tag => tag.mount(this_buffer));
-        return this.end_offset;
+        // 起始地址边界检查在父类上
+        return super.join(parent, offset);
     }
 
     /**
@@ -87,8 +32,10 @@ export class S7Area extends S7Memory {
      * @constructor
      * @param {S7MParamter}
      */
-    constructor({ name = "", type = "DB", bytes = 256 } = { name: "", type: "DB" }) {
+    constructor({ name = "", type = "DB", bytes = 256 } = { name: "", type: "DB", bytes: 256 }) {
         super({ name, type, bytes })
     }
+
+    /** @todo mount将由S7PLC转移到这里，内容挂载从这个类开始 */
 
 }

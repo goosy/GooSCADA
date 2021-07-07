@@ -1,32 +1,32 @@
 # 类型继承关系
 
 * S7Memory
-  * S7Tag
-    * ElementaryTag
-      * BoolTag
-      * ByteTag
-        * CharTag
-        * USIntTag
-        * SIntTag
-        * BcdByteTag
-      * WordTag
-        * UIntTag
-          * DateTag
-        * IntTag
-          * S5TimeTag
-      * DWordTag
-        * UDIntTag
-          * TODTag
-        * DIntTag
-          * TimeTag
-        * RealTag
+  * ElementaryTag
+    * BoolTag
+    * ByteTag
+      * CharTag
+      * USIntTag
+      * SIntTag
+      * BcdByteTag
+    * WordTag
+      * UIntTag
+        * DateTag
+      * IntTag
+        * S5TimeTag
+    * DWordTag
+      * UDIntTag
+        * TODTag
+      * DIntTag
+        * TimeTag
+      * RealTag
+  * Complex
     * ComplexTag
       * ArrayTag
       * StringTag
       * DataTimeTag
       * StructTag
-  * S7Area
-    * DBArea
-    * MBArea
-    * CTArea
-    * TMArea
+    * S7Area
+      * DBArea
+      * MBArea
+      * CTArea
+      * TMArea
