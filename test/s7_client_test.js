@@ -1,16 +1,38 @@
-import snap7 from "../src/node-snap7.js";
+import { S7Client } from "s7client";
 
-var s7client = new snap7.S7Client();
+// PLC Connection Settings
+const plcSettings = {
+    name: "LocalPLC",
+    host: 'localhost',
+    // port: 102,
+    // rack: 0,
+    // slot: 1
+};
 
-await s7client.ConnectTo('127.0.0.1', 0, 1);
-let res;
-// let buff = Buffer.alloc(4, 0x80);
-// res = await s7client.DBWrite(8, 0, 4, buff);
-// console.log(res);
-// res = await s7client.DBRead(10, 0, 4);
-// console.log(res);
+// DBA to read
+let dbNr = 8;
+let dbVars = [
+    { type: 'INT', start: 0 },
+    { type: "BOOL", start: 2, bit: 0 },
+    { type: "BOOL", start: 2, bit: 1 },
+    { type: "BOOL", start: 2, bit: 2 },
+    { type: "BOOL", start: 2, bit: 3 },
+    { type: "REAL", start: 12 }
+];
 
-setInterval(async () => {
-    let res = await s7client.DBRead(8, 0, 50);
-    console.log(res);
-}, 5000);
+let client = new S7Client(plcSettings);
+client.on('error', console.error);
+await client.connect();
+
+// Read DB
+const res = await client.readDB(dbNr, dbVars);
+console.log(res);
+
+// Write multiple Vars
+await client.writeVars([{
+    area: 'db', dbnr: 8, type: 'INT',
+    start: 0, //bit: 2,
+    value: 78
+}]);
+
+client.disconnect();

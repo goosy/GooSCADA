@@ -1,5 +1,5 @@
 // import { S7PLC, } from "../src/index.js";
-import { S7PLC, } from "../lib/index.js";
+import { S7PLC } from "../lib/index.js";
 import { plc_config_JSON } from "../example/conf/config.js";
 
 const s7plc = new S7PLC(/* plc_config_JSON */);
@@ -19,7 +19,7 @@ s7plc.start_serve();
 
 let i = 0;
 setInterval(() => {
-    s7plc.get_mem("commands_GD8", "nodeID").value = i++;
-    console.log(s7plc.get_mem("commands_GD8"));
-}, 4000);
+    s7plc.get_mem("nodes", "nodeGD8", "flow").value = 36.1 + i++;
+    console.log(s7plc.get_mem("nodes", "nodeGD8").buffer);
+}, 2000);
 

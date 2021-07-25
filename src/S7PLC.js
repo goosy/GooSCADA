@@ -3,10 +3,16 @@
  * MIT License
  */
 /**
- * @typedef {import('./ElementaryTag.js').ElementaryTag|import('./ComplexTag.js').ComplexTag} S7Tag
+ * @typedef {import('./S7Memory/ElementaryTag.js').ElementaryTag|import('./S7Memory/ComplexTag.js').ComplexTag} S7Tag
  */
-import snap7 from "./node-snap7.js";
+import snap7 from "node-snap7";
 import { createMemory } from "./S7Memory/index.js";
+
+/**
+ * Area type abbreviation
+ * @readonly
+ * @enum {string} 
+ */
 const AreaType = {
     /**
      * @TODO 
@@ -19,6 +25,7 @@ const AreaType = {
     131: "MK",
     132: "DB"
 }
+
 export class S7PLC extends snap7.S7Server {
 
     /**
@@ -27,9 +34,9 @@ export class S7PLC extends snap7.S7Server {
      * {
      *      "node": s7area1, 
      *      "DB1": s7area1, 
-     *      "DB8": s7area2, 
      *      "send_data": s7area2, 
-     *      "counter": s7area3, 
+     *      "DB8": s7area2, 
+     *      "ware_counter": s7area3, 
      *      "CT": s7area3, 
      *      ...
      * }
@@ -79,12 +86,12 @@ export class S7PLC extends snap7.S7Server {
         });
         this.SetResourceless(true);
         this.on("readWrite", (sender, operation, tagObj, buffer, callback) => {
-            // console.log('buffer   : ', buffer);
-            // console.log('Area     : ' + tagObj.Area);
-            // console.log('DBNumber : ' + tagObj.DBNumber);
-            // console.log('Start    : ' + tagObj.Start);
-            // console.log('Size     : ' + tagObj.Size);
-            // console.log('WordLen  : ' + tagObj.WordLen);
+            // buffer   : buffer
+            // Area     : tagObj.Area
+            // DBNumber : tagObj.DBNumber
+            // Start    : tagObj.Start
+            // Size     : tagObj.Size
+            // WordLen  : tagObj.WordLen
             const start = tagObj.Start;
             const end = tagObj.Start + tagObj.Size;
             // 获得对应区域的buffer
