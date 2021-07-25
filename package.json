@@ -1,6 +1,6 @@
 {
 	"name": "goovplc",
-	"version": "0.7.1",
+	"version": "0.7.2",
 	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
 	"type": "module",
 	"main": "./index.js",
@@ -30,7 +30,6 @@
 	"scripts": {
 		"start": "node ./dist/app.js",
 		"build": "rollup -c",
-		"buildlib": "rollup -c rollup.config.lib.js",
 		"watch": "rollup -c -w"
 	},
 	"keywords": [
