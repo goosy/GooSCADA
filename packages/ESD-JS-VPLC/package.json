@@ -1,0 +1,40 @@
+{
+	"name": "esd-gb-vplc",
+	"version": "0.6.0",
+	"type": "module",
+	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
+	"main": "./dist/app.js",
+	"exports": {
+		".": "./dist/app.js"
+	},
+	"engines": {
+		"node": ">=14.8.0"
+	},
+	"dependencies": {
+		"goovplc": "^0.7.4"
+	},
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^19.0.0",
+		"@rollup/plugin-node-resolve": "^13.0.0",
+		"rollup": "^2.51.1",
+		"rollup-plugin-copy": "^3.4.0",
+		"rollup-plugin-terser": "^5.0.0"
+	},
+	"directories": {
+		"dist": "dist"
+	},
+	"scripts": {
+		"dev": "node ./index.js",
+		"start": "node ./dist/app.js",
+		"build": "rollup -c",
+		"watch": "rollup -c -w"
+	},
+	"keywords": [
+		"PLC",
+		"S7",
+		"SCADA",
+		"nodejs"
+	],
+	"author": "goosy.jo@gmail.com",
+	"license": "MIT"
+}
