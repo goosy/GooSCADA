@@ -1,0 +1,9 @@
+{
+  "name": "gooscada",
+  "version": "0.1.0",
+  "description": "a monorepos for automation system",
+  "author": "goosy <goosy.jo@gmail.com>",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "license": "MIT"
+}

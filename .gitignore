@@ -66,9 +66,14 @@ typings/
 # configuration
 package-lock.json
 yarn.lock
+# DS
+.DS_Store
 
 # production
+assets/
 build-include/
 dist/
 lib/
 public/
+dist-ssr
+*.local
