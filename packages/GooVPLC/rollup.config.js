@@ -16,8 +16,8 @@ const external = [
     'url',
     'zlib',
     'node-snap7', // reserve
-    '../../conf/config.js',
-    '../../conf/connections.js',
+    '/.*\/conf\/config.js$/',
+    '/.*\/con\/connections.js$/',
 ];
 export default [{ // WSCLI
     input: './src/wscli.js',
