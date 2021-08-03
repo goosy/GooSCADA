@@ -5,7 +5,8 @@
 	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
 	"main": "./dist/app.js",
 	"exports": {
-		".": "./dist/app.js"
+		".": "./dist/app.js",
+		"./wscli": "./dist/wscli.js"
 	},
 	"engines": {
 		"node": ">=14.8.0"

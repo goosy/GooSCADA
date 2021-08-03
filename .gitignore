@@ -77,3 +77,4 @@ lib/
 public/
 dist-ssr
 *.local
+/legacy/

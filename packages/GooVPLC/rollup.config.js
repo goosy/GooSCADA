@@ -1,20 +1,10 @@
 import pkg from './package.json';
+import { builtinModules } from 'module';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
 const external = [
-    'crypto',
-    'events',
-    'fs/promises',
-    'http',
-    'https',
-    'module',
-    'net',
-    'stream',
-    'tls',
-    'util',
-    'url',
-    'zlib',
+    ...builtinModules,
     'node-snap7', // reserve
     '/.*\/conf\/config.js$/',
     '/.*\/con\/connections.js$/',
