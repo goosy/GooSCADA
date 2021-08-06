@@ -102,10 +102,5 @@ app
     .provide("subTagValue", sub_tag)
     .provide("readTagValue", read_tag)
     .provide("writeTagValue", write_tag)
-    .provide("websocket", ws)
-    .directive('focus', {
-        updated(el, { value }, vnode) {
-            if (value) el.focus();
-        }
-    });
+    .provide("websocket", ws);
 /* const vm =  */app.mount('#app');

@@ -1,10 +1,10 @@
 <script lang='jsx'>
-import { inject, computed, reactive, ref, toRefs, watch } from "vue";
+import { inject, computed, nextTick, reactive, ref, toRefs, watch } from "vue";
 export default {
     setup(props, { attrs, slots, /* emit */ }) {
         const tags = inject("TagMap");
         const add_tag = inject("addTag");
-        const write_tag = inject("writeTagValue"); 
+        const write_tag = inject("writeTagValue");
         // for local test
         // const tags = reactive(new Map());
         // const add_tag = (name, initValue) => { if (tags.has(name)) return; tags.set(name, initValue); }
@@ -22,11 +22,17 @@ export default {
             set: (value) => write_tag(id, value)
         });
         const label = type === "DB" ? "数据块符号" : "变量名称";
+        
         const is_changing = ref(false);
-        const new_value = ref(initvalue);
+        const edit_el = ref(null);
+        const showEdit = async () => {
+            is_changing.value = true;
+            await nextTick();
+            edit_el.value.focus();
+            edit_el.value.select();
+        };
 
-        const edit_focus = ref(false);
-        const showEdit = () => is_changing.value = true;
+        const new_value = ref(initvalue);
         const change = () => {
             if (type === "BOOL") tag.value = !tag.value;
             else {
@@ -38,7 +44,6 @@ export default {
             is_changing.value = false;
             new_value.value = tag.value;
         }
-
 
         function get_value_vnode() {
             switch (type) {
@@ -63,7 +68,7 @@ export default {
                         <>
                             <span id="value"
                                 v-show={!is_changing.value}
-                                onclick={event=>{
+                                onclick={event => {
                                     event.target.blur();
                                     showEdit();
                                 }}>
@@ -76,8 +81,9 @@ export default {
                                     v-model={new_value.value}
                                     onkeyup={event => {
                                         if (event.keyCode === 13) change();
+                                        if (event.keyCode === 27) cancelEdit();
                                     }}
-                                    v-focus={is_changing.value}
+                                    ref={edit_el}
                                 />
                                 <button onclick={change}>修改</button>
                                 <button onclick={cancelEdit}>取消</button>
