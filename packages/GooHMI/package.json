@@ -1,20 +1,19 @@
 {
   "name": "goohmi",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "a web UI connnect to S7PLC via websocket",
   "type": "module",
-  "main": "./public/bundler.js",
   "exports": {
-    "./src": "./src/index.js",
-    ".": "./dist/bundler.js"
+    ".": "./dist/HttpServer.js",
+    "./cjs": "./dist/HttpServer.cjs"
   },
   "engines": {
     "node": ">=14.8.0"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "build": "vite build && rollup -c",
+    "serve": "node ./test/test.js"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.0",

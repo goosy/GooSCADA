@@ -5,10 +5,11 @@
 
 import { plc_config_JSON } from "./conf/config.js";
 import { connections } from "./conf/connections.js";
-import { S7PLC, createS7Connection, createHttpServer, attachWSServer } from "goovplc";
+import { S7PLC, createS7Connection, attachWSServer } from "goovplc";
+import { createHttpServer, setRouterOptions } from "goohmi";
 
 // set title
-import { setTitle } from "./src/setTitle.js"; 
+import { setTitle } from "./src/setTitle.js";
 setTitle(plc_config_JSON.description);
 
 // ===== create a VPLC server
@@ -25,22 +26,24 @@ s7plc.on("write", (tagObj, buffer) => {
 s7plc.start_serve();
 
 // ===== create HTTP Server for HMI serve 
-function data(body, response) {// 动态生成 /data.js
-    const sendDB = plc_config_JSON.areas[0];
-    const recvDB = plc_config_JSON.areas[1];
-    response.writeHead(200, {
-        'Content-Type': 'application/javascript; charset="UTF-8"'
-    });
-    response.write(`// auto gen
+setRouterOptions({
+    '/conf/data.js': (request, response) => {// 动态生成 /data.js
+        const sendDB = plc_config_JSON.areas[0];
+        const recvDB = plc_config_JSON.areas[1];
+        response.writeHead(200, {
+            'Content-Type': 'application/javascript; charset="UTF-8"'
+        });
+        response.write(`// auto gen
 const host = '${connections[0].localAddress + ":" + plc_config_JSON.port}';
 const hostdesc = '${plc_config_JSON.description}';
 const sendDB = ${JSON.stringify(sendDB)};
 const recvDB = ${JSON.stringify(recvDB)};
 export {host, hostdesc, sendDB, recvDB};
 `);
-    response.end();
-}
-const httpserver = createHttpServer({ '/conf/data.js': data });
+        response.end();
+    }
+});
+const httpserver = createHttpServer();
 
 // ===== create WebSocket Server for JSON serve
 attachWSServer(httpserver, s7plc);
