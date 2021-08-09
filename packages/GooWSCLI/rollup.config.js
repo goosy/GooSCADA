@@ -3,14 +3,8 @@ import { builtinModules } from 'module';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
-const external = [
-    ...builtinModules,
-    'node-snap7', // reserve
-    '/.*\/conf\/config.js$/',
-    '/.*\/con\/connections.js$/',
-];
-export default { // main lib
-    input: './src/index.js',
+export default {
+    input: './index.js',
     output: [{
         file: pkg.exports['.'],
         format: 'es',
@@ -21,8 +15,8 @@ export default { // main lib
     plugins: [
         resolve({
             preferBuiltins: true,
-        }), // tells Rollup how to find XX in node_modules
-        commonjs(), // converts XX to ES modules
+        }), 
+        commonjs(), 
     ],
-    external,
+    external: builtinModules,
 }

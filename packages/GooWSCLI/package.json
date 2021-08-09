@@ -1,18 +1,18 @@
 {
-	"name": "goovplc",
-	"version": "0.7.5",
-	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
+	"name": "goowscli",
+	"version": "0.1.0",
+	"description": "a CLI communicate with GooVPLC.",
 	"type": "module",
-	"main": "./lib/index.js",
+	"main": "./wscli.cjs",
 	"exports": {
-		".": "./lib/index.js",
-		"./cjs": "./lib/index.cjs"
+		".": "./wscli.js",
+		"./cjs": "./wscli.cjs"
 	},
 	"engines": {
 		"node": ">=14.8.0"
 	},
 	"bin": {
-		"wscli": "./lib/wscli.js"
+		"wscli": "./wscli.js"
 	},
 	"dependencies": {
 		"node-snap7": "^1.0.6"
@@ -21,22 +21,19 @@
 		"@rollup/plugin-commonjs": "^19.0.0",
 		"@rollup/plugin-node-resolve": "^13.0.0",
 		"faye-websocket": "^0.11.4",
-		"rollup": "^2.52.3",
-		"s7client": "^1.1.0",
-		"vue": "^3.1.3"
+		"rollup": "^2.52.3"
 	},
 	"directories": {
-		"lib": "lib",
 		"test": "test"
 	},
 	"scripts": {
+		"start": "node ./wscli.js",
 		"build": "rollup -c",
 		"watch": "rollup -c -w"
 	},
 	"keywords": [
-		"PLC",
-		"S7",
-		"SCADA",
+		"websocket",
+		"GooVPLC",
 		"nodejs"
 	],
 	"author": "goosy.jo@gmail.com",
