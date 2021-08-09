@@ -60,11 +60,11 @@ export const plc_config_JSON = {
 						"name": "flow",
 						"type": "REAL",
 						"value": 0.0, //初始值
-					}, { // reserve
-						"name": "reserve",
-						"type": "ARRAY",
-						"element": { type: "BYTE" },
-						"length": 26, 
+					}, { // description
+						"name": "description",
+						"type": "STRING",
+						"length": 24,
+						"value": "this is writen by Goosy", //初始值
 					}]
 				}, {
 					"name": "nodeSC1",
@@ -117,11 +117,11 @@ export const plc_config_JSON = {
 						"name": "flow",
 						"type": "REAL",
 						"value": 0.0, //初始值
-					}, { // reserve
-						"name": "reserve",
-						"type": "ARRAY",
-						"element": { type: "BYTE" },
-						"length": 26, 
+					}, { // description
+						"name": "description",
+						"type": "STRING",
+						"length": 24,
+						"value": "this is writen by Goosy", //初始值
 					}]
 				}, {
 					"name": "nodeKX1",
@@ -174,11 +174,11 @@ export const plc_config_JSON = {
 						"name": "flow",
 						"type": "REAL",
 						"value": 0.0, //初始值
-					}, { // reserve
-						"name": "reserve",
-						"type": "ARRAY",
-						"element": { type: "BYTE" },
-						"length": 26, 
+					}, { // description
+						"name": "description",
+						"type": "STRING",
+						"length": 24,
+						"value": "this is writen by Goosy", //初始值
 					}]
 				}, {
 					"name": "nodeSC2",
@@ -231,11 +231,11 @@ export const plc_config_JSON = {
 						"name": "flow",
 						"type": "REAL",
 						"value": 0.0, //初始值
-					}, { // reserve
-						"name": "reserve",
-						"type": "ARRAY",
-						"element": { type: "BYTE" },
-						"length": 26, 
+					}, { // description
+						"name": "description",
+						"type": "STRING",
+						"length": 24,
+						"value": "this is writen by Goosy", //初始值
 					}]
 				},
 			],
@@ -272,7 +272,7 @@ export const plc_config_JSON = {
 					"type": "ARRAY",
 					"element": {
 						type: "BYTE",
-					}, 
+					},
 					"length": 46,
 				},
 			],

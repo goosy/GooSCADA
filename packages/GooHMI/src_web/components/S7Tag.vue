@@ -21,10 +21,10 @@ export default {
             set: value => write_tag(id, value)
         });
         const label = type === "DB" ? "数据块符号" : "变量名称";
-        const has_value = ["BOOL", "BYTE", "WORD", "INT", "DINT", "DWORD", "REAL", "DT"].includes(type);
+        const has_value = ["BOOL", "BYTE", "WORD", "INT", "DINT", "DWORD", "REAL", "DT", "STRING"].includes(type);
         if (has_value) add_tag(id, initvalue);
         const js_type = type === "BOOL" ? Boolean : (
-            ["DT"].includes(type) ? String : (
+            ["DT", "STRING"].includes(type) ? String : (
                 has_value ? Number : null
             )
         );
@@ -74,7 +74,7 @@ export default {
                             <input
                                 type={js_type === String ? 'text' : 'number'}
                                 id={'input_' + id}
-                                v-model={[new_value.value, js_type === Number ? ['number'] : []]}
+                                v-model={new_value.value}
                                 onkeyup={event => {
                                     if (event.keyCode === 13) change();
                                     if (event.keyCode === 27) cancelEdit();
