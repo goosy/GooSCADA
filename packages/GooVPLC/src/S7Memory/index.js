@@ -57,7 +57,7 @@ export const S7Type = {
  * @returns {S7Memory}
  */
 export function createMemory(json = { type: '', tags: [] }) {
-    if (!S7Type.hasOwnProperty(json.type)) throw new Error('not exist this type!');;
+    if (!S7Type.hasOwnProperty(json.type)) throw new Error('not exist this type!');
     const memory = new S7Type[json.type](json);
     if (typeof memory.addTags === 'function') {
         let tags = [];

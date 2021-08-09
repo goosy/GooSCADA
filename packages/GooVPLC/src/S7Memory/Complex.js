@@ -16,6 +16,10 @@ import { S7Memory } from "./S7Memory.js";
  */
 
 export class Complex extends S7Memory {
+    get hasValue() {
+        return false;
+    }
+
     /**
      * 子tag，不可变
      *  @type {S7Tag}

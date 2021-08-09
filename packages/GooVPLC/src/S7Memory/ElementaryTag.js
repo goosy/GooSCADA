@@ -14,6 +14,9 @@ import { S7Memory } from "./S7Memory.js";
 export class ElementaryTag extends S7Memory {
     #init_value;
     #pre_value = null;
+    get hasValue() {
+        return true;
+    }
 
     /**
      * 读S7Tag值，通过buffer存储变量值，具体子类应覆盖
@@ -27,7 +30,8 @@ export class ElementaryTag extends S7Memory {
      */
     set value(value) {
         if (!this.mounted) throw new Error(`S7Tag:${this.name} = ${value} cant assign value, Tag have not mount a area`);
-        // 由子类调用trigger_value_change() 来实现 emit("valuechange", , )
+        // 本抽象方法不触发 emit("valuechange", , )
+        // 由子类调用 trigger_value_change() 来实现 
     }
 
     /** 
