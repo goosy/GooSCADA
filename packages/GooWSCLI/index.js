@@ -16,6 +16,11 @@ function heartbeat() {
 }
 
 let websocket;
+/**
+ * 建立WS连接
+ * @date 2021-08-11
+ * @param {string} host
+ */
 function createConn(host) {
     websocket?.close();
     websocket = new WebSocket.Client(host);
@@ -36,16 +41,24 @@ function createConn(host) {
     });
 }
 
+/**
+ * 发送JSON请求
+ * @date 2021-08-11
+ * @param {string} action
+ * @param {string} name
+ * @param {(number|string|boolean)} value
+ */
 function send(action, name, value) {
     if (!websocket?.alive) {
         console.log('websocket have not connected. please connect first.');
         return;
     }
-    value = Number(value);
+    const n = Number(value);
+    value = isNaN(n) ? value : n;
     websocket.send(JSON.stringify({
         action,
-        value,
-        name
+        name,
+        value
     }));
 }
 
@@ -56,14 +69,15 @@ const rl = createInterface({
 });
 rl.prompt();
 rl.on('line', (line) => {
-    line = line.trim().split(/ +/);
-    let cmd = '', value, namepath;
-    switch (line[0]) {
+    let [, cmd = '', key = '', value = ''] = line.trim().match(/^([^ ]+)?(?: ([^ ]+))?(?: +(.+))?$/);
+    switch (cmd) {
+        case '':
+            break;
         case 'help':
             console.log('help are not prepared.');
             break;
         case 'connect':
-            createConn(line[1]);
+            createConn(key);
             break;
         case 'close':
             websocket?.close();
@@ -72,21 +86,18 @@ rl.on('line', (line) => {
             if (websocket?.alive) console.log(websocket?.url, websocket?.statusCode);
             else console.log("ws isnt alive.");
             break;
-        case 'read':
-        case 'subscribe':
-            [cmd, ...namepath] = line;
-            break;
-        case 'write':
-            [cmd, value, ...namepath] = line;
-            break;
         case 'exit':
             websocket?.close();
             rl.close();
             break;
+        case 'read':
+        case 'subscribe':
+        case 'write':
+            send(cmd, key, value);
+            break;
         default:
             break;
     }
-    if (cmd !== '') send(cmd, namepath.join('/'), value);
     rl.prompt();
 })
 rl.on('close', () => {

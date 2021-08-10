@@ -1,6 +1,6 @@
 {
 	"name": "goowscli",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "a CLI communicate with GooVPLC.",
 	"type": "module",
 	"main": "./wscli.cjs",
@@ -13,9 +13,6 @@
 	},
 	"bin": {
 		"wscli": "./wscli.js"
-	},
-	"dependencies": {
-		"node-snap7": "^1.0.6"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^19.0.0",

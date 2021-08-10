@@ -6,9 +6,11 @@ import commonjs from '@rollup/plugin-commonjs';
 export default {
     input: './index.js',
     output: [{
+        banner: '#!/usr/bin/env node',
         file: pkg.exports['.'],
         format: 'es',
     }, {
+        banner: '#!/usr/bin/env node',
         file: pkg.exports['./cjs'],
         format: 'cjs',
     }],
