@@ -12,8 +12,8 @@
 		"node": ">=14.8.0"
 	},
 	"dependencies": {
-		"goovplc": "^0.7.5",
-		"goohmi": "^0.3.0"
+		"goohmi": "^0.3.0",
+		"goovplc": "^0.7.5"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^19.0.0",

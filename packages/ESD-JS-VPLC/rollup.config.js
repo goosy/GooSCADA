@@ -45,9 +45,6 @@ writeFile('./dist/package.json', JSON.stringify({
 	"exports": {
 		".": "./app.js"
 	},
-	"dependencies": {
-		"goovplc": "^0.7.4"
-	},
 	"devDependencies": {},
 	"scripts": {
 		"start": "node ./app.js",
