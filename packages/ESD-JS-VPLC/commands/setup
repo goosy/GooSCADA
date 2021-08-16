@@ -6,14 +6,11 @@
 # 	sudo apt-get install -y nodejs
 # fi
 
-# sed -i '/export NODE_OPTIONS/d'  ~/.bashrc 
-# sed -i '$a\export NODE_OPTIONS=--experimental-modules'  ~/.bashrc 
-# NODE_OPTIONS=--experimental-modules
 
 if command -v pm2 >/dev/null 2>&1; then
     echo pm2 is installed.
 else
-    call npm install pm2 -g
+    call yarn global add pm2
 fi
 
-# npm install --production
+yarn
