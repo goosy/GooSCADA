@@ -301,7 +301,7 @@ export class DTTag extends ComplexTag {
     };
 
     /**
-     * 接受 S7 DT 字面量，或 JS Date 对象
+     * 接受 String(内容为 S7 DT 字面量)，或 JS Date 对象
      * 范围 DT#1990-1-1-0:0:0.0 to DT#2089-12-31-23:59:59.999
      * @param {string|Date} dt
      */
@@ -311,10 +311,17 @@ export class DTTag extends ComplexTag {
             datestr = dt.toISOString().replace("Z", "").replace("T", "-");
             week = dt.getDay();
         } else if (typeof (dt) == "string") {
-            datestr = dt.toLowerCase().replace("date_and_time#", "").replace("dt#", "");
+            datestr = dt.toLowerCase();
+            if (datestr.startsWith('date_and_time#')) {
+                datestr = datestr.substring(14);
+            } else if (datestr.startsWith('dt#')) {
+                datestr = datestr.substring(3);
+            } else {
+                datestr = '';
+            }
             if (!/^\d+-\d+-\d+-\d+:\d+:\d+\.\d+/.test(datestr)) throw new Error('input error, must like "DT#2089-12-31-23:59:59.999"!');
         } else {
-            throw new Error("input error, parameter must be a string or Date or Number object.");
+            throw new Error("input error, parameter must be a string or Date object.");
         }
         let [Y, M, D, H, I, S, MS] = datestr.split(/[-_:\.]/).map(str => parseInt(str));
         if (week == -1) week = new Date(Y, M - 1, D, H, I, S, MS).getDay();
@@ -336,7 +343,7 @@ export class DTTag extends ComplexTag {
      * @constructor
      * @param {S7MParamter}
      */
-    constructor({ name = "", value }) {
+    constructor({ name = "", value = 'DT#1990-1-1-0:0:0.0' }) {
         super({ name, type: "DT", value });
         this.addTags([year, month, day, hours, minutes, seconds, msL, msH]);
     }

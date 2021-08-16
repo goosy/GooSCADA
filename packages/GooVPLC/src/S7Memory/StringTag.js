@@ -34,7 +34,7 @@ export class StringTag extends ComplexTag {
      * 
      */
     constructor(
-        { name = "", length = 254, type = "STRING", value }
+        { name = "", length = 254, type = "STRING", value = "" }
             = { name: "", length: 254, type: "STRING" }
     ) {
         if (length < 1 || length > 254) throw new Error('length must be between 1 and 254');
