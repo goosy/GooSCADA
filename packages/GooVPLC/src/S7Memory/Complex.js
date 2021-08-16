@@ -29,15 +29,17 @@ export class Complex extends S7Memory {
         return [...this.#tags];
     }
     /**
-     * @param {string[]} path
-     * @return {S7Tag}
+     * return S7Tag object for name form 'tag1.tag2....tagn'
+     * @param {string[]} name
+     * @return {S7Tag|null}
      */
-    get_tag(...path) {
-        const name = path.shift();
+    get_tag(name) {
+        const dotIndex = name.indexOf('.');
+        const basename = dotIndex === -1 ? name : name.substring(0, dotIndex);
         for (const tag of this.tags) {
-            if (tag.name === name) {
-                if (path.length == 0) return tag;
-                return tag.get_tag(...path);
+            if (tag.name === basename) {
+                if (dotIndex === -1) return tag;
+                return tag.get_tag(name.substring(1 + dotIndex));
             }
         }
         return null;

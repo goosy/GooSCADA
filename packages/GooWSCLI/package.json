@@ -1,6 +1,6 @@
 {
 	"name": "goowscli",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "a CLI communicate with GooVPLC.",
 	"type": "module",
 	"main": "./wscli.cjs",

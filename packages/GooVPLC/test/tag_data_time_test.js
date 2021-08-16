@@ -10,12 +10,12 @@ t.join(db, [0]);
 t.mount(buff);
 console.log(`S7Tag ${t.name} :`);
 // t.pair_value = [789, 3];
-t.value = "S5T#1h_13m_26s_990ms";
+t.value = 'S5T#1h_13m_26s_990ms';
 console.log('value:', t.value);
 console.log('pair_value:', t.pair_value);
 console.log('buffer:', t.buffer);
 console.log('raw:', buff);
-console.log("\n");
+console.log('\n');
 
 console.log("================================")
 t = createMemory({ type: "DATE", name: "myDate" });
@@ -29,7 +29,7 @@ console.log('rawValue:', t.rawValue);
 console.log('JSDate:', t.JSDate);
 console.log('buffer:', t.buffer);
 console.log('raw:', buff);
-console.log("\n");
+console.log('\n');
 
 console.log("================================")
 t = createMemory({ type: "TOD", name: "myTOD" });
@@ -41,7 +41,7 @@ console.log('rawValue:', t.rawValue);
 console.log('value:', t.value);
 console.log('buffer:', t.buffer);
 console.log('raw:', buff);
-console.log("\n");
+console.log('\n');
 
 console.log("================================")
 t = createMemory({ type: "TIME", name: "myTime" });
@@ -53,7 +53,7 @@ console.log('rawValue:', t.rawValue);
 console.log('value:', t.value);
 console.log('buffer:', t.buffer);
 console.log('raw:', buff);
-console.log("\n");
+console.log('\n');
 
 console.log("================================")
 t = createMemory({ type: "DT", name: "myDateAndTime" });
@@ -66,4 +66,4 @@ console.log('date:', t.date);
 console.log('get_tag("year").value:', t.get_tag("year").value);
 console.log('buffer:', t.buffer);
 console.log('raw:', buff);
-console.log("\n");
+console.log('\n');

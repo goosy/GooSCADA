@@ -13,38 +13,44 @@ function onMessage(ws, s7plc) {
         let message = event.data;
         try {
             const msg = JSON.parse(message);
-            const name = msg?.name?.split('/');
+            const name = msg?.name;
             let action = msg?.action;
             let value = msg?.value;
             let error = false;
             if (!name || !action || !s7plc?.get_mem) return;
-            const mem = s7plc.get_mem(...name);
-            if (!mem?.buffer) error = msg.name + " memory does not exist!";
-            else if (action == "subscribe") {
-                const action = "subscribeResponse";
-                const name = msg.name;
-                value = mem.value;
-                mem.on("valuechange", () => {
-                    if (ws.isAlive) {
-                        const value = mem.value;
-                        ws.send(JSON.stringify({
-                            action,
-                            name,
-                            value
-                        }));
-                    }
-                })
+            const mem = s7plc.get_mem(name);
+            let memvalue;
+            function getvalue() {
+                if (mem?.hasValue) {
+                    return mem.value;
+                } else {
+                    return mem.buffer;
+                }
             }
-            else if (action == "read") {
-                if (mem instanceof ElementaryTag) value = mem.value;
-                else value = mem.buffer;
-            } else if (action == "write") {
+            function subhandler() {
+                if (ws.isAlive) {
+                    ws.send(JSON.stringify({
+                        action: "subscribeResponse",
+                        name,
+                        value: getvalue()
+                    }));
+                }
+            }
+            // parse action
+            if (!mem?.buffer) {
+                error = name + " memory does not exist!";
+            } else if (action == "subscribe") {
+                value = getvalue();
+                mem.on("valuechange", subhandler);
+            } else if (action == "read") {
+                value = getvalue();
+            } else if (action == "write" && mem.hasValue) {
                 mem.value = value;
                 value = mem.value;
             } else {
                 error = "wrong request action!";
             }
-            const ret = error ? { error } : { action: action + "Response", name: msg.name, value };
+            const ret = error ? { error } : { action: action + "Response", name, value };
             ws.send(JSON.stringify(ret));
         } catch (err) {
             console.error(err);
@@ -62,7 +68,7 @@ const interval = setInterval(() => {
             return;
         }
         ws.isAlive = false;
-        ws.ping("are you alive?",()=>{
+        ws.ping("are you alive?", () => {
             ws.isAlive = true;
         });
     });

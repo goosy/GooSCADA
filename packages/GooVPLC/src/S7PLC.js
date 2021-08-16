@@ -54,16 +54,17 @@ export class S7PLC extends snap7.S7Server {
     }
     /**
      * 获得指定Tag
-     * 用tag的层级名称做为参数：数据区名,Tag名1,...,Tagn
-     * 比如 get_tag("DB8","node","flow")
+     * 用tag的层级名称做为参数：数据区名.Tag名1.Tag名2.....Tagn
+     * 比如 get_mem("DB8.node.flow")
      * 如不存在，则返回null
      * @param {string[]} path
      * @return {S7Tag|null}
     */
-    get_mem(...path) {
-        let area = this.get_area(path.shift());
-        if (path.length === 0) return area;
-        return area?.get_tag(...path);
+    get_mem(name) {
+        const dotIndex = name.indexOf('.');
+        const area = this.get_area(dotIndex === -1 ? name : name.substring(0, dotIndex));
+        if (area && dotIndex === -1) return area;
+        return area?.get_tag(name.substring(1 + dotIndex));
     }
 
     /**

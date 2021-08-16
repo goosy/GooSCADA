@@ -17,7 +17,7 @@ const props = defineProps({
     id: String,
 });
 const hasSubTag = struct => struct.hasOwnProperty("tags");
-const getSubID = struct => props.id + '/' + struct.name;
+const getSubID = struct => props.id + '.' + struct.name;
 </script>
 
 <style scoped>
