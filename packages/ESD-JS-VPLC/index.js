@@ -10,6 +10,7 @@ import { createHttpServer, setRouterOptions } from "goohmi";
 const [, , plc_config_path = './conf/'] = process.argv;
 const { plc_config_JSON } = await import(plc_config_path + "config.js");
 const { connections } = await import(plc_config_path + "connections.js");
+const { program } = await import(plc_config_path + "program.js"); // vplc自己的处理程序
 
 // set title
 import { setTitle } from "./src/setTitle.js";
@@ -27,6 +28,7 @@ s7plc.on("write", (tagObj, buffer) => {
     console.log("write: ", buffer);
 })
 s7plc.start_serve();
+program(s7plc);
 
 // ===== create HTTP Server for HMI serve 
 setRouterOptions({

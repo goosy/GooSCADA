@@ -10,17 +10,21 @@ import { createMemory } from "./S7Memory/index.js";
 
 /**
  * Area type abbreviation
+ * in snap7 enum:
+ * "PE": s7server.srvAreaPE = 0: Process inputs
+ * "PA": s7server.srvAreaPA = 1: Process outputs
+ * "MK": s7server.srvAreaMK = 2: Merkers
+ * "CT": s7server.srvAreaCT = 3: Counters
+ * "TM": s7server.srvAreaTM = 4: Timers
+ * "DB": s7server.srvAreaDB = 5: DB
+ * but in s7server.on("readWrite", (sender, operation, tagObj, buffer, callback) => {})
+ * tagObj.Area are not same value, so need AreaType
  * @readonly
  * @enum {string} 
  */
 const AreaType = {
     /**
-     * @TODO 
-     * "PE": s7server.srvAreaPE : Process inputs
-     * "PA": s7server.srvAreaPA : Process outputs
-     * "MK": s7server.srvAreaMK : Merkers
-     * "CT": s7server.srvAreaCT : Counters
-     * "TM": s7server.srvAreaTM : Timers
+     * @TODO PE PA CT TM
      */
     131: "MK",
     132: "DB"
