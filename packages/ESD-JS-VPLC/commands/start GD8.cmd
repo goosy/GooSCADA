@@ -1,0 +1,1 @@
+node ./app.js ./conf/GD8/

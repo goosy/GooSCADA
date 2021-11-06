@@ -3,10 +3,13 @@
  * MIT License
  */
 
-import { plc_config_JSON } from "./conf/config.js";
-import { connections } from "./conf/connections.js";
 import { S7PLC, createS7Connection, attachWSServer } from "goovplc";
 import { createHttpServer, setRouterOptions } from "goohmi";
+// import { plc_config_JSON } from './conf/config.js';
+// import { connections } from './conf/connections.js';
+const [, , plc_config_path = './conf/'] = process.argv;
+const { plc_config_JSON } = await import(plc_config_path + "config.js");
+const { connections } = await import(plc_config_path + "connections.js");
 
 // set title
 import { setTitle } from "./src/setTitle.js";
