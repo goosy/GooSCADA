@@ -369,10 +369,6 @@ export const plc_config_JSON = {
 					"name": "read_equS5",
 					"type": "BOOL",
 					"value": false,
-				}, { // 读取流量6当量
-					"name": "read_equS6",
-					"type": "BOOL",
-					"value": false,
 				}, { // 读取泵操作延时
 					"name": "read_pump_change_delay",
 					"type": "BOOL",

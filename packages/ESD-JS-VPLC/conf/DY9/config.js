@@ -1,18 +1,18 @@
 export const plc_config_JSON = {
-	"host": "192.168.38.11", //S7 http websocket 服务主机地址
-	"port": 8081, //http and ws serve port
-	"description": "永安站孤永线出口",
+	"host": "192.168.31.19", //S7 http websocket 服务主机地址
+	"port": 8019, //http and ws serve port
+	"description": "东营站孤罗线进口",
 	"areas": [ // 可以设置多个数据区
 		{ //数据区 1 开始
-			"name": "nodeYA1",
+			"name": "nodeDY9",
 			"type": "DB", // DB块
 			"DBNO": 8, // DB块号
 			"bytes": 50, // DB块长度
 			"tags": [ //分别定义各个变量在数据块中的位置
-				{ // 变量nodeID
+				{ // 节点ID
 					"name": "node_ID",
 					"type": "INT",
-					"value": 8081, //初始值
+					"value": 8019, //初始值
 				}, { // commOK
 					"name": "comm_OK",
 					"type": "BOOL",
@@ -240,7 +240,7 @@ export const plc_config_JSON = {
 		}, //数据区 2 完成
 
 		{ //数据区 3 开始
-			"name": "commands_YA1",
+			"name": "commands_DY9",
 			"type": "DB", // DB块
 			"DBNO": 10, // DB块号
 			"bytes": 50, // DB块长度
@@ -248,7 +248,7 @@ export const plc_config_JSON = {
 				{ // 节点ID
 					"name": "node_ID",
 					"type": "INT",
-					"value": 8081, //初始值
+					"value": 8019, //初始值
 				}, { // 停泵命令
 					"name": "stop_pumps",
 					"type": "BOOL",
