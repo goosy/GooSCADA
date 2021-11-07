@@ -80,7 +80,7 @@ export const plc_config_JSON = {
 						"name": "pressure_AL_F",
 						"type": "BOOL",
 						"value": false, //初始值
-					}, {
+				        }, { // datetime
 						"name": "datetime",
 						"type": "DT",
 						"value": "DT#2021-6-30-0:0:0.0", //初始值					
@@ -104,23 +104,27 @@ export const plc_config_JSON = {
 						"name": "response_code_ex",
 						"type": "INT",
 						"value": 0, //初始值
-					}, { // response_value
-						"name": "response_value",
+					}, { // response_real_value
+						"name": "response_real_value",
 						"type": "REAL",
 						"value": 0.0, //初始值
+					}, { // response_dint_value
+						"name": "response_dint_value",
+						"type": "DINT",
+						"value": 0, //初始值
 					}, { // reserve
 						"name": "reserve",
 						"type": "ARRAY",
 						"element": { type: "BYTE" },
-						"length": 18, 
+						"length": 14, 
 					}]
 				}, {
-					"name": "nodeSC1",
+					"name": "nodeSC8",
 					"type": "STRUCT",
 					"tags": [{ // 变量nodeID
 						"name": "nodeID",
 						"type": "INT",
-						"value": 8181, //初始值
+						"value": 7108, //初始值
 					}, { // commOK
 						"name": "comm_OK",
 						"type": "BOOL",
@@ -209,23 +213,27 @@ export const plc_config_JSON = {
 						"name": "response_code_ex",
 						"type": "INT",
 						"value": 0, //初始值
-					}, { // response_value
-						"name": "response_value",
+					}, { // response_real_value
+						"name": "response_real_value",
 						"type": "REAL",
 						"value": 0.0, //初始值
+					}, { // response_dint_value
+						"name": "response_dint_value",
+						"type": "DINT",
+						"value": 0, //初始值
 					}, { // reserve
 						"name": "reserve",
 						"type": "ARRAY",
 						"element": { type: "BYTE" },
-						"length": 18, 
+						"length": 14, 
 					}]
 				}, {
-					"name": "nodeKX1",
+					"name": "nodeKX",
 					"type": "STRUCT",
 					"tags": [{ // 变量nodeID
 						"name": "nodeID",
 						"type": "INT",
-						"value": 8179, //初始值
+						"value": 8111, //初始值
 					}, { // commOK
 						"name": "comm_OK",
 						"type": "BOOL",
@@ -314,23 +322,27 @@ export const plc_config_JSON = {
 						"name": "response_code_ex",
 						"type": "INT",
 						"value": 0, //初始值
-					}, { // response_value
-						"name": "response_value",
+					}, { // response_real_value
+						"name": "response_real_value",
 						"type": "REAL",
 						"value": 0.0, //初始值
+					}, { // response_dint_value
+						"name": "response_dint_value",
+						"type": "DINT",
+						"value": 0, //初始值
 					}, { // reserve
 						"name": "reserve",
 						"type": "ARRAY",
 						"element": { type: "BYTE" },
-						"length": 18, 
+						"length": 14, 
 					}]
 				}, {
-					"name": "nodeSC2",
+					"name": "nodeSC",
 					"type": "STRUCT",
 					"tags": [{ // 变量nodeID
 						"name": "nodeID",
 						"type": "INT",
-						"value": 8191, //初始值
+						"value": 8110, //初始值
 					}, { // commOK
 						"name": "comm_OK",
 						"type": "BOOL",
@@ -419,15 +431,19 @@ export const plc_config_JSON = {
 						"name": "response_code_ex",
 						"type": "INT",
 						"value": 0, //初始值
-					}, { // response_value
-						"name": "response_value",
+					}, { // response_real_value
+						"name": "response_real_value",
 						"type": "REAL",
 						"value": 0.0, //初始值
+					}, { // response_dint_value
+						"name": "response_dint_value",
+						"type": "DINT",
+						"value": 0, //初始值
 					}, { // reserve
 						"name": "reserve",
 						"type": "ARRAY",
 						"element": { type: "BYTE" },
-						"length": 18, 
+						"length": 14, 
 					}]
 				},
 			],
@@ -605,6 +621,14 @@ export const plc_config_JSON = {
 					"name": "read_temperature_AL",
 					"type": "BOOL",
 					"value": false,
+				}, { // 读取温度死区
+					"name": "read_temperature_DZ",
+					"type": "BOOL",
+					"value": false,
+				}, { // 读取温度容错时间
+					"name": "read_temperature_FT",
+					"type": "BOOL",
+					"value": false,
 				}, { // 读取零点值
 					"name": "read_pressure_zero",
 					"type": "BOOL",
@@ -627,6 +651,34 @@ export const plc_config_JSON = {
 					"value": false,
 				}, { // 读取低低值
 					"name": "read_pressure_AL",
+					"type": "BOOL",
+					"value": false,
+				}, { // 读取压力死区
+					"name": "read_pressure_DZ",
+					"type": "BOOL",
+					"value": false,
+				}, { // 读取压力容错时间
+					"name": "read_pressure_FT",
+					"type": "BOOL",
+					"value": false,
+				}, { // 读取流量1
+					"name": "read_flow_1",
+					"type": "BOOL",
+					"value": false,
+				}, { // 读取流量2
+					"name": "read_flow_2",
+					"type": "BOOL",
+					"value": false,
+				}, { // 读取流量3
+					"name": "read_flow_3",
+					"type": "BOOL",
+					"value": false,
+				}, { // 读取流量4
+					"name": "read_flow_4",
+					"type": "BOOL",
+					"value": false,
+				}, { // 读取流量5
+					"name": "read_flow_5",
 					"type": "BOOL",
 					"value": false,
 				}, { // 读取流量1当量
@@ -657,93 +709,23 @@ export const plc_config_JSON = {
 					"name": "read_pump_change_delay",
 					"type": "BOOL",
 					"value": false,
-				}, { // 扩展命令参数
-					"name": "command_para",
+				}, { // 扩展命令代码
+					"name": "command_code",
+					"type": "INT",
+					"value": 0,
+				}, { // 扩展命令参数 实数型
+					"name": "command_para_real",
 					"type": "REAL",
-					"value": false,
-				}, { // 写入零点值
-					"name": "write_temperature_zero",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入量程值
-					"name": "write_temperature_span",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入高高值
-					"name": "write_temperature_AH",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入高值
-					"name": "write_temperature_WH",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入低值
-					"name": "write_temperature_WL",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入低低值
-					"name": "write_temperature_AL",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入零点值
-					"name": "write_pressure_zero",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入量程值
-					"name": "write_pressure_span",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入高高值
-					"name": "write_pressure_AH",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入高值
-					"name": "write_pressure_WH",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入低值
-					"name": "write_pressure_WL",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入低低值
-					"name": "write_pressure_AL",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入流量1当量
-					"name": "write_equS1",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入流量2当量
-					"name": "write_equS2",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入流量3当量
-					"name": "write_equS3",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入流量4当量
-					"name": "write_equS4",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入流量5当量
-					"name": "write_equS5",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入流量6当量
-					"name": "write_equS6",
-					"type": "BOOL",
-					"value": false,
-				}, { // 写入泵操作延时
-					"name": "write_pump_change_delay",
-					"type": "BOOL",
-					"value": false,
+					"value": 0.0,
+				}, { // 扩展命令参数 长整型
+					"name": "command_para_dint",
+					"type": "DINT",
+					"value": 0,
 				}, { // 保留
 					"name": "reserve",
 					"type": "ARRAY",
-					"element": {
-						type: "BYTE",
-					}, 
-					"length": 36,
+					"element": { type: "BYTE" }, 
+					"length": 34,
 				},
 			],
 		}, //数据区 3 完成
