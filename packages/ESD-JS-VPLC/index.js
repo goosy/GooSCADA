@@ -33,17 +33,15 @@ program(s7plc);
 // ===== create HTTP Server for HMI serve 
 setRouterOptions({
     '/conf/data.js': (request, response) => {// 动态生成 /data.js
-        const sendDB = plc_config_JSON.areas[0];
-        const recvDB = plc_config_JSON.areas[1];
+        const DBs = plc_config_JSON.areas;
         response.writeHead(200, {
             'Content-Type': 'application/javascript; charset="UTF-8"'
         });
         response.write(`// auto gen
 const host = '${connections[0].localAddress + ":" + plc_config_JSON.port}';
 const hostdesc = '${plc_config_JSON.description}';
-const sendDB = ${JSON.stringify(sendDB)};
-const recvDB = ${JSON.stringify(recvDB)};
-export {host, hostdesc, sendDB, recvDB};
+const DBs = ${JSON.stringify(DBs)};
+export {host, hostdesc, DBs};
 `);
         response.end();
     }

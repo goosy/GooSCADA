@@ -434,6 +434,128 @@ export const plc_config_JSON = {
 		}, //数据区 1 完成
 
 		{ //数据区 2 开始
+			"name": "node_para",
+			"type": "DB", // DB块
+			"DBNO": 9, // DB块号
+			"bytes": 112, // DB块长度
+			"tags": [ //分别定义各个变量在数据块中的位置
+				{ // temperature_zero
+					"name": "temperature_zero",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // temperature_span
+					"name": "temperature_span",
+					"type": "REAL",
+					"value": 100, //初始值
+				}, { // temperature_AH
+					"name": "temperature_AH",
+					"type": "REAL",
+					"value": 100, //初始值
+				}, { // temperature_WH
+					"name": "temperature_WH",
+					"type": "REAL",
+					"value": 100, //初始值
+				}, { // temperature_WL
+					"name": "temperature_WL",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // temperature_AL
+					"name": "temperature_AL",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // temperature_DZ
+					"name": "temperature_DZ",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // temperature_FT
+					"name": "temperature_FT",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // pressure_zero
+					"name": "pressure_zero",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // pressure_span
+					"name": "pressure_span",
+					"type": "REAL",
+					"value": 4, //初始值
+				}, { // pressure_AH
+					"name": "pressure_AH",
+					"type": "REAL",
+					"value": 1, //初始值
+				}, { // pressure_WH
+					"name": "pressure_WH",
+					"type": "REAL",
+					"value": 1, //初始值
+				}, { // pressure_WL
+					"name": "pressure_WL",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // pressure_AL
+					"name": "pressure_AL",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // pressure_DZ
+					"name": "pressure_DZ",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // pressure_FT
+					"name": "pressure_FT",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // flow_1
+					"name": "flow_1",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // flow_2
+					"name": "flow_2",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // flow_3
+					"name": "flow_3",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // flow_4
+					"name": "flow_4",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // flow_5
+					"name": "flow_5",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // flow_smooth_factor
+					"name": "flow_smooth_factor",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // equS1
+					"name": "equS1",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // equS2
+					"name": "equS2",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // equS3
+					"name": "equS3",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // equS4
+					"name": "equS4",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // equS5
+					"name": "equS5",
+					"type": "REAL",
+					"value": 0, //初始值
+				}, { // pump_change_delay
+					"name": "pump_change_delay",
+					"type": "REAL",
+					"value": 0, //初始值
+				},
+			],
+		}, //数据区 2 完成
+
+		{ //数据区 3 开始
 			"name": "commands_GD8",
 			"type": "DB", // DB块
 			"DBNO": 10, // DB块号
@@ -624,7 +746,7 @@ export const plc_config_JSON = {
 					"length": 36,
 				},
 			],
-		}, //数据区 2 完成
+		}, //数据区 3 完成
 
 	]
 };

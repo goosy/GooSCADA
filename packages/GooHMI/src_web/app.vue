@@ -5,11 +5,10 @@
     <span id="host">{{ s7plc.host }}</span>
     <span> 通信状态:{{ ws_state }}</span>
   </p>
-  <s7-struct :struct="s7plc.sendDB" :id="s7plc.sendDB.name" />
-  <s7-struct :struct="s7plc.recvDB" :id="s7plc.recvDB.name" />
+  <s7-struct v-for="DB in s7plc.DBs" :struct="DB" :id="DB.name" />
 </template>
 <script setup>
-import { host, hostdesc, sendDB, recvDB } from "/conf/data.js";
+import { host, hostdesc, DBs } from "/conf/data.js";
 import S7Struct from "./components/S7Struct.vue";
 import { computed, reactive, ref, inject } from "vue";
 document.title = hostdesc;
@@ -22,8 +21,7 @@ ws.addEventListener('close', update_ws_state);
 const s7plc = reactive({
   host,
   hostdesc,
-  sendDB,
-  recvDB,
+  DBs,
 });
 const ws_state = computed(() => {
   switch (ws_state_id.value) {
