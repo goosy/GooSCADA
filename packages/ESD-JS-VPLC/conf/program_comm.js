@@ -45,28 +45,25 @@ export function do_cmd(plc, addr_options) {
     let i = 128, j = 256;
     const read_codes = {}, write_codes = {};
     para_origin.forEach(item => {
-        let value;
+        let code;
         const addr = para_data.get_tag(item.name);
         if (!item.writeonly) {
-            value = i++;
-            read_codes["read_" + item.name] = {
+            code = i++;
+            read_codes[code] = {
                 type: item.type,
-                value,
+                str: "read_" + item.name,
+                code,
                 addr,
                 data_type: item.type,
+                busy: false,
             };
         }
         if (!item.readonly) {
-            // write_codes["write_" + item.name] = {
-            //     type: item.type,
-            //     value,
-            //     addr,
-            //     data_type: item.type,
-            // };
-            value = j++;
-            write_codes[value] = {
+            code = j++;
+            write_codes[code] = {
                 type: item.type,
                 str: "write_" + item.name,
+                code,
                 addr,
                 data_type: item.type,
             };
@@ -123,28 +120,52 @@ export function do_cmd(plc, addr_options) {
     const response_dint_value = node_data.get_tag("response_dint_value");
 
     // 读命令
-    Object.entries(read_codes).forEach(([cmd_str, cmd]) => {
-        const cmd_tag = cmds_data.get_tag(cmd_str);
-        const value_tag = cmd.addr;
-        cmd_tag.on("valuechange", (oldvalue, newvalue) => {
-            if (newvalue) {// 有命令时
-                if (cmd.data_type == "Real") {
-                    response_real_value.value = value_tag.value;
-                } else {
-                    response_dint_value.value = value_tag.value;
-                }
-                response_code_ex.value = cmd.value;
-            } else {
-                if (response_code_ex.value == cmd.value) response_code_ex.value = 0;
+    const response_buffer = [];
+    setInterval(() => {
+        let curr_cmd;
+        let response_done;
+        // 取得第一个未处理的命令
+        do {
+            response_done = false;
+            curr_cmd = response_buffer[0];
+            if (curr_cmd && !read_codes[curr_cmd.code].busy) {
+                response_buffer.shift(); // 已完成则出队
+                response_done = true;
             }
-        })
-    })
+        } while (response_done);
+        // 处理当前命令
+        if (curr_cmd) {// 有命令时
+            const value = curr_cmd.value_tag.value;
+            if (curr_cmd.data_type == "Real") {
+                response_real_value.value = value;
+            } else {
+                response_dint_value.value = value;
+            }
+            response_code_ex.value = curr_cmd.code;
+        } else {
+            response_code_ex.value = 0;
+        }
+    }, 1000);
+    Object.values(read_codes).forEach((read_code) => {
+        const code = read_code.code;
+        const value_tag = read_code.addr;
+        const data_type = read_code.data_type;
+        const cmd_tag = cmds_data.get_tag(read_code.str);
+        cmd_tag.on("valuechange", (oldvalue, newvalue) => {
+            if (newvalue) { // 有命令传入则压入应答缓冲中
+                response_buffer.push({ code, value_tag, data_type });
+                read_code.busy = true;
+            } else { // 有命令已处理或撤消
+                read_code.busy = false;
+            }
+        });
+    });
 
     // 写命令
     command_code.on("valuechange", (oldvalue, newvalue) => {
         const cmd = write_codes[newvalue];
         if (cmd) {// 有命令时
-            const value_tag = cmd.addr;console.log(value_tag)
+            const value_tag = cmd.addr;
             if (cmd.data_type == "Real") {
                 value_tag.value = command_para_real.value;
             } else {
