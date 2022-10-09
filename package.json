@@ -4,8 +4,17 @@
   "description": "a monorepos for automation system",
   "author": "goosy <goosy.jo@gmail.com>",
   "private": true,
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  },
   "workspaces": [
     "packages/*"
   ],
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^19.0.2",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "rollup": "^2.79.1"
+  },
   "license": "MIT"
 }

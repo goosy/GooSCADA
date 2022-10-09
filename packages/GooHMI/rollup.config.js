@@ -2,7 +2,7 @@ import pkg from './package.json';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 // import replace from '@rollup/plugin-replace';
-import copy from 'rollup-plugin-copy'
+import copy from 'rollup-plugin-copy';
 import { builtinModules as external } from 'module';
 
 export default {

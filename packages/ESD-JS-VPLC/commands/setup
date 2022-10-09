@@ -10,7 +10,7 @@
 if command -v pm2 >/dev/null 2>&1; then
     echo pm2 is installed.
 else
-    call yarn global add pm2
+    call pnpm -g add pm2
 fi
 
-yarn
+pnpm install

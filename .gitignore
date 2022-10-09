@@ -63,9 +63,16 @@ typings/
 # jet brain
 .idea
 
-# configuration
+# package
+.npm
 package-lock.json
+.yarn-integrity
 yarn.lock
+.yarnrc.yml
+.yarn/
+.pnp*js
+pnpm-lock.yaml
+
 # DS
 .DS_Store
 
@@ -79,3 +86,4 @@ dist-ssr
 *.local
 /legacy/
 wscli.*js
+packages/ESD-JS-VPLC/conf/**/

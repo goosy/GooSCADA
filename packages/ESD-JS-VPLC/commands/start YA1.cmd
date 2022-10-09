@@ -1,1 +1,0 @@
-node ./app.js ./conf/YA1/
