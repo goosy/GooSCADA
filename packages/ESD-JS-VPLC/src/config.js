@@ -1,0 +1,16 @@
+import { join } from 'path';
+import { GCL } from './gcl.js';
+
+function gen_load(filename) {
+    return async function (conf_path) {
+        const gcl = await GCL.load_file(join(conf_path, filename));
+        return gcl.document.toJS();
+    }
+}
+
+export const get_plc_config = gen_load('./config.yaml');
+export const get_connections = gen_load('./connections.yaml');
+export const get_custom_program = async function (conf_path) {
+    const cp_path = new URL("file:" + join(conf_path, "program.js"));
+    return (await import(cp_path)).program; // vplc自己的处理程序
+}

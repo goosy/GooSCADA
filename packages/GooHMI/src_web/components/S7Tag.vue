@@ -21,7 +21,21 @@ export default {
             set: value => write_tag(id, value)
         });
         const label = type === "DB" ? "数据块符号" : "变量名称";
-        const has_value = ["BOOL", "BYTE", "WORD", "INT", "DINT", "DWORD", "REAL", "DT", "STRING"].includes(type);
+        const has_value = [
+            "BOOL",
+            "BYTE",
+            "INT",
+            "UINT",
+            "DINT",
+            "UDINT",
+            "SINT",
+            "USINT",
+            "WORD",
+            "DWORD",
+            "REAL",
+            "DT",
+            "STRING"
+        ].includes(type);
         if (has_value) add_tag(id, initvalue);
         const js_type = type === "BOOL" ? Boolean : (
             ["DT", "STRING"].includes(type) ? String : (
@@ -103,4 +117,5 @@ export default {
 </script>
 
 <style>
+
 </style>

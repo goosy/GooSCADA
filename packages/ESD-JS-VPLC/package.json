@@ -1,11 +1,11 @@
 {
-	"name": "esd-gb-vplc",
-	"version": "0.6.0",
+	"name": "s7vplc",
+	"version": "1.0.0",
 	"type": "module",
-	"description": "a nodejs-based Virtual S7 PLC CPU provide flow data through S7.",
-	"main": "./dist/app.js",
+	"description": "a nodejs-based Virtual S7 PLC CPU provide specified data through S7.",
+	"main": "./lib/app.js",
 	"exports": {
-		".": "./dist/app.js"
+		".": "./lib/app.js"
 	},
 	"engines": {
 		"node": ">=14.8.0"
@@ -15,15 +15,15 @@
 		"goovplc": "workspace:^0.8.0"
 	},
 	"devDependencies": {
-		"rollup-plugin-copy": "^3.4.0",
-		"rollup-plugin-terser": "^5.0.0"
+		"rollup-plugin-terser": "^5.0.0",
+		"yaml": "^2.1.3"
 	},
 	"directories": {
-		"dist": "dist"
+		"lib": "lib"
 	},
 	"scripts": {
-		"dev": "node ./index.js",
-		"start": "node ./dist/app.js",
+		"dev": "node ./dev.js",
+		"start": "node ./cli.js",
 		"build": "rollup -c",
 		"watch": "rollup -c -w"
 	},
