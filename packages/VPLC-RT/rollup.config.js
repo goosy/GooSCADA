@@ -5,7 +5,7 @@ import { terser } from 'rollup-plugin-terser';
 
 const production = process.env.VPLC == "production";
 export default {
-	input: ['./index.js'],
+	input: ['./src/index.js'],
 	output: {
 		file: pkg["exports"]["."],
 		format: 'es',

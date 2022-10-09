@@ -1,5 +1,5 @@
 {
-	"name": "s7vplc",
+	"name": "vplc-rt",
 	"version": "1.0.0",
 	"type": "module",
 	"description": "a nodejs-based Virtual S7 PLC CPU provide specified data through S7.",

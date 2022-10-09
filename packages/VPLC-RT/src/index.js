@@ -5,8 +5,8 @@
 
 import { S7PLC, createS7Connection, attachWSServer } from "goovplc";
 import { createHttpServer, setRouterOptions } from "goohmi";
-import { get_plc_config, get_connections, get_custom_program } from './src/config.js';
-import { setTitle } from "./src/setTitle.js";
+import { get_plc_config, get_connections, get_custom_program } from './config.js';
+import { setTitle } from "./setTitle.js";
 
 export async function start(conf_path) {
     const plc_config = await get_plc_config(conf_path);
