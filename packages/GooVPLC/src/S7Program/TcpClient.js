@@ -1,23 +1,32 @@
 import { Socket } from "net";
-/** @typedef {import('../S7Memory/S7Memory.js').S7Memory} S7Memory */
+
+/** 
+ * @typedef {import('../S7Memory/S7Memory.js').S7Memory} S7Memory
+ * 
+ * @typedef {object} CommData
+ * @property {S7Memory} send
+ * @property {S7Memory} receive
+ */
+
 /**
  * 通过继承net.Socket类来创建一个TCP客户端
  */
 export class S7TcpClient extends Socket {
-    /** @type {S7Memory} */
-    #send;
+    /** @type {CommData} */
+    #data;
+    get comm_data() {
+        return this.#data;
+    }
     send() {
-        this.write(this.#send.buffer);
+        this.write(this.#data.send.buffer);
         // console.log("send:", this.sendbuffer)
     }
-    /** @type {S7Memory} */
-    #receive;
     /**
      * 接收数据
      * @param {Buffer} buffer
     */
     receive(buffer) {
-        this.#receive.update_buffer(buffer);
+        this.#data.receive.update_buffer(buffer);
         this.emit("received");
     }
     #interval;
@@ -33,14 +42,12 @@ export class S7TcpClient extends Socket {
     /**
      * a tcp scoket class with send and receive buffer supplied
      * @constructor
-     * @param {S7Memory} send_mem
-     * @param {S7Memory} receive_mem
+     * @param {CommData} comm_data
      * @param {SocketConnectOpts} options
      */
-    constructor(send_mem, receive_mem, options) {
+    constructor(comm_data, options) {
         super(options);
-        this.#send = send_mem;
-        this.#receive = receive_mem;
+        this.#data = comm_data;
         this.on("data", this.receive);
         this.setMaxListeners(30);
     }
@@ -48,27 +55,16 @@ export class S7TcpClient extends Socket {
 
 /**
  * create a S7TcpClient and connect to TCPServer supplied
- * @param {S7Memory} send_mem
- * @param {S7Memory} receive_mem
+ * @param {CommData} comm_data
  * @param {SocketConnectOpts&TcpSocketConnectOpts} options
  * @param {function} connectListener
  * @returns {S7TcpClient}
  */
-export function createS7Connection(send_mem, receive_mem, options, connectListener) {
-    let createOpts = {};
-    createOpts.fd = options?.fd ?? undefined;
-    createOpts.allowHalfOpen = options?.allowHalfOpen ?? false;
-    createOpts.readable = options?.readable ?? false;
-    createOpts.writable = options?.writable ?? false;
-    createOpts.signal = options?.signal ?? undefined;
-    const tcp = new S7TcpClient(send_mem, receive_mem, options)
+export function createS7Connection(comm_data, options = {}, connectListener) {
+    const { fd, allowHalfOpen = false, readable = false, writable = false, signal } = options;
+    const tcp = new S7TcpClient(comm_data, { fd, allowHalfOpen, readable, writable, signal })
 
-    let connectOpts = {};
-    connectOpts.port = options?.port ?? 2010;
-    connectOpts.host = options?.host ?? undefined;
-    connectOpts.localAddress = options?.localAddress ?? undefined;
-    connectOpts.localPort = options?.localPort ?? undefined;
-    connectOpts.family = options?.family ?? 4;
+    const { port = 2010, host, localAddress, localPort, family = 4 } = options;
     /**
      * connect to TCPServer supplied
      * @date 2021-06-30
@@ -76,7 +72,7 @@ export function createS7Connection(send_mem, receive_mem, options, connectListen
      * @param {function} connectListener
      * @returns {S7TcpClient}
      */
-    tcp.connect(connectOpts, connectListener);
+    tcp.connect({ port, host, localAddress, localPort, family }, connectListener);
 
     return tcp;
 }

@@ -1,6 +1,5 @@
 import WebSocket from "faye-websocket";
 import { S7PLC } from "../S7PLC.js";
-import { ElementaryTag } from "../S7Memory/ElementaryTag.js";
 
 /**
  * 处理接收到的消息
@@ -19,7 +18,6 @@ function onMessage(ws, s7plc) {
             let error = false;
             if (!name || !action || !s7plc?.get_mem) return;
             const mem = s7plc.get_mem(name);
-            let memvalue;
             function getvalue() {
                 if (mem?.hasValue) {
                     return mem.value;

@@ -28,6 +28,12 @@ export async function start(conf_path) {
         console.log("write: ", buffer);
     })
     s7plc.start_serve();
+    for (const conn of connections) {
+        const send = s7plc.get_mem(conn.send);
+        const receive = s7plc.get_mem(conn.receive);
+        conn.data = { send, receive };
+    }
+    s7plc.connections = connections;
     custom_program(s7plc);
 
     // ===== create HTTP Server for HMI serve 
@@ -59,42 +65,38 @@ export {host, hostdesc, DBs};
     });
 
     // ===== create S7TcpClient to send and receive S7PLC data
-    const conn_options = connections[0];
-    const client = createS7Connection(
-        s7plc.get_mem(conn_options.send),
-        s7plc.get_mem(conn_options.receive),
-        conn_options
-    );
-
-    let timeout = { _destroyed: true },
-        delay = 4000;
-    function delay_connect() {
-        if (timeout._destroyed) timeout = setTimeout(() => {
-            client.connect(conn_options);
-            console.log("try connect to ", conn_options.host, conn_options.port);
-        }, delay);
-        delay = delay < 300000 ? delay * 2 : 300000;
+    for (const conn of connections) {
+        const client = createS7Connection(conn.data, conn);
+        let timeout = { _destroyed: true },
+            delay = 4000;
+        function delay_connect() {
+            if (timeout._destroyed) timeout = setTimeout(() => {
+                client.connect(conn);
+                console.log("try connect to ", conn.host, conn.port);
+            }, delay);
+            delay = delay < 300000 ? delay * 2 : 300000;
+        }
+        client.on('connect', () => {
+            console.log("connect the ESD-JS-AS!", conn.name);
+            client.cyclic_send(1000);
+        });
+        client.on('data', (data) => {
+            // 连接成功，接收 data
+            client.receive(data);
+        });
+        client.on("end", function () {
+            console.log("data end");
+        });
+        client.on("error", function (err) {
+            console.log("can't connect.");
+            delay_connect();
+            this.stop_send();
+        });
+        client.on("close", function () {
+            console.log("connection closed");
+            this.stop_send();
+            client.destroy();
+            delay_connect();
+        });
     }
-    client.on('connect', () => {
-        console.log("connect the ESD-JS-AS!", conn_options.name);
-        client.cyclic_send(1000);
-    });
-    client.on('data', (data) => {
-        // 连接成功，接收 data
-        client.receive(data);
-    });
-    client.on("end", function () {
-        console.log("data end");
-    });
-    client.on("error", function (err) {
-        console.log("can't connect.");
-        delay_connect();
-        this.stop_send();
-    });
-    client.on("close", function () {
-        console.log("connection closed");
-        this.stop_send();
-        client.destroy();
-        delay_connect();
-    });
 }

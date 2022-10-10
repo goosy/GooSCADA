@@ -8,5 +8,5 @@
   family: 4                    # IP 栈版本，可用值4和6。默认 4
   type: TCP                    # 通信协议类型
   active: true                 # 是否为主动连接
-  send: nodes                  # 定义发送区在 vplc中的对应结构位置: `区域名.变量名1.变量名2...`
+  send: node_data.basic                  # 定义发送区在 vplc中的对应结构位置: `区域名.变量名1.变量名2...`
   receive: commands            # 定义接收区在 vplc中的对应结构位置: `区域名.变量名1.变量名2...`
