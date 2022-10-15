@@ -1,38 +1,44 @@
 {
-	"name": "vplc-rt",
-	"version": "1.0.0",
-	"type": "module",
-	"description": "a nodejs-based Virtual S7 PLC CPU provide specified data through S7.",
-	"main": "./lib/app.js",
-	"exports": {
-		".": "./lib/app.js"
-	},
-	"engines": {
-		"node": ">=14.8.0"
-	},
-	"dependencies": {
-		"goohmi": "workspace:^0.4.0",
-		"goovplc": "workspace:^0.8.0"
-	},
-	"devDependencies": {
-		"rollup-plugin-terser": "^5.0.0",
-		"yaml": "^2.1.3"
-	},
-	"directories": {
-		"lib": "lib"
-	},
-	"scripts": {
-		"dev": "node ./dev.js",
-		"start": "node ./cli.js",
-		"build": "rollup -c",
-		"watch": "rollup -c -w"
-	},
-	"keywords": [
-		"PLC",
-		"S7",
-		"SCADA",
-		"nodejs"
-	],
-	"author": "goosy.jo@gmail.com",
-	"license": "MIT"
+  "name": "vplc-rt",
+  "version": "1.0.1",
+  "type": "module",
+  "description": "a nodejs-based Virtual S7 PLC CPU provide specified data through S7.",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "engines": {
+    "node": ">=14.8.0"
+  },
+  "dependencies": {
+    "goohmi": "workspace:^0.4.0",
+    "goovplc": "workspace:^0.8.0"
+  },
+  "devDependencies": {
+    "mri": "^1.2.0",
+    "rimraf": "^3.0.2",
+    "rollup-plugin-terser": "^5.0.0",
+    "yaml": "^2.1.3"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "bin": {
+    "vplc": "./cli.js"
+  },
+  "scripts": {
+    "clean": "rimraf ./lib",
+    "dev": "nodemon ./dev.js",
+    "start": "node ./cli.js",
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "keywords": [
+    "PLC",
+    "S7",
+    "SCADA",
+    "nodejs"
+  ],
+  "author": "goosy.jo@gmail.com",
+  "license": "MIT"
 }

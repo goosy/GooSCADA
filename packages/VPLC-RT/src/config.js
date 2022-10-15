@@ -9,8 +9,8 @@ function gen_load(filename) {
 }
 
 export const get_plc_config = gen_load('./config.yaml');
-export const get_connections = gen_load('./connections.yaml');
+export const get_tcps = gen_load('./tcp.yaml');
 export const get_custom_program = async function (conf_path) {
-    const cp_path = new URL("file:" + join(conf_path, "program.js"));
+    const cp_path = new URL("file:" + join(conf_path, "program.mjs"));
     return (await import(cp_path)).program; // vplc自己的处理程序
 }

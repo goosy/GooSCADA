@@ -54,19 +54,19 @@ areas: # 可以设置多个数据区
     - { name: pressure_WH, type: REAL, value: 1, comment: 高值 }
     - { name: pressure_WL, type: REAL, value: 0, comment: 低值 }
     - { name: pressure_AL, type: REAL, value: 0, comment: 低低值 }
-    - { name: pressure_DZ, type: REAL, value: 0, comment: 压力比较死区 }
-    - { name: pressure_FT, type: DINT, value: 0, comment: 压力比较容错时间 }
+    - { name: pressure_DZ, type: REAL, value: 0.05, comment: 压力比较死区 }
+    - { name: pressure_FT, type: DINT, value: 500, comment: 压力比较容错时间 }
     - { name: flow_1, type: REAL, value: 0, comment: 流量1}
     - { name: flow_2, type: REAL, value: 0, comment: 流量2}
     - { name: flow_3, type: REAL, value: 0, comment: 流量3}
     - { name: flow_4, type: REAL, value: 0, comment: 流量4}
     - { name: flow_5, type: REAL, value: 0, comment: 流量5}
-    - { name: flow_smooth_factor, type: REAL, value: 0, comment: 流量平滑权值}
-    - { name: equS1, type: DINT, value: 0, comment: 流量1当量 }
-    - { name: equS2, type: DINT, value: 0, comment: 流量2当量 }
-    - { name: equS3, type: DINT, value: 0, comment: 流量3当量 }
-    - { name: equS4, type: DINT, value: 0, comment: 流量4当量 }
-    - { name: equS5, type: DINT, value: 0, comment: 流量5当量 }
+    - { name: flow_smooth_factor, type: REAL, value: 0.9, comment: 流量平滑权值}
+    - { name: equS1, type: DINT, value: 10000, comment: 流量1当量 }
+    - { name: equS2, type: DINT, value: 10000, comment: 流量2当量 }
+    - { name: equS3, type: DINT, value: 10000, comment: 流量3当量 }
+    - { name: equS4, type: DINT, value: 10000, comment: 流量4当量 }
+    - { name: equS5, type: DINT, value: 10000, comment: 流量5当量 }
     - { name: pump_change_delay, type: DINT, value: 2000, comment: 泵操作延时 }
 
 - comment: 数据区 2
