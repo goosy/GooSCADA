@@ -1,6 +1,6 @@
 import { createApp, reactive } from 'vue'
-import appvue from './app.vue'
-const ws = new WebSocket('ws://' + window.location.host);
+import App from './app.vue'
+const ws = new WebSocket(`ws://${window.location.host}`);
 ws.onopen = (event) => {
     console.log("Connection open ...");
     /** @type {WebSocket} */
@@ -13,8 +13,8 @@ ws.onopen = (event) => {
     });
 };
 ws.onmessage = event => {
-    console.log("Received Message: " + event.data);
-    let ret = JSON.parse(event.data);
+    console.log(`Received Message: ${event.data}`);
+    const ret = JSON.parse(event.data);
     if (ret?.error) return;
     switch (ret.action) {
         case "getSendDBNameResponse":
@@ -95,9 +95,9 @@ function write_tag(name, value) {
 }
 
 const tags = reactive(new Map());
-const app = createApp(appvue);
+const app = createApp(App);
 app
-    .provide("TagMap", tags)
+    .provide("tags", tags)
     .provide("addTag", add_tag)
     .provide("subTagValue", sub_tag)
     .provide("readTagValue", read_tag)

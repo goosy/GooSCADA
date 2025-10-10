@@ -3,7 +3,7 @@ import { inject, computed, nextTick, reactive, ref, toRefs, watch } from "vue";
 const test_mode = process.env.WEBTEST;
 export default {
     setup(props, { attrs, slots, /* emit */ }) {
-        const tags = test_mode ? reactive(new Map()) : inject("TagMap");
+        const tags = test_mode ? reactive(new Map()) : inject("tags");
         const add_tag = test_mode
             ? (name, initValue) => { if (tags.has(name)) return; tags.set(name, initValue); }
             : inject("addTag");
@@ -72,7 +72,8 @@ export default {
                         <span style="cursor:default" onclick={change} >{tag.value ? '✅True' : '⬜False'}</span>
                     </>
                 );
-            } else if (has_value) {
+            }
+            if (has_value) {
                 return (
                     <>
                         <span
@@ -87,7 +88,7 @@ export default {
                         <span v-show={is_changing.value} name="valueedit">
                             <input
                                 type={js_type === String ? 'text' : 'number'}
-                                id={'input_' + id}
+                                id={`input_${id}`}
                                 v-model={new_value.value}
                                 onkeyup={event => {
                                     if (event.keyCode === 13) change();
@@ -95,14 +96,13 @@ export default {
                                 }}
                                 ref={edit_el}
                             />
-                            <button onclick={change}>修改</button>
-                            <button onclick={cancelEdit}>取消</button>
+                            <button type="button" onclick={change}>修改</button>
+                            <button type="button" onclick={cancelEdit}>取消</button>
                         </span>
                     </>
                 )
-            } else {
-                return slots.default?.();
             }
+            return slots.default?.();
         }
 
         return () => (
@@ -116,6 +116,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
