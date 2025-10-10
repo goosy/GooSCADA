@@ -1,7 +1,7 @@
 import { createMemory } from "../src/S7Memory/index.js"
 const db = createMemory({ type: "DB", name: "myDB", bytes: 50 });
 db.mount(Buffer.alloc(50));
-let buff = db.buffer;
+const buff = db.buffer;
 let t;
 
 console.log("================================\n")

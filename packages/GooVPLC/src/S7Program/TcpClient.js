@@ -1,4 +1,4 @@
-import { Socket } from "net";
+import { Socket } from "node:net";
 
 /** 
  * @typedef {import('../S7Memory/S7Memory.js').S7Memory} S7Memory

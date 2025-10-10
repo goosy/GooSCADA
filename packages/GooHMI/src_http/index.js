@@ -1,7 +1,7 @@
-import { createServer } from 'http';
-import { readFile } from 'fs/promises';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { createServer } from 'node:http';
+import { readFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { getMIME } from './file-types.js';
 import { routerOptions, setRouterOptions } from './routerOptions';
 
@@ -13,15 +13,15 @@ setRouterOptions({ // in dist folder, there must have ./public/ and ./conf/ fold
 
 function defaultListener(request, response) {
     let body = "";
-    request.on('data', function (chunk) {
+    request.on('data', (chunk) => {
         body += chunk;
     });
 
-    request.on('end', async function () {
+    request.on('end', async () => {
         /** @type {string} */
         const pathname = request.url;
 
-        if (routerOptions.hasOwnProperty(pathname)) {
+        if (Object.hasOwn(routerOptions,pathname)) {
             await routerOptions[pathname](request, response);
             return;
         }

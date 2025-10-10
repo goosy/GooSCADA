@@ -1,11 +1,11 @@
-import { platform } from 'os';
-import { exec } from 'child_process';
+import { platform } from 'node:os';
+import { exec } from 'node:child_process';
 export function setTitle(title){
     switch (platform()) {
         case 'darwin':
         case 'linux':
         case 'win32':
-            exec("title=" + title + ' && echo - ne "\\e]0;$title\\a"');
+            exec(`title=${title} && echo - ne "\\e]0;$title\\a"`);
             break;
         default:
             console.log("无法确定操作系统!")

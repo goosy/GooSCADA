@@ -42,12 +42,12 @@ export class ElementaryTag extends S7Memory {
         super({ name, type, bytes });
         this.#init_value = value;
         this.on("bufferchange", (start, end) => {
-            this.trigger_value_change(start == end); // only BoolTag start == end
+            this.trigger_value_change(start === end); // only BoolTag start == end
         });
     }
 
     trigger_value_change(isBoolTag) {
-        if (isBoolTag && this.#pre_value == this.value) return;
+        if (isBoolTag && this.#pre_value === this.value) return;
         this.emit("valuechange", this.#pre_value, this.value);
         this.#pre_value = this.value;
     }
@@ -61,8 +61,8 @@ export class ElementaryTag extends S7Memory {
     mount(buff) {
         super.mount(buff); // 调用父类 mount() 以更新 mounted 标志
         // 重新计算本Tag挂载位置
-        let [begin_offset,] = this.start_offset;
-        let bytes = this.bytes == 0 ? 1 : this.bytes;
+        const [begin_offset,] = this.start_offset;
+        const bytes = this.bytes === 0 ? 1 : this.bytes;
         this.buffer = buff.slice(begin_offset, begin_offset + bytes);
         this.value = this.#init_value; // 设置初始值
         this.trigger_value_change();

@@ -57,7 +57,7 @@ export class Complex extends S7Memory {
         if (append_byte_offset < new_byte_offset) {
             this.append_offset = [new_byte_offset, new_bit_offset];
         }
-        if (append_byte_offset == new_byte_offset && append_bit_offset < new_bit_offset) {
+        if (append_byte_offset === new_byte_offset && append_bit_offset < new_bit_offset) {
             this.append_offset = [new_byte_offset, new_bit_offset];
         }
         const new_bytes = this.append_offset[0];
@@ -68,7 +68,9 @@ export class Complex extends S7Memory {
      * @param {S7Tag[]} tags
      */
     addTags(tags) {
-        tags.forEach(tag => this.addTag(tag));
+        for (const tag of tags) {
+            this.addTag(tag);
+        }
     }
 
     /**
@@ -94,7 +96,9 @@ export class Complex extends S7Memory {
         const [begin_offset,] = this.start_offset;
         this.buffer = buff.slice(begin_offset, begin_offset + this.bytes);
         const this_buffer = this.buffer;
-        this.#tags.forEach(tag => tag.mount(this_buffer));
+        for (const tag of this.#tags) {
+            tag.mount(this_buffer);
+        }
     }
 
     /**

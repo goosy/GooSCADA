@@ -11,7 +11,7 @@ export class USIntTag extends ByteTag {
      * @param {number} value 
      */
     set value(value) {
-        let buff = super.value; // 调用基类确保已加载
+        const buff = super.value; // 调用基类确保已加载
         if (value < 0 || value > 255) {
             console.log("Invalid value");
             return;

@@ -50,10 +50,11 @@ export function DEC2BCD(DEC_BYTE) {
  * @return {number[]}
  */
 export function Num2ByteArrayOfBase(num, base) {
-    let ret = [];
-    while (num > 0) {
-        ret.unshift(num % base);
-        num = (num - ret[0]) / base;
+    const ret = [];
+    let n = num;
+    while (n > 0) {
+        ret.unshift(n % base);
+        n = Math.floor(n / base);
     }
     return ret;
 }
@@ -63,10 +64,11 @@ export function Num2ByteArrayOfBase(num, base) {
  * @return {number[]}
  */
 export function Num2ByteArray(num) {
-    let ret = [];
-    while (num != 0) {
-        ret.unshift(num & 0xFF);
-        num >>>= 8;
+    const ret = [];
+    let n = num;
+    while (n !== 0) {
+        ret.unshift(n & 0xFF);
+        n >>>= 8;
     }
     return ret;
 }
@@ -94,7 +96,7 @@ export function ByteArray2Number(byte_list) {
  * @return {number}
  */
 export function BCD2Decimal(BCD) {
-    let DECArray = Num2ByteArray(BCD).map(BCD2DEC);
+    const DECArray = Num2ByteArray(BCD).map(BCD2DEC);
     return ByteArray2NumberByBase(DECArray, 100);
 }
 

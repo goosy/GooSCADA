@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
 import { getMIME } from './file-types.js';
 
 let routerOptions = {
@@ -6,7 +6,7 @@ let routerOptions = {
     conf: './conf',
     '/': async (request, response) => {
         try {
-            const content = await readFile(routerOptions.static + '/index.html');
+            const content = await readFile(`${routerOptions.static}/index.html`);
             response.writeHead(200, { 'Content-Type': getMIME('html') });
             response.write(content);
             response.end();
@@ -26,15 +26,15 @@ let routerOptions = {
     },
     '/reqself': (request, response) => { // 返回请求的文本
         response.writeHead(200, { 'Content-type': getMIME('txt') });
-        response.write(request.mothod + ' ' + request.url + ' HTTP/' + request.httpVersion + '\r\n');
-        for (var h in request.headers) {
-            response.write(h + ':' + request.headers[h] + '\r\n');
+        response.write(`${request.mothod} ${request.url} HTTP/${request.httpVersion}\r\n`);
+        for (const h in request.headers) {
+            response.write(`${h}:${request.headers[h]}\r\n`);
         }
         response.write('\r\n');
-        request.on('data', function (chunk) {
+        request.on('data', (chunk) => {
             response.write(chunk);
         });
-        request.on('end', function (chunk) {
+        request.on('end', (chunk) => {
             response.end();
         })
     }

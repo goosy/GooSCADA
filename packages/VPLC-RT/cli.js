@@ -60,7 +60,7 @@ if (argv.version) {
         { cwd: work_path }
     );
 } else if (cmd === 'list') {
-    exec(`pm2 list`, (error, stdout, stderr) => {
+    exec("pm2 list", (error, stdout, stderr) => {
         if (error) {
             console.error(`exec error: ${error}`);
             return;
@@ -70,7 +70,7 @@ if (argv.version) {
 } else if (cmd === 'init') {
     cp(join(module_path, '.\\conf\\'), work_path, { recursive: true });
 } else if (cmd === 'flush') {
-    exec(`pm2 flush`);
+    exec("pm2 flush");
 } else {
     show_help();
 }

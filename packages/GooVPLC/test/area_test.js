@@ -3,10 +3,9 @@ import { createMemory } from '../src/S7Memory/index.js'
 
 console.log("================================\n")
 
-let buff = Buffer.alloc(50);
-let t;
+const buff = Buffer.alloc(50);
 
-t = createMemory({
+const t = createMemory({
     type: "DB",
     name: "myDB",
     DBNO: 8,
@@ -33,7 +32,7 @@ t = createMemory({
         },
     ],
 });
-t.join({on:function(){}}, [0, 0]);
+t.join({on:()=> {}}, [0, 0]);
 t.mount(buff);
 t.get_tag("bool0").value = true;
 t.get_tag("bool7").value = true;

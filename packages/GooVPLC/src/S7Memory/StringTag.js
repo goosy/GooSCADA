@@ -20,7 +20,7 @@ export class StringTag extends ComplexTag {
     set value(str) {
         if (!this.mounted) throw new Error(`S7Tag:${this.name} have not mount a area`);
         // str 长度最大长度不得超过 this.length，否则只复制合法范围内的字串
-        let length = str.length > this.length ? this.length : str.length;
+        const length = str.length > this.length ? this.length : str.length;
         const buff = this.buffer;
         for (let index = 0; index < length; index++) {
             buff[index + 2] = str.charCodeAt(index);
@@ -38,7 +38,7 @@ export class StringTag extends ComplexTag {
             = { name: "", length: 254, type: "STRING" }
     ) {
         if (length < 1 || length > 254) throw new Error('length must be between 1 and 254');
-        let bytes = length + 2;
+        const bytes = length + 2;
         super({ name, bytes, type, value });
     }
     /**

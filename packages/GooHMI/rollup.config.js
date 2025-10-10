@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 // import replace from '@rollup/plugin-replace';
 import copy from 'rollup-plugin-copy';
-import { builtinModules as external } from 'module';
+import { builtinModules as external } from 'node:module';
 
 export default {
     input: "./src_http/index.js",

@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
 import { Document, parseDocument } from 'yaml';
 
 export class GCL {
@@ -21,7 +21,8 @@ export class GCL {
     }
     get_lines() {
         this.#lines = [];
-        let index, position = 0;
+        let index;
+        let position = 0;
         do {
             index = this.#source.indexOf('\n', position);
             if (index > -1) {
@@ -32,8 +33,6 @@ export class GCL {
         if (position < this.#source.length) this.#lines.push([position, this.#source.length]);
     }
 
-    constructor() { }
-
     get_coorinfo(start, end) {
         const ln = 1 + this.#lines.findIndex(([s, e]) => s <= start && start < e);
         const col = start - this.#lines[ln - 1][0];
@@ -41,19 +40,20 @@ export class GCL {
         return { ln, col, code };
     }
 
-    static async load(yaml, options = {}) {
+    static async load(yaml_or_file, options = {}) {
         const gcl = new GCL();
         const {
             encoding = 'utf8',
             isFile = true,
             filename = '',
         } = options;
+        let yaml;
         if (isFile) {
-            gcl.#file = yaml;
+            gcl.#file = yaml_or_file;
             yaml = gcl.#source = (await readFile(gcl.#file, { encoding }));
         } else {
             gcl.#file = filename;
-            yaml = gcl.#source = yaml;
+            yaml = gcl.#source = yaml_or_file;
         }
         gcl.get_lines();
         gcl.#document = parseDocument(yaml, { version: '1.1' }); // only YAML 1.1 support merge key

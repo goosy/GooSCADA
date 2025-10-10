@@ -11,7 +11,7 @@ export class WordTag extends ElementaryTag {
      * @param {number[]} value
      */
     set value(value) {
-        let buff = super.value; // 调用基类确保已加载
+        const buff = super.value; // 调用基类确保已加载
         buff[0] = value[0];
         buff[1] = value[1];
         this.trigger_value_change();

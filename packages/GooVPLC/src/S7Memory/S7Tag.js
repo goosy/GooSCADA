@@ -31,8 +31,8 @@ export class S7Tag extends S7Memory {
     mount(buff) {
         super.mount(); // 调用父类 mount() 以更新 mounted 标志
         // 重新计算本Tag挂载位置
-        let [begin_offset,] = this.start_offset;
-        let bytes = this.bytes == 0 ? 1 : this.bytes;
-        this.buffer = buff.slice(begin_offset, begin_offset + bytes);
+        const [begin_offset,] = this.start_offset;
+        const bytes = this.bytes === 0 ? 1 : this.bytes;
+        this.buffer = buff.subarray(begin_offset, begin_offset + bytes);
     }
 };

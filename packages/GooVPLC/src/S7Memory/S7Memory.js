@@ -1,4 +1,4 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
 import { MemoryBlock } from './MemoryBlock.js';
 /**
  * @typedef {[number, number]} Offset
@@ -128,7 +128,7 @@ export class S7Memory extends EventEmitter{
      */
     next_word_bound(offset) {
         let [byte_offset,] = this.next_byte_bound(offset);
-        byte_offset = byte_offset % 2 == 0 ? byte_offset : byte_offset + 1;
+        byte_offset = byte_offset % 2 === 0 ? byte_offset : byte_offset + 1;
         return [byte_offset, 0];
     }
 
@@ -145,9 +145,11 @@ export class S7Memory extends EventEmitter{
      */
     change_value_capturing() {
         this.#parent.on("bufferchange", (start, end) => {
-            start = start > this.start_offset[0] ? start : this.start_offset[0];
-            end = end < this.end_offset[0] ? end : this.end_offset[0];
-            if (start <= end) this.emit("bufferchange", start, end);
+            let s = start;
+            let e = end;
+            s = s > this.start_offset[0] ? s : this.start_offset[0];
+            e = e < this.end_offset[0] ? e : this.end_offset[0];
+            if (s <= e) this.emit("bufferchange", s, e);
         })
     }
     /**

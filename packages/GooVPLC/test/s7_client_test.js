@@ -10,8 +10,8 @@ const plcSettings = {
 };
 
 // DBA to read
-let dbNr = 8;
-let dbVars = [
+const dbNr = 8;
+const dbVars = [
     { type: 'INT', start: 0 },
     { type: "BOOL", start: 2, bit: 0 },
     { type: "BOOL", start: 2, bit: 1 },
@@ -20,7 +20,7 @@ let dbVars = [
     { type: "REAL", start: 12 }
 ];
 
-let client = new S7Client(plcSettings);
+const client = new S7Client(plcSettings);
 client.on('error', console.error);
 await client.connect();
 

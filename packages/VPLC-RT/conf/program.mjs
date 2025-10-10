@@ -20,7 +20,7 @@ export function program(plc) {
             || pump_run_list[3].value;
     }
     let timeout_ID;
-    pump_run_list.forEach(run => {
+    for (const run of pump_run_list) {
         run.on("valuechange", (_0, _1) => {
             pump_change_F.value = true;
             clearTimeout(timeout_ID);
@@ -29,19 +29,21 @@ export function program(plc) {
             }, pump_change_delay.value);
             // pump_run_list 决定 pump_run
             pump_run.value = get_pump_run();
-        })
-    });
+        });
+    }
     pump_run.on('valuechange', (_, newvalue) => {
         // 保证值仅由 pump_run_list 决定
         const correct_value = get_pump_run();
-        if (newvalue != correct_value) pump_run.value = correct_value;
+        if (newvalue !== correct_value) pump_run.value = correct_value;
     });
 
     // 停泵命令
     const response_code = node_basic.get_tag("response_code");
     commands.get_tag("basic.stop_pumps").on("valuechange", (_, newvalue) => {
         if (newvalue) {
-            pump_run_list.forEach(run => run.value = false);
+            for (const run of pump_run_list) {
+                run.value = false;
+            }
             response_code.value = 1;
         } else {
             response_code.value = 0;

@@ -4,7 +4,7 @@ export class SIntTag extends ByteTag {
      * @return {number}
      */
     get value() {
-        let v = super.value;
+        const v = super.value;
         return v > 127 ? v - 256 : v; // 调用基类确保已加载
     }
     /**

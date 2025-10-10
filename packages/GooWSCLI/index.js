@@ -1,5 +1,5 @@
 import WebSocket from "faye-websocket";
-import { createInterface } from "readline";
+import { createInterface } from "node:readline";
 
 /**
  * alive check
@@ -25,17 +25,17 @@ function createConn(host) {
     websocket?.close();
     websocket = new WebSocket.Client(host);
     // websocket.on('ping', heartbeat); // faye-websocket have not event:"ping"
-    websocket.on('close', function (event) {
+    websocket.on('close', (event) => {
         clearTimeout(pingTimeout);
         console.log('close', event.code, event.reason);
         websocket = null;
     });
-    websocket.on('message', function (event) {
+    websocket.on('message', (event) => {
         console.log('message', event.data);
         rl.prompt();
         // websocket.close();
     });
-    websocket.on('open', function (event) {
+    websocket.on('open', (event) => {
         console.log('websocket connection created.')
         websocket.alive = true;// heartbeat(); // faye-websocket have not event:"ping"
     });
@@ -46,19 +46,20 @@ function createConn(host) {
  * @date 2021-08-11
  * @param {string} action
  * @param {string} name
- * @param {(number|string|boolean)} value
+ * @param {(number|string|boolean)} num
  */
-function send(action, name, value) {
+function send(action, name, num) {
     if (!websocket?.alive) {
         console.log('websocket have not connected. please connect first.');
         return;
     }
-    const n = Number(value);
-    value = isNaN(n) ? value : n;
+    // try to convert num to number or keep as string
+    const n = Number(num);
+    const value = Number.isNaN(n) ? num : n;
     websocket.send(JSON.stringify({
         action,
         name,
-        value
+        value,
     }));
 }
 
@@ -69,7 +70,7 @@ const rl = createInterface({
 });
 rl.prompt();
 rl.on('line', (line) => {
-    let [, cmd = '', key = '', value = ''] = line.trim().match(/^([^ ]+)?(?: ([^ ]+))?(?: +(.+))?$/);
+    const [, cmd = '', key = '', value = ''] = line.trim().match(/^([^ ]+)?(?: ([^ ]+))?(?: +(.+))?$/);
     switch (cmd) {
         case '':
             break;

@@ -81,17 +81,16 @@ export class MemoryBlock {
      * @type {Offset}
      */
     get end() {
-        let byte_offset = this.#start_bytes,
-            bit_offset = this.#start_bits;
-        if (this.bytes == 0) {
-            if(bit_offset == 7){
+        let byte_offset = this.#start_bytes;
+        let bit_offset = this.#start_bits;
+        if (this.bytes === 0) {
+            if (bit_offset === 7) {
                 byte_offset++;
                 bit_offset = 0;
             } else bit_offset++;
             return [byte_offset, bit_offset];
-        } else {
-            return [byte_offset + this.bytes, 0];
         }
+        return [byte_offset + this.bytes, 0];
     }
 
     /**

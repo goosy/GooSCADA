@@ -11,7 +11,7 @@ export class RealTag extends DWordTag {
      * @param {number} value
      */
     set value(value) {
-        let buff = super.value; // 调用基类确保已加载
+        const buff = super.value; // 调用基类确保已加载
         if (typeof value !== "number") {
             console.log("Invalid value");
             return;

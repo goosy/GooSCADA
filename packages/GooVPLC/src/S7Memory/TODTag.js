@@ -19,7 +19,7 @@ export class TODTag extends UDIntTag {
      */
     get value() {
         let value = super.value; // 调用基类确保已加载
-        let strList = [];
+        const strList = [];
         let remainder;
         remainder = value % msPerSecond;
         strList.unshift(remainder); // 毫秒值
@@ -39,11 +39,11 @@ export class TODTag extends UDIntTag {
      */
     set value(value) {
         let num;
-        if (typeof (value) == "number") num = value;
-        else if (typeof (value) == "string") {
-            let valStr = value.toLowerCase().replace(/^(tod|time_of_day)#/, "");
+        if (typeof (value) === "number") num = value;
+        else if (typeof (value) === "string") {
+            const valStr = value.toLowerCase().replace(/^(tod|time_of_day)#/, "");
             if (!/\d+:\d+:\d+\.\d+$/.test(valStr)) throw new Error('input error, must like "TOD#22:0:56.248"!');
-            let TODList = valStr.split(/:|\./).map((str) => parseInt(str));
+            const TODList = valStr.split(/:|\./).map((str) => Number.parseInt(str));
             num = TODList[0] * msPerHour
                 + TODList[1] * msPerMinute
                 + TODList[2] * msPerSecond

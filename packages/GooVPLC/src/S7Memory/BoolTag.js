@@ -4,8 +4,8 @@ export class BoolTag extends ElementaryTag {
      * @return {boolean}
      */
     get value() {
-        let byte = super.value[0]; // 调用基类确保已加载
-        let bit_number = 1 << this.start_offset[1];
+        const byte = super.value[0]; // 调用基类确保已加载
+        const bit_number = 1 << this.start_offset[1];
         return (byte & bit_number) > 0;
     }
     /**
@@ -14,7 +14,7 @@ export class BoolTag extends ElementaryTag {
      */
     set value(value) {
         let byte = super.value[0]; // 调用基类确保已加载
-        let bit_number = 1 << this.start_offset[1];
+        const bit_number = 1 << this.start_offset[1];
         if (value) byte = byte | bit_number;
         else byte = byte & ~bit_number;
         this.buffer[0] = byte;

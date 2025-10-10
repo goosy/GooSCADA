@@ -70,8 +70,8 @@ httpserver.listen(port, host, () => {
 // ===== create S7TcpClient to send and receive S7PLC data
 for (const conn of tcps) {
     const client = createS7Connection(conn.data, conn);
-    let timeout = { _destroyed: true },
-        delay = 4000;
+    let timeout = { _destroyed: true };
+    let delay = 4000;
     function delay_connect() {
         if (timeout._destroyed) timeout = setTimeout(() => {
             client.connect(conn);
@@ -87,7 +87,7 @@ for (const conn of tcps) {
         // 连接成功，接收 data
         client.receive(data);
     });
-    client.on("end", function () {
+    client.on("end", () => {
         console.log("data end");
     });
     client.on("error", function (err) {

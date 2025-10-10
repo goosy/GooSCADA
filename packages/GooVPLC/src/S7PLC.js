@@ -77,9 +77,9 @@ export class S7PLC extends snap7.S7Server {
      */
     add_area(area) {
         this.#areas.set(area.name, area);
-        this.#areas.set(area.type + (area.type == "DB" ? area.DBNO : ""), area);
+        this.#areas.set(area.type + (area.type === "DB" ? area.DBNO : ""), area);
         area.join(this); // 偏移量强制为[0,0]
-        let buff = Buffer.alloc(area.bytes);
+        const buff = Buffer.alloc(area.bytes);
         area.mount(buff);
     }
 
@@ -105,11 +105,10 @@ export class S7PLC extends snap7.S7Server {
                 area.buffer.copy(buffer, 0, start, end);
                 this.emit("read", tagObj, buffer);
                 return callback(buffer);
-            } else {
-                area.update_buffer(buffer, start);
-                this.emit("write", tagObj, buffer);
-                return callback();
             }
+            area.update_buffer(buffer, start);
+            this.emit("write", tagObj, buffer);
+            return callback();
         });
     }
 

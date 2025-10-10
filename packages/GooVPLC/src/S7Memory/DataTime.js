@@ -34,30 +34,31 @@ const time_base2ms = [10, 100, 1000, 10000];
  * @returns {string}
  */
 function getTimeDurationStr(value) {
-    let strList = [];
+    const strList = [];
+    let v = value;
     let remainder;
-    if (value > 0) {
-        remainder = value % ms_per.second;
-        if (remainder > 0) strList.unshift(remainder + "ms");
-        value = value - remainder;
+    if (v > 0) {
+        remainder = v % ms_per.second;
+        if (remainder > 0) strList.unshift(`${remainder}ms`);
+        v = v - remainder;
     }
-    if (value > 0) {
-        remainder = value % ms_per.minute;
-        if (remainder > 0) strList.unshift(remainder / ms_per.second + "s");
-        value = value - remainder;
+    if (v > 0) {
+        remainder = v % ms_per.minute;
+        if (remainder > 0) strList.unshift(`${remainder / ms_per.second}s`);
+        v = v - remainder;
     }
-    if (value > 0) {
-        remainder = value % ms_per.hour;
-        if (remainder > 0) strList.unshift(remainder / ms_per.minute + "m");
-        value = value - remainder;
+    if (v > 0) {
+        remainder = v % ms_per.hour;
+        if (remainder > 0) strList.unshift(`${remainder / ms_per.minute}m`);
+        v = v - remainder;
     }
-    if (value > 0) {
-        remainder = value % ms_per.day;
-        if (remainder > 0) strList.unshift(remainder / ms_per.hour + "h");
-        value = value - remainder;
+    if (v > 0) {
+        remainder = v % ms_per.day;
+        if (remainder > 0) strList.unshift(`${remainder / ms_per.hour}h`);
+        v = v - remainder;
     }
-    if (value > 0) {
-        strList.unshift(value / ms_per.day + "d");
+    if (v > 0) {
+        strList.unshift(`${v / ms_per.day}d`);
     }
     return strList.join("_");
 }
@@ -68,9 +69,9 @@ function getTimeDurationStr(value) {
  */
 function parse_unit(str) {
     if (str.endsWith('ms')) {
-        return parseInt(str.slice(0, -2));
+        return Number.parseInt(str.slice(0, -2));
     }
-    let value = parseInt(str.slice(0, -1));
+    const value = Number.parseInt(str.slice(0, -1));
     if (str.endsWith('s')) {
         return value * ms_per.second;
     }
@@ -90,8 +91,8 @@ function parse_unit(str) {
  * @param {string} str
  */
 function parse2ms(str) {
-    let timeStrList = str.split("_");
-    let msList = timeStrList.map(parse_unit);
+    const timeStrList = str.replace(/([dhms])(\d)/ig, '$1_$2').split("_");
+    const msList = timeStrList.map(parse_unit);
     return msList.reduce((ms, value) => ms + value, 0);
 }
 //#endregion parse
@@ -134,7 +135,7 @@ export class TimeTag extends DIntTag {
         }
         let valStr = value.toLowerCase().replace("time#", "").replace("t#", "");
         let sign = 1;
-        if (valStr[0] == '-') {
+        if (valStr[0] === '-') {
             valStr = valStr.substring(1);
             sign = -1;
         }
@@ -166,14 +167,14 @@ export class S5TimeTag extends IntTag {
      */
     get value() {
         const [count, base] = this.pair_value;
-        let ms = count * time_base2ms[base];
+        const ms = count * time_base2ms[base];
         return `S5T#${getTimeDurationStr(ms)}`;
     }
     /** @type {(string|number)} */
     set value(value) {
         let count;
         if (typeof value === 'string') {
-            let valStr = value.toLowerCase().replace("s5time#", "").replace("s5t#", "");
+            const valStr = value.toLowerCase().replace("s5time#", "").replace("s5t#", "");
             count = parse2ms(valStr);
         } else if (typeof value === 'number') {
             count = value;
@@ -193,13 +194,13 @@ export class S5TimeTag extends IntTag {
      * @type {[number, number]}
      */
     get pair_value() {
-        let base = (this.rawValue & 0xf000) >> 12; // 读前4位
-        let count = BCD2Decimal(this.rawValue & 0x0fff);// 读后12位
+        const base = (this.rawValue & 0xf000) >> 12; // 读前4位
+        const count = BCD2Decimal(this.rawValue & 0x0fff);// 读后12位
         return [count, base];
     }
     set pair_value([count, base]) {
         if (count < 0 || count > 999) throw new Error(`S5TimeTag.count error : ${count} out of 0-999`);
-        let dec = base * 1000 + count;
+        const dec = base * 1000 + count;
         this.rawValue = Decimal2BCD(dec);
         this.trigger_value_change();
     }
@@ -233,7 +234,7 @@ export class DateTag extends UIntTag {
     }
     /** @type {Date} */
     get JSDate() {
-        let ms = this.rawValue * ms_per.day;
+        const ms = this.rawValue * ms_per.day;
         return new Date(ms);
     }
 
@@ -242,20 +243,20 @@ export class DateTag extends UIntTag {
      * @param {string|Date|number} value
      */
     set value(value) {
-        if (typeof (value) == "number") {
+        if (typeof (value) === "number") {
             super.value = value;
             return;
         }
         let date;
         if (value instanceof Date) date = value;
-        else if (typeof (value) == "string") {
-            let valStr = value.toLowerCase().replace("date#", "").replace("d#", "");
+        else if (typeof (value) === "string") {
+            const valStr = value.toLowerCase().replace("date#", "").replace("d#", "");
             if (!/\d+-\d+-\d+/.test(valStr)) throw new Error('input error, must like "DATE#2021-5-6"!');
             date = new Date(Date.UTC(...valStr.split('-')));
         } else {
             throw new Error("input error, parameter must be a string or Date or Number object.");
         }
-        let ms = date.valueOf();
+        const ms = date.valueOf();
         super.value = (ms - ms % ms_per.day) / ms_per.day; // 调用基类确保已加载
     }
     constructor({ name = "", type = "DATE", value = 0 } = { name: "", type: "DATE" }) {
@@ -264,16 +265,16 @@ export class DateTag extends UIntTag {
 }
 
 
-let year = new BcdByteTag({ name: "year" });
-let month = new BcdByteTag({ name: "month" });
-let day = new BcdByteTag({ name: "day" });
-let hours = new BcdByteTag({ name: "hours" });
-let minutes = new BcdByteTag({ name: "minutes" });
-let seconds = new BcdByteTag({ name: "seconds" });
-let msL = new BcdByteTag({ name: "msL" });
-let msH = new BcdByteTag({ name: "msH" });
+const year = new BcdByteTag({ name: "year" });
+const month = new BcdByteTag({ name: "month" });
+const day = new BcdByteTag({ name: "day" });
+const hours = new BcdByteTag({ name: "hours" });
+const minutes = new BcdByteTag({ name: "minutes" });
+const seconds = new BcdByteTag({ name: "seconds" });
+const msL = new BcdByteTag({ name: "msL" });
+const msH = new BcdByteTag({ name: "msH" });
 function getDTList() {
-    let Y = year.value;
+    const Y = year.value;
     return [
         Y < 90 ? Y + 2000 : Y + 1900,
         month.value,
@@ -291,12 +292,12 @@ export class DTTag extends ComplexTag {
 
     /** @type {string} */
     get value() {
-        let [Y, M, D, H, I, S, MS] = getDTList();
+        const [Y, M, D, H, I, S, MS] = getDTList();
         return `DATE_AND_TIME#${Y}-${M}-${D}-${H}:${I}:${S}.${MS}`;
     };
     /** @type {Date} */
     get date() {
-        let [Y, M, D, H, I, S, MS] = getDTList();
+        const [Y, M, D, H, I, S, MS] = getDTList();
         return new Date(Y, M - 1, D, H, I, S, MS);
     };
 
@@ -306,11 +307,12 @@ export class DTTag extends ComplexTag {
      * @param {string|Date} dt
      */
     set value(dt) {
-        let datestr, week = -1;
+        let datestr;
+        let week = -1;
         if (dt instanceof Date) {
             datestr = dt.toISOString().replace("Z", "").replace("T", "-");
             week = dt.getDay();
-        } else if (typeof (dt) == "string") {
+        } else if (typeof (dt) === "string") {
             datestr = dt.toLowerCase();
             if (datestr.startsWith('date_and_time#')) {
                 datestr = datestr.substring(14);
@@ -323,9 +325,9 @@ export class DTTag extends ComplexTag {
         } else {
             throw new Error("input error, parameter must be a string or Date object.");
         }
-        let [Y, M, D, H, I, S, MS] = datestr.split(/[-_:\.]/).map(str => parseInt(str));
-        if (week == -1) week = new Date(Y, M - 1, D, H, I, S, MS).getDay();
-        if (week == 0) week = 7;
+        const [Y, M, D, H, I, S, MS] = datestr.split(/[-_:\.]/).map(str => Number.parseInt(str));
+        if (week === -1) week = new Date(Y, M - 1, D, H, I, S, MS).getDay();
+        if (week === 0) week = 7;
         // 调用子Tag写值确保已加载
         year.value = Y % 100;
         month.value = M;

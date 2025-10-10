@@ -1,0 +1,12 @@
+{
+    "linter": {
+        "rules": {
+            "complexity": {
+                "noForEach": "off"
+            },
+            "style": {
+                "useDefaultParameterLast": "off"
+            }
+        }
+    }
+}
