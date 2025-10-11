@@ -1,4 +1,4 @@
-import pkg from './package.json';
+import pkg from './package.json' with { type: 'json' };
 import { builtinModules } from 'module';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';

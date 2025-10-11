@@ -1,7 +1,7 @@
 import pkg from './package.json';
 import { builtinModules } from 'module';
 import resolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 
 const production = process.env.VPLC == "production";
 export default {

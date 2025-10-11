@@ -2,7 +2,7 @@ import { exec } from 'node:child_process';
 import { cp } from 'node:fs/promises';
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from "node:url";
-import pkg from './package.json' assert { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 import mri from 'mri';
 
 const argv = mri(process.argv.slice(2), {

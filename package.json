@@ -6,15 +6,16 @@
   "private": true,
   "engines": {
     "node": ">=16",
-    "pnpm": ">=7"
+    "pnpm": ">=8"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^19.0.2",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "rollup": "^2.79.1"
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.2",
+    "rollup": "^4.52.4"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a"
 }

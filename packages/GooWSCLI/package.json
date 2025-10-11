@@ -16,7 +16,7 @@
 	},
 	"devDependencies": {
 		"faye-websocket": "^0.11.4",
-		"rollup": "^2.79.1"
+		"rollup": "^4.52.4"
 	},
 	"directories": {
 		"test": "test"
