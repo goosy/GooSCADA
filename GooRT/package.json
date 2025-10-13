@@ -1,8 +1,8 @@
 {
-  "name": "vplc-rt",
-  "version": "1.0.2",
+  "name": "goort",
+  "version": "1.0.0",
   "type": "module",
-  "description": "a nodejs-based Virtual S7 PLC CPU provide specified data through S7.",
+  "description": "a nodejs-based Virtual Runtime for S7 PLC CPU.",
   "main": "./lib/index.js",
   "exports": {
     ".": "./lib/index.js"

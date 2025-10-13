@@ -86,4 +86,4 @@ dist-ssr
 *.local
 /legacy/
 wscli.*js
-packages/ESD-JS-VPLC/conf/**/
+GooRT/conf/**/
