@@ -3,7 +3,6 @@ import { createInterface } from "node:readline";
 
 /**
  * alive check
- */
 let pingTimeout;
 function heartbeat() {
     console.log("heartbeat")
@@ -14,6 +13,7 @@ function heartbeat() {
         websocket.close();
     }, 30000 + 3000);
 }
+ */
 
 let websocket;
 /**
@@ -26,7 +26,7 @@ function createConn(host) {
     websocket = new WebSocket.Client(host);
     // websocket.on('ping', heartbeat); // faye-websocket have not event:"ping"
     websocket.on('close', (event) => {
-        clearTimeout(pingTimeout);
+        // clearTimeout(pingTimeout); // faye-websocket have not event:"ping"
         console.log('close', event.code, event.reason);
         websocket = null;
     });
@@ -35,9 +35,10 @@ function createConn(host) {
         rl.prompt();
         // websocket.close();
     });
-    websocket.on('open', (event) => {
+    websocket.on('open', () => {
         console.log('websocket connection created.')
-        websocket.alive = true;// heartbeat(); // faye-websocket have not event:"ping"
+        websocket.alive = true;
+        // heartbeat(); // faye-websocket have not event:"ping"
     });
 }
 
@@ -97,6 +98,7 @@ rl.on('line', (line) => {
             send(cmd, key, value);
             break;
         default:
+            console.log('command not found.');
             break;
     }
     rl.prompt();

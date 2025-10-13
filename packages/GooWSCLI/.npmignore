@@ -1,0 +1,11 @@
+# source
+index.js
+node_modules/
+
+# bundler
+rollup.config.js
+
+# test & production
+conf/**/
+test/
+.pnp*
