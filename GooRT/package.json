@@ -1,6 +1,6 @@
 {
   "name": "goort",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "a nodejs-based Virtual Runtime for S7 PLC CPU.",
   "main": "./lib/index.js",
@@ -15,7 +15,10 @@
     "goovplc": "workspace:^"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.52.4",
     "mri": "^1.2.0",
     "rimraf": "^6.0.1",
     "yaml": "^2.8.1"

@@ -1,6 +1,6 @@
 {
   "name": "goohmi",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "a web UI connnect to S7PLC via websocket",
   "type": "module",
   "exports": {
@@ -17,11 +17,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-replace": "^6.0.2",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitejs/plugin-vue-jsx": "^5.1.1",
     "@vue/compiler-sfc": "^3.5.22",
     "rollup-plugin-copy": "^3.5.0",
+    "rollup": "^4.52.4",
     "vite": "^7.1.9",
     "vite-plugin-copy": "^0.1.6",
     "vue": "^3.5.22"
